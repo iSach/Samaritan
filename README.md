@@ -30,6 +30,23 @@ To run it:
 - Define admin in samaritan.properties, can use all commands.
 - Use £help to see list of commands.
 
+## UI
+
+You surely saw in the config things about Ui.
+What are those?
+Samaritan implements a WebSocket server, that you can enable/disable.
+To work with a web interface made originally by Rodrigo Graça, modified by me to receive the WebSockets.
+Modified UI Repo: https://github.com/iSach/SamaritanUI
+
+To install and use that:
+- Turn on and configure the WebSocket server in samaritan.properties.
+- Restart Samaritan.
+- On your website folder, put somewhere the SamaritanUI folder.
+- Configure in samaritan.js the port and the hostname.
+- Go on your website.
+- Go on discord, and execute that command: £send Hello world !
+- "HELLO" -> "WORLD" -> "!" will appear on the web interface.
+
 ## Team
 
 [![Sacha "iSach" Lewin](https://avatars3.githubusercontent.com/u/13520261?v=3&s=460)](https://isach.be) |
