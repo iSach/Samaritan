@@ -30,6 +30,12 @@ To run it:
 - Define admin in samaritan.properties, can use all commands.
 - Use £help to see list of commands.
 
+## CleverBot implementation.
+
+Samaritan implements CleverBot.
+To speak with Samaritan:
+- Start a private message with the bot.
+
 ## UI
 
 You surely saw in the config things about Ui.
