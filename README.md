@@ -3,7 +3,9 @@
 There is no planned release date for the Samaritan Source Code.
 It's currently in Closed Beta Testing. (Beta 2.0)
 
-Samaritan is an upcoming fancy multifunction bot for Discord (http://discordapp.com). It has first been (badly by me) done (1.0), and is now being remade clearly: 2.0. It supports things like Music, CleverBot implementation, Advanced Command System, etc. In Closed Beta.
+Samaritan is a fancy multifunction bot for Discord (http://discordapp.com). It has first been (badly by me) done (1.0), and is now being remade clearly: 2.0. It supports things like Music, CleverBot implementation, Advanced Command System, etc. In Open Beta.
+
+It's still In Development! Please report bugs!
 
 ## Made with...
 
@@ -13,11 +15,20 @@ Samaritan is an upcoming fancy multifunction bot for Discord (http://discordapp.
 
 ## Installation
 
-As Samaritan isn't available yet. This isn't available.
+On your IDE:
+- Git clone the repo.
+- Import build.gradle
+
+To run it:
+- Download the jar: 
+- Run it with java -jar.
+- Configure samaritan.properties
+- Run again.
 
 ## Usage
 
-As Samaritan isn't available yet. This isn't available.
+- Define admin in samaritan.properties, can use all commands.
+- Use £help to see list of commands.
 
 ## Team
 
