@@ -18,6 +18,7 @@ import net.dv8tion.jda.entities.PrivateChannel;
 import org.joda.time.Instant;
 
 import javax.security.auth.login.LoginException;
+import java.io.File;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -50,6 +51,11 @@ public class Samaritan {
      * The Smart Logger of this Samaritan Instance.
      */
     private SmartLogger logger;
+
+    /**
+     * Absolute File!
+     */
+    private File workingDirectory;
 
     /**
      * UI WebSocket Server.
@@ -104,13 +110,14 @@ public class Samaritan {
      * @param uiWebSocketPort Web UI Port.
      *                        From <samaritan.properties.
      */
-    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, String admin) {
+    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, String admin, File workingDirectory) {
         this.botToken = botToken;
         this.logger = new SmartLogger();
         this.status = new SamaritanStatus();
         this.songPlayers = new HashMap<>();
         this.gifFactory = new GifFactory();
         this.admin = admin;
+        this.workingDirectory = workingDirectory;
 
         status.setBootInstant(new Instant());
 
@@ -282,5 +289,9 @@ public class Samaritan {
      */
     public boolean useWebUi() {
         return webUi;
+    }
+
+    public File getWorkingDirectory() {
+        return workingDirectory;
     }
 }

@@ -30,11 +30,20 @@ public class SamaritanMain {
     private static InputStream input = null;
 
     /**
+     * Working Directory.
+     */
+    private static File workingDirectory;
+
+    /**
      * Checks file, and generates them.
      *
      * @param args
      */
     public static void main(String[] args) {
+        workingDirectory = new File("");
+        if(args[0] != null && !args[0].isEmpty())
+            workingDirectory = new File(args[0]);
+
         if (!checkFiles()) {
             System.out.println("---------------------------");
             System.out.println("");
@@ -53,7 +62,7 @@ public class SamaritanMain {
         boolean webUi = Boolean.parseBoolean((String) properties.get("web_ui"));
         int uiWebSocketPort = Integer.parseInt((String) properties.get("ui_websocket_port"));
         String admin = properties.getProperty("admin");
-        new Samaritan(args, botToken, webUi, uiWebSocketPort, admin);
+        new Samaritan(args, botToken, webUi, uiWebSocketPort, admin, workingDirectory);
     }
 
     /**
@@ -62,10 +71,10 @@ public class SamaritanMain {
      * @return {@code true} if samaritan.properties existed, {@code false} otherwise.
      */
     private static boolean checkFiles() {
-        File folder = new File("");
-        File logsFolder = new File("logs");
-        File musicFolder = new File("music");
-        File propertiesFile = new File("samaritan.properties");
+        File folder = new File(workingDirectory, "");
+        File logsFolder = new File(workingDirectory, "logs");
+        File musicFolder = new File(workingDirectory, "music");
+        File propertiesFile = new File(workingDirectory, "samaritan.properties");
 
         boolean existed = true;
 

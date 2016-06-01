@@ -8,9 +8,6 @@ import net.dv8tion.jda.entities.Guild;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -123,7 +120,7 @@ public class SongPlayer extends Thread {
      */
     public Map<Integer, File> getSongs() {
         Map<Integer, File> songs = new HashMap<>();
-        File musicDirectory = new File("music");
+        File musicDirectory = new File(samaritan.getWorkingDirectory(), "music");
         final int[] i = {0};
         Arrays.asList(musicDirectory.listFiles()).stream().filter(f -> f.getPath().endsWith(".mp3")).forEach(songFile -> {
             songs.put(i[0], songFile);
