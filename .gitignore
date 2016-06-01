@@ -228,7 +228,7 @@ gradle-app.setting
 !gradle-wrapper.jar
 
 
-gradle-wrapper.properties
+!gradle-wrapper.properties
 
 # Cache of project
 .gradletasknamecache
