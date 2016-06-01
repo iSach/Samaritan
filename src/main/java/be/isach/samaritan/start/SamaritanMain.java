@@ -41,7 +41,7 @@ public class SamaritanMain {
      */
     public static void main(String[] args) {
         workingDirectory = new File("");
-        if(args[0] != null && !args[0].isEmpty())
+        if(args.length > 0 && !args[0].isEmpty())
             workingDirectory = new File(args[0]);
 
         if (!checkFiles()) {

@@ -1,1 +1,1 @@
-web: cd build/libs ; java -jar samaritan-all-2.0-SNAPSHOT.jar
+web: java -jar samaritan-all-2.0-SNAPSHOT.jar
