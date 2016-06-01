@@ -29,7 +29,6 @@ dependencies {
     }
     compile 'ca.pjer:chatter-bot-api:1.4.2'
     compile 'joda-time:joda-time:2.9.4'
-    compile name: 'jave-1.0.2'
     compile group: 'org.apache.commons', name: 'commons-exec', version: '1.3'
 }
 
