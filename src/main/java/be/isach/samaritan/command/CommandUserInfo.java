@@ -42,7 +42,7 @@ public class CommandUserInfo extends Command {
                 "Game: " + (user.getCurrentGame() == null ? "None" : user.getCurrentGame().getName()) + "\n" +
                 "Status: " + user.getOnlineStatus().toString().toLowerCase() + "\n" +
                 "Roles: " + formatRoleList(getGuild().getRolesForUser(user)) + "\n" +
-                "Access Level: N/A" + "\n" +
+                "Access Level: " + getSamaritan().getAccessLevelManager().getAccessLevel(user) + "\n" +
                 "Avatar URL: " + user.getAvatarUrl() + "\n" +
                 "```";
         getMessageChannel().sendMessage(stringBuilder);

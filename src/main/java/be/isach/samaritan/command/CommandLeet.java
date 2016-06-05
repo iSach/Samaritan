@@ -47,7 +47,7 @@ public class CommandLeet extends Command {
 
     private String getLeetFromChar(String s) {
         for (int i = 0; i < ENGLISH_ARRAY.length; i++) {
-            if (s.equals(ENGLISH_ARRAY[i].toLowerCase())) return LEET_ARRAY[i];
+            if (s.toLowerCase().equals(ENGLISH_ARRAY[i].toLowerCase())) return LEET_ARRAY[i];
         }
         return s;
     }

@@ -44,6 +44,11 @@ public class CommandEval extends Command {
         ScriptEngine engine = manager.getEngineByName("js");
         try {
             Object result = engine.eval(toEval);
+            System.out.println(toEval);
+            if(result.toString().length() > 50) {
+                getMessageChannel().sendMessage("Too big output.");
+                return;
+            }
             getMessageChannel().sendMessage(result.toString());
         } catch (NullPointerException | ScriptException e) {
             getMessageChannel().sendMessage("An error happened. Stacktrace printed to console.");

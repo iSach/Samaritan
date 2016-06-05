@@ -4,9 +4,9 @@ import be.isach.samaritan.brainfuck.BrainfuckInterpreter;
 import be.isach.samaritan.chat.PrivateMessageChatThread;
 import be.isach.samaritan.command.console.ConsoleListenerThread;
 import be.isach.samaritan.history.MessageHistoryPrinter;
+import be.isach.samaritan.level.AccessLevelManager;
 import be.isach.samaritan.listener.CommandListener;
 import be.isach.samaritan.listener.PrivateMessageListener;
-import be.isach.samaritan.listener.QuoteListener;
 import be.isach.samaritan.log.SmartLogger;
 import be.isach.samaritan.music.SongPlayer;
 import be.isach.samaritan.runtime.ShutdownThread;
@@ -80,20 +80,14 @@ public class Samaritan {
     private PrivateMessageListener pmListener;
 
     /**
-     * Quote Listener.
-     */
-    private QuoteListener quoteListener;
-
-    /**
      * Bot Token.
      */
     private String botToken;
 
     /**
-     * Admin, TEMPORARY.
-     * TODO: Permissions with commands and saving.
+     * Main Admin. Owner. As Discord User ID.
      */
-    public String admin;
+    private String ownerId;
 
     /**
      * WEB Interface using WebSockets?
@@ -111,6 +105,11 @@ public class Samaritan {
     private GifFactory gifFactory;
 
     /**
+     * Users Acess Level Manager.
+     */
+    private AccessLevelManager accessLevelManager;
+
+    /**
      * Samaritan Constructor.
      *
      * @param args            Program Arguments.
@@ -122,16 +121,17 @@ public class Samaritan {
      * @param uiWebSocketPort Web UI Port.
      *                        From <samaritan.properties.
      */
-    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, String admin, File workingDirectory) {
+    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, long ownerId, File workingDirectory) {
         this.botToken = botToken;
         this.logger = new SmartLogger();
         this.status = new SamaritanStatus();
         this.songPlayers = new HashMap<>();
         this.gifFactory = new GifFactory();
-        this.admin = admin;
+        this.ownerId = String.valueOf(ownerId);
         this.workingDirectory = workingDirectory;
         this.brainfuckInterpreter = new BrainfuckInterpreter();
         this.messageHistoryPrinter = new MessageHistoryPrinter();
+        this.accessLevelManager = new AccessLevelManager(this);
 
         status.setBootInstant(new Instant());
 
@@ -151,6 +151,8 @@ public class Samaritan {
             System.exit(1);
             return;
         }
+
+        this.accessLevelManager.loadUsers();
 
         Runtime.getRuntime().addShutdownHook(new ShutdownThread(this));
 
@@ -190,8 +192,12 @@ public class Samaritan {
             PrivateChannel privateChannel = (PrivateChannel) chatThread.getMessageChannel();
             privateChannel.sendMessage("I must go, a reboot is in the queue!\nYou can try speaking to me again in a few moments.\nGood bye, my dear " + privateChannel.getUser().getUsername() + ".");
         }
-        jda.getAccountManager().reset();
-        jda.getAccountManager().update();
+        try {
+            jda.getAccountManager().reset();
+            jda.getAccountManager().update();
+        } catch (Exception exc) {
+
+        }
         jda.shutdown();
         if (exitSystem)
             System.exit(0);
@@ -216,11 +222,9 @@ public class Samaritan {
      */
     private void setUpListeners() {
         this.pmListener = new PrivateMessageListener();
-        this.quoteListener = new QuoteListener(this);
 
         jda.addEventListener(new CommandListener(this));
         jda.addEventListener(pmListener);
-        jda.addEventListener(quoteListener);
     }
 
     /**
@@ -277,13 +281,6 @@ public class Samaritan {
     }
 
     /**
-     * @return The Private Message Listener
-     */
-    public QuoteListener getQuoteListener() {
-        return quoteListener;
-    }
-
-    /**
      * @return Samaritan's status.
      */
     public SamaritanStatus getStatus() {
@@ -305,6 +302,13 @@ public class Samaritan {
     }
 
     /**
+     * @return Access Level Manager.
+     */
+    public AccessLevelManager getAccessLevelManager() {
+        return accessLevelManager;
+    }
+
+    /**
      * @return Brainfuck code Interpreter.
      */
     public BrainfuckInterpreter getBrainfuckInterpreter() {
@@ -323,5 +327,12 @@ public class Samaritan {
      */
     public File getWorkingDirectory() {
         return workingDirectory;
+    }
+
+    /**
+     * @return Main Admin ID.
+     */
+    public String getOwnerId() {
+        return ownerId;
     }
 }

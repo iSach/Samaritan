@@ -21,30 +21,38 @@ import java.util.List;
  */
 public enum CommandType {
 
-    BRAINFUCK(CommandBrainfuck.class, true, "Runs BrainFuck code", "brainfuck", "bf"),
-    CAT(CommandCat.class, false, "Shows a cat image", "cat"),
+    /**
+     * REMINDER:
+     * Access Levels.
+     * 4: Owner or Admin. OWner Access can't be changed.
+     * Then Levels go from 3 to 0.
+     */
+
+    BRAINFUCK(CommandBrainfuck.class, 0, "Runs BrainFuck code", "brainfuck", "bf"),
+    CAT(CommandCat.class, 0, "Shows a cat image", "cat"),
     //    DOWNLOAD(CommandDownload.class, false, "Downloads a Youtube Video.", "download"),
-    EVAL(CommandEval.class, false, "Runs JS code.", "eval"),
-    FIND_THE_NUMBER(CommandFindTheNumber.class, true, "Starts a Find The Number game.", "findthenumber", "ftn"),
-    GIF(CommandGif.class, true, "Sends a gif", "gif"),
-    HASTE(CommandHaste.class, true, "Prints Hastebin Code.", "haste"),
-    HELP(CommandHelp.class, true, "Prints this", "help"),
-    JOIN_ME(CommandJoinMe.class, false, "Joins Admin.", "joinme"),
-    LEET(CommandLeet.class, true, "Translates text to Leet.", "leet"),
-//    LUA(CommandLua.class, true, "Runs LUA code.", "lua"),
-    PLAY(CommandPlay.class, false, "Plays a Music", "play"),
-    PRINT_HISTORY(CommandPrintHistory.class, true, "Prints History of given size", "history"),
+    EVAL(CommandEval.class, 2, "Runs JS code.", "eval"),
+    FIND_THE_NUMBER(CommandFindTheNumber.class, 0, "Starts a Find The Number game.", "findthenumber", "ftn"),
+    GIF(CommandGif.class, 0, "Sends a gif", "gif"),
+    HASTE(CommandHaste.class, 0, "Prints Hastebin Code.", "haste"),
+    HELP(CommandHelp.class, 0, "Prints this", "help"),
+    JOIN_ME(CommandJoinMe.class, 2, "Joins Admin.", "joinme"),
+    LEET(CommandLeet.class, 0, "Translates text to Leet.", "leet"),
+    //    LUA(CommandLua.class, true, "Runs LUA code.", "lua"),
+    PLAY(CommandPlay.class, 2, "Plays a Music", "play"),
+    PRINT_HISTORY(CommandPrintHistory.class, 0, "Prints History of given size", "history"),
     //    MEME(CommandMeme.class, false, "Shows a cool meme.", "meme"),
-    QUOTE(CommandQuote.class, false, "Quotes a message", "quote"),
-    SAY(CommandSay.class, false, "Says a message", "say", "print"),
-    SEND(CommandSend.class, false, "Sends a WebSocket", "send", "socket"),
-    SET_NAME(CommandSetName.class, false, "Sets new name", "setname"),
-    SHUFFLE(CommandShuffle.class, false, "Toggles Shuffle Mode", "shuffle"),
-    SONGS(CommandSongs.class, false, "Lists songs", "songs"),
-    SHUTDOWN(CommandShutdown.class, false, "Stops Samaritan [!!]", "stop", "shutdown"),
-    TIC_TAC_TOE(CommandTicTacToe.class, true, "Starts a Tic Tac Toe Game", "tictactoe", "ttt"),
-    UPTIME(CommandUptime.class, true, "Shows uptime", "uptime"),
-    USERINFO(CommandUserInfo.class, true, "Show infos about a User.", "userinfo", "user-info");
+    QUOTE(CommandQuote.class, 0, "Quotes a message", "quote"),
+    SAY(CommandSay.class, 3, "Says a message", "say", "print"),
+    SEND(CommandSend.class, 2, "Sends a WebSocket", "send", "socket"),
+    SET_LEVEL(CommandSetLevel.class, 4, "Sets a user Level.", "setlevel"),
+    SET_NAME(CommandSetName.class, 4, "Sets new name", "setname"),
+    SHUFFLE(CommandShuffle.class, 2, "Toggles Shuffle Mode", "shuffle"),
+    SONGS(CommandSongs.class, 0, "Lists songs", "songs"),
+    SHUTDOWN(CommandShutdown.class, 4, "Stops Samaritan [!!]", "stop", "shutdown"),
+    TIC_TAC_TOE(CommandTicTacToe.class, 0, "Starts a Tic Tac Toe Game", "tictactoe", "ttt"),
+    UPTIME(CommandUptime.class, 0, "Shows uptime", "uptime"),
+    USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info");
 
     /**
      * Command class.
@@ -64,13 +72,13 @@ public enum CommandType {
     /**
      * Is command public?
      */
-    private boolean publiic;
+    private int requiredAccessLevel;
 
-    CommandType(Class<? extends Command> clazz, boolean publiic, String description, String... aliases) {
+    CommandType(Class<? extends Command> clazz, int requiredAccessLevel, String description, String... aliases) {
         this.clazz = clazz;
         this.aliases = Arrays.asList(aliases);
         this.description = description;
-        this.publiic = publiic;
+        this.requiredAccessLevel = requiredAccessLevel;
     }
 
     /**
@@ -98,13 +106,6 @@ public enum CommandType {
     }
 
     /**
-     * @return Whether command is public or not.
-     */
-    public boolean isPublic() {
-        return publiic;
-    }
-
-    /**
      * @return command description
      */
     public String getDescription() {
@@ -116,6 +117,13 @@ public enum CommandType {
      */
     public List<String> getAliases() {
         return aliases;
+    }
+
+    /**
+     * @return Required Access Level to execute.
+     */
+    public int getRequiredAccessLevel() {
+        return requiredAccessLevel;
     }
 
     /**
@@ -145,5 +153,16 @@ public enum CommandType {
             longest = Math.max(longest, commandsRegistry.getAliases().get(0).length());
         return longest;
     }
+
+    /**
+     * @return The length of the longest Command complete alias.
+     */
+    public static int longestDescriptionLength() {
+        int longest = 0;
+        for (CommandType commandsRegistry : values())
+            longest = Math.max(longest, commandsRegistry.getDescription().length());
+        return longest;
+    }
+
 
 }

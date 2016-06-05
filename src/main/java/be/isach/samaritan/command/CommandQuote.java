@@ -1,5 +1,6 @@
 package be.isach.samaritan.command;
 
+import net.dv8tion.jda.MessageHistory;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.MessageChannel;
 import net.dv8tion.jda.entities.TextChannel;
@@ -38,8 +39,12 @@ class CommandQuote extends Command {
     @Override
     void onExecute(String[] args) {
         String s = buildStringFromArgs();
-        for (Message message : getSamaritan().getQuoteListener().getMessages((TextChannel) getMessageChannel())) {
-            if (message.getContent().contains(s)) {
+        MessageHistory messageHistory = new MessageHistory(getMessageChannel());
+        messageHistory.retrieve(150);
+        for (Message message : messageHistory.getRecent()) {
+            if (message.getContent().toLowerCase().contains(s.toLowerCase())
+                    && !message.getContent().startsWith("-")
+                    && !message.getAuthor().isBot()) {
                 String messageToSend = "```\n" +
                         "(" +
                         message.getTime().toZonedDateTime().withZoneSameInstant(ZoneId.of("Europe/Paris")).format(DATE_FORMAT) +

@@ -44,7 +44,13 @@ public class CommandListener extends ListenerAdapter {
             String commandLabel = commandFiltered.split(" ")[0];
             for (CommandType commandType : CommandType.values()) {
                 if (commandType.correspondsTo(commandLabel)) {
-                    if (!commandType.isPublic() && !event.getAuthor().getUsername().equals(samaritan.admin)) return;
+                    if (!samaritan.getAccessLevelManager().hasAccessLevel(commandType.getRequiredAccessLevel(), event.getAuthor())) {
+                        event.getMessage().deleteMessage();
+                        event.getChannel().sendMessage("You don't have the required access level for that! (you have: "
+                                + samaritan.getAccessLevelManager().getAccessLevel(event.getAuthor()) + ", required: " +
+                                commandType.getRequiredAccessLevel() + ")");
+                        return;
+                    }
                     String[] g = commandFiltered.split(" ");
                     String[] args = new String[commandFiltered.split(" ").length - 1];
                     for (int i = 1; i < g.length; i++)

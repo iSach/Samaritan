@@ -1,6 +1,5 @@
 package be.isach.samaritan.command;
 
-import be.isach.samaritan.Samaritan;
 import net.dv8tion.jda.entities.*;
 
 /**
@@ -31,11 +30,11 @@ class CommandJoinMe extends Command {
      */
     @Override
     void onExecute(String[] args) {
-        User user = getJda().getUsersByName(getSamaritan().admin).get(0);
+        User user = getJda().getUserById(String.valueOf(getSamaritan().getOwnerId()));
         VoiceChannel voiceChannel = null;
         for (Guild guild : getJda().getGuilds())
-            for (VoiceChannel voiceChannell : guild.getVoiceChannels())
-                if (voiceChannell.getUsers().contains(user)) voiceChannel = voiceChannell;
+            for (VoiceChannel vocalChannel : guild.getVoiceChannels())
+                if (vocalChannel.getUsers().contains(user)) voiceChannel = vocalChannel;
         if (voiceChannel == null) {
             getMessageChannel().sendMessage("I couldn't find you in any voice channel, please join one.");
             return;

@@ -33,25 +33,26 @@ class CommandHelp extends Command {
      */
     @Override
     void onExecute(String[] args) {
-        if(args != null && args.length > 0 && !args[0].isEmpty()) {
+        if (args != null && args.length > 0 && !args[0].isEmpty()) {
             onHelpForCommand(args[0]);
             return;
         }
+        int totalScale = CommandType.longestStringLength() + 7;
+        int totalScaleDesc = CommandType.longestDescriptionLength() + 6;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
-        stringBuilder.append(" \n\nAvailable commands: \n\n");
-        int totalScale = CommandType.longestStringLength() + 7;
-        for (CommandType commands : CommandType.values()) {
-            String access = commands.isPublic() ? "[PUBLIC]" : "[ADMIN]";
-            String alias = commands.getAliases().get(0) + TextUtil.getSpaces(totalScale - commands.getAliases().get(0).length());
-            String desc = commands.getDescription();
-            stringBuilder.append(access);
-            if(commands.isPublic())
-                stringBuilder.append(TextUtil.getSpaces(10 - "[PUBLIC]".length()));
-            else
-                stringBuilder.append(TextUtil.getSpaces(10 - "[ADMIN]".length()));
+        stringBuilder.append(" \nAvailable commands: \n\n\n");
+        stringBuilder.append("Alias").append(TextUtil.getSpaces(totalScale - "Alias".length())).append(" ");
+        stringBuilder.append("Description").append(TextUtil.getSpaces(totalScaleDesc - "Description".length()));
+        stringBuilder.append("Required Access Level");
+        stringBuilder.append("\n\n");
+        for (CommandType commandType : CommandType.values()) {
+            String access = commandType.getRequiredAccessLevel() + "";
+            String alias = commandType.getAliases().get(0) + TextUtil.getSpaces(totalScale - commandType.getAliases().get(0).length());
+            String desc = commandType.getDescription() + TextUtil.getSpaces(totalScaleDesc - commandType.getDescription().length());
             stringBuilder.append(SamaritanConstants.PREFIX).append(alias);
             stringBuilder.append(desc);
+            stringBuilder.append(access);
             stringBuilder.append("\n");
         }
         stringBuilder.append("```");
@@ -59,7 +60,7 @@ class CommandHelp extends Command {
     }
 
     private void onHelpForCommand(String commandLabel) {
-        if(!CommandType.isValidCommandAlias(commandLabel)) {
+        if (!CommandType.isValidCommandAlias(commandLabel)) {
             getMessageChannel().sendMessage("```" + commandLabel + "``` isn't a valid command!");
             return;
         }
@@ -73,8 +74,8 @@ class CommandHelp extends Command {
                 "Description: `" +
                 commandType.getDescription() +
                 "`\n" +
-                "Is Public: `" +
-                commandType.isPublic() +
+                "Required Access Level: `" +
+                commandType.getRequiredAccessLevel() +
                 "`\n";
         getMessageChannel().sendMessage(stringBuilder);
     }
