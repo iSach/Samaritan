@@ -14,7 +14,7 @@ import net.dv8tion.jda.hooks.EventListener;
  * Created by: Sacha
  * Created on: 29th mai, 2016
  * at 01:31
- *
+ * <p>
  * This class implements nextMessage.
  * To be used like Scanner.nextLine(), it waits for an input in MessageChannel.
  * Fetches message with EventListener.
@@ -73,6 +73,7 @@ public abstract class MessageScanningThread extends Thread implements EventListe
             if (scannedMessaged != null) return;
             if (event.getTextChannel() != messageChannel) return;
             if (event.getAuthor().isBot()) return;
+            if (!event.getAuthor().equals(executor)) return;
             setScannedMessaged(event.getMessage());
         }
     }

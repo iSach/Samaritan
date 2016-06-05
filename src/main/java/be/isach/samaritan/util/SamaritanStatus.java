@@ -36,7 +36,7 @@ public class SamaritanStatus {
      * @return the Uptime as a Period.
      */
     public Duration getUpTime() {
-        Interval interval = new Interval(bootInstant.minus(5000000000L), new Instant());
+        Interval interval = new Interval(bootInstant, new Instant());
         return interval.toDuration();
     }
 

@@ -1,7 +1,8 @@
 package be.isach.samaritan.listener;
 
 import be.isach.samaritan.Samaritan;
-import be.isach.samaritan.command.CommandsRegistry;
+import be.isach.samaritan.command.CommandType;
+import be.isach.samaritan.util.SamaritanConstants;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
 
@@ -35,21 +36,25 @@ public class CommandListener extends ListenerAdapter {
      */
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-        if (!event.getMessage().getContent().startsWith("£")) return;
+        if (!event.getMessage().getContent().startsWith(Character.toString(SamaritanConstants.PREFIX))) return;
 
         commandLoop:
         for (String s : event.getMessage().getContent().split(" && ")) {
-            String commandFiltered = s.replaceFirst("£", "");
+            String commandFiltered = s.replaceFirst(Character.toString(SamaritanConstants.PREFIX), "");
             String commandLabel = commandFiltered.split(" ")[0];
-            for (CommandsRegistry command : CommandsRegistry.values()) {
-                if (command.correspondsTo(commandLabel)) {
-                    if(!command.isPublic() && !event.getAuthor().getUsername().equals(samaritan.admin)) return;
+            for (CommandType commandType : CommandType.values()) {
+                if (commandType.correspondsTo(commandLabel)) {
+                    if (!commandType.isPublic() && !event.getAuthor().getUsername().equals(samaritan.admin)) return;
                     String[] g = commandFiltered.split(" ");
                     String[] args = new String[commandFiltered.split(" ").length - 1];
                     for (int i = 1; i < g.length; i++)
                         args[i - 1] = g[i];
-                    command.call(event.getTextChannel(), event.getMessage().getAuthor(), event.getGuild(), samaritan, args);
-                    event.getMessage().deleteMessage();
+                    long threadId = commandType.call(event.getTextChannel(), event.getMessage().getAuthor(), event.getGuild(), samaritan, args);
+                    try {
+                        event.getMessage().deleteMessage();
+                    } catch (Exception exc) {
+                        System.out.println("Couldn't delete command request message for thread: " + threadId);
+                    }
                     continue commandLoop;
                 }
             }

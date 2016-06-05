@@ -19,16 +19,21 @@ import java.util.List;
  * <p>
  * Commands registry, all commands are registered here.
  */
-public enum CommandsRegistry {
+public enum CommandType {
 
+    BRAINFUCK(CommandBrainfuck.class, true, "Runs BrainFuck code", "brainfuck", "bf"),
     CAT(CommandCat.class, false, "Shows a cat image", "cat"),
     //    DOWNLOAD(CommandDownload.class, false, "Downloads a Youtube Video.", "download"),
     EVAL(CommandEval.class, false, "Runs JS code.", "eval"),
     FIND_THE_NUMBER(CommandFindTheNumber.class, true, "Starts a Find The Number game.", "findthenumber", "ftn"),
     GIF(CommandGif.class, true, "Sends a gif", "gif"),
+    HASTE(CommandHaste.class, true, "Prints Hastebin Code.", "haste"),
     HELP(CommandHelp.class, true, "Prints this", "help"),
     JOIN_ME(CommandJoinMe.class, false, "Joins Admin.", "joinme"),
+    LEET(CommandLeet.class, true, "Translates text to Leet.", "leet"),
+//    LUA(CommandLua.class, true, "Runs LUA code.", "lua"),
     PLAY(CommandPlay.class, false, "Plays a Music", "play"),
+    PRINT_HISTORY(CommandPrintHistory.class, true, "Prints History of given size", "history"),
     //    MEME(CommandMeme.class, false, "Shows a cool meme.", "meme"),
     QUOTE(CommandQuote.class, false, "Quotes a message", "quote"),
     SAY(CommandSay.class, false, "Says a message", "say", "print"),
@@ -37,7 +42,9 @@ public enum CommandsRegistry {
     SHUFFLE(CommandShuffle.class, false, "Toggles Shuffle Mode", "shuffle"),
     SONGS(CommandSongs.class, false, "Lists songs", "songs"),
     SHUTDOWN(CommandShutdown.class, false, "Stops Samaritan [!!]", "stop", "shutdown"),
-    UPTIME(CommandUptime.class, true, "Shows uptime", "uptime");
+    TIC_TAC_TOE(CommandTicTacToe.class, true, "Starts a Tic Tac Toe Game", "tictactoe", "ttt"),
+    UPTIME(CommandUptime.class, true, "Shows uptime", "uptime"),
+    USERINFO(CommandUserInfo.class, true, "Show infos about a User.", "userinfo", "user-info");
 
     /**
      * Command class.
@@ -59,22 +66,35 @@ public enum CommandsRegistry {
      */
     private boolean publiic;
 
-    CommandsRegistry(Class<? extends Command> clazz, boolean publiic, String description, String... aliases) {
+    CommandType(Class<? extends Command> clazz, boolean publiic, String description, String... aliases) {
         this.clazz = clazz;
         this.aliases = Arrays.asList(aliases);
         this.description = description;
         this.publiic = publiic;
     }
 
-    public void call(TextChannel textChannel, User user, Guild guild, Samaritan samaritan, String[] args) {
+    /**
+     * @param alias The command alias.
+     * @return The command corresponding to given alias.
+     */
+    public static CommandType fromAlias(String alias) {
+        for (CommandType commandType : values()) {
+            if (commandType.correspondsTo(alias)) return commandType;
+        }
+        return null;
+    }
+
+    public long call(TextChannel textChannel, User user, Guild guild, Samaritan samaritan, String[] args) {
+        Command command = null;
         try {
             CommandData commandData = new CommandData(samaritan, user, guild);
-            Command command = clazz.getDeclaredConstructor(MessageChannel.class, CommandData.class, String[].class).newInstance(textChannel, commandData, args);
+            command = clazz.getDeclaredConstructor(MessageChannel.class, CommandData.class, String[].class).newInstance(textChannel, commandData, args);
             System.out.println("Calling command: " + command.toString());
             command.start();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();
         }
+        return command == null ? 0 : command.getId();
     }
 
     /**
@@ -103,6 +123,27 @@ public enum CommandsRegistry {
      */
     public boolean correspondsTo(String labelToCheck) {
         return aliases.contains(labelToCheck.toLowerCase());
+    }
+
+    /**
+     * @param alias The alias to check.
+     * @return {@code true} if the alias corresponds to any command, {@code false} otherwise.
+     */
+    public static boolean isValidCommandAlias(String alias) {
+        for (CommandType commandsRegistry : values()) {
+            if (commandsRegistry.correspondsTo(alias)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return The length of the longest Command complete alias.
+     */
+    public static int longestStringLength() {
+        int longest = 0;
+        for (CommandType commandsRegistry : values())
+            longest = Math.max(longest, commandsRegistry.getAliases().get(0).length());
+        return longest;
     }
 
 }

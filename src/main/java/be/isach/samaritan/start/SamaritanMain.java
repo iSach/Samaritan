@@ -40,7 +40,7 @@ public class SamaritanMain {
      * @param args
      */
     public static void main(String[] args) {
-        workingDirectory = new File("");
+        workingDirectory = new File("./");
         if(args.length > 0 && !args[0].isEmpty())
             workingDirectory = new File(args[0]);
 

@@ -1,10 +1,7 @@
 package be.isach.samaritan.listener;
 
 import be.isach.samaritan.Samaritan;
-import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.Message;
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.TextChannel;
+import net.dv8tion.jda.entities.*;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
 
@@ -41,6 +38,9 @@ public class QuoteListener extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        if (!(event.getChannel() instanceof PrivateChannel)) return;
+        if (messagesMap == null) return;
+        if (messagesMap.get(event.getTextChannel()) == null) return;
         messagesMap.get(event.getTextChannel()).add(event.getMessage());
     }
 }

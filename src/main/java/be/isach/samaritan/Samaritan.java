@@ -1,7 +1,9 @@
 package be.isach.samaritan;
 
+import be.isach.samaritan.brainfuck.BrainfuckInterpreter;
 import be.isach.samaritan.chat.PrivateMessageChatThread;
 import be.isach.samaritan.command.console.ConsoleListenerThread;
+import be.isach.samaritan.history.MessageHistoryPrinter;
 import be.isach.samaritan.listener.CommandListener;
 import be.isach.samaritan.listener.PrivateMessageListener;
 import be.isach.samaritan.listener.QuoteListener;
@@ -48,6 +50,11 @@ public class Samaritan {
     private JDA jda;
 
     /**
+     * Message History Printer Util.
+     */
+    private MessageHistoryPrinter messageHistoryPrinter;
+
+    /**
      * The Smart Logger of this Samaritan Instance.
      */
     private SmartLogger logger;
@@ -56,6 +63,11 @@ public class Samaritan {
      * Absolute File!
      */
     private File workingDirectory;
+
+    /**
+     * Brainfuck Code Interpreter
+     */
+    private BrainfuckInterpreter brainfuckInterpreter;
 
     /**
      * UI WebSocket Server.
@@ -118,6 +130,8 @@ public class Samaritan {
         this.gifFactory = new GifFactory();
         this.admin = admin;
         this.workingDirectory = workingDirectory;
+        this.brainfuckInterpreter = new BrainfuckInterpreter();
+        this.messageHistoryPrinter = new MessageHistoryPrinter();
 
         status.setBootInstant(new Instant());
 
@@ -158,7 +172,6 @@ public class Samaritan {
         try {
             jda = new JDABuilder().setBotToken(botToken).buildBlocking();
             jda.getAccountManager().setGame("Beta 2.0");
-            jda.getAccountManager().setUsername("Samaritan");
             jda.getAccountManager().update();
         } catch (LoginException | InterruptedException e) {
             logger.write("Couldn't connect!");
@@ -291,6 +304,23 @@ public class Samaritan {
         return webUi;
     }
 
+    /**
+     * @return Brainfuck code Interpreter.
+     */
+    public BrainfuckInterpreter getBrainfuckInterpreter() {
+        return brainfuckInterpreter;
+    }
+
+    /**
+     * @return Message History Printer Util.
+     */
+    public MessageHistoryPrinter getMessageHistoryPrinter() {
+        return messageHistoryPrinter;
+    }
+
+    /**
+     * @return Directory where Samaritan is currently running.
+     */
     public File getWorkingDirectory() {
         return workingDirectory;
     }
