@@ -30,6 +30,15 @@ class CommandSay extends Command{
             getMessageChannel().sendMessage("What do you want to say?");
             toSay = nextMessage().getContent();
         }
-        getMessageChannel().sendMessage(toSay);
+        try {
+            getMessageChannel().sendMessage(toSay);
+        } catch (Exception exc) {
+            try {
+                sleep(5000);
+                getMessageChannel().sendMessage("oooh, calm down mate! Relax and stop spamming!");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

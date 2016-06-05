@@ -43,7 +43,7 @@ public enum CommandType {
     PRINT_HISTORY(CommandPrintHistory.class, 0, "Prints History of given size", "history"),
     //    MEME(CommandMeme.class, false, "Shows a cool meme.", "meme"),
     QUOTE(CommandQuote.class, 0, "Quotes a message", "quote"),
-    SAY(CommandSay.class, 3, "Says a message", "say", "print"),
+    SAY(CommandSay.class, 2, "Says a message", "say", "print"),
     SEND(CommandSend.class, 2, "Sends a WebSocket", "send", "socket"),
     SET_LEVEL(CommandSetLevel.class, 4, "Sets a user Level.", "setlevel"),
     SET_NAME(CommandSetName.class, 4, "Sets new name", "setname"),

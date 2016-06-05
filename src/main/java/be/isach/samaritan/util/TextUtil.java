@@ -2,6 +2,7 @@ package be.isach.samaritan.util;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
+import org.json.JSONException;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class TextUtil {
         return stringBuilder.toString();
     }
 
-    public static String postToHastebin(String body) throws UnirestException {
+    public static String postToHastebin(String body) throws UnirestException, JSONException {
         return Unirest.post("http://hastebin.com/documents").body(body).asJson().getBody().getObject().getString("key");
     }
 

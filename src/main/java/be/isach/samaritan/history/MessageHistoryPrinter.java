@@ -86,7 +86,7 @@ public class MessageHistoryPrinter {
             messageBuilder.appendString("Successfully found and printed history of `" + messages.size() + "` messages.\n");
             messageBuilder.appendString(TextUtil.postToHastebin(dump, true) + ".txt\n");
             channel.sendMessage(messageBuilder.build());
-        } catch (UnirestException ex) {
+        } catch (Exception ex) {
             channel.sendMessage("Failed to connect to Hastebin: " + ex.getMessage());
         }
     }

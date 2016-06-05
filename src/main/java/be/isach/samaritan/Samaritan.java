@@ -193,7 +193,7 @@ public class Samaritan {
             privateChannel.sendMessage("I must go, a reboot is in the queue!\nYou can try speaking to me again in a few moments.\nGood bye, my dear " + privateChannel.getUser().getUsername() + ".");
         }
         try {
-            jda.getAccountManager().reset();
+            jda.getAccountManager().setUsername("Samaritan");
             jda.getAccountManager().update();
         } catch (Exception exc) {
 

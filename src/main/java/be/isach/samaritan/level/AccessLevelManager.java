@@ -94,6 +94,7 @@ public class AccessLevelManager {
     }
 
     public int getAccessLevel(User user) {
+        if(user.isBot()) return 4;
         try {
             return levelsMap.get(user.getId());
         } catch (Exception e) {

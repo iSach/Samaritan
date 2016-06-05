@@ -38,6 +38,8 @@ public class CommandListener extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         if (!event.getMessage().getContent().startsWith(Character.toString(SamaritanConstants.PREFIX))) return;
 
+        if(event.getAuthor().isBot()) return;
+
         commandLoop:
         for (String s : event.getMessage().getContent().split(" && ")) {
             String commandFiltered = s.replaceFirst(Character.toString(SamaritanConstants.PREFIX), "");
