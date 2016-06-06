@@ -173,7 +173,7 @@ public class Samaritan {
     private boolean initJda() {
         try {
             jda = new JDABuilder().setBotToken(botToken).buildBlocking();
-            jda.getAccountManager().setGame("Beta 2.0");
+            jda.getAccountManager().setGame("Beta 2.0.1");
             jda.getAccountManager().update();
         } catch (LoginException | InterruptedException e) {
             logger.write("Couldn't connect!");

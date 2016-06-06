@@ -1,5 +1,5 @@
 group 'be.isach'
-version '2.0-SNAPSHOT'
+version '2.0.1-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'

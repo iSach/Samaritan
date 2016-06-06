@@ -51,7 +51,7 @@ public class SamaritanMain {
         } catch (IOException e) {
             System.out.println("---------------------------");
             System.out.println("");
-            System.out.println("Samaritan vBeta 2.0.");
+            System.out.println("Samaritan vBeta 2.0.1.");
             System.out.println("");
             System.out.println("No config.json detected. Generating new one.");
             System.out.println("");
