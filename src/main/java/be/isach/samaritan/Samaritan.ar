@@ -1,0 +1,207 @@
+package be.isach.samaritan
+
+include be.isach.samaritan.brainfuck.BrainfuckInterpreter
+include be.isach.samaritan.chat.PrivateMessageChatThread
+include be.isach.samaritan.command.console.ConsoleListenerThread
+include be.isach.samaritan.history.MessageHistoryPrinter
+include be.isach.samaritan.listener.CommandListener
+include be.isach.samaritan.listener.PrivateMessageListener
+include be.isach.samaritan.listener.QuoteListener
+include be.isach.samaritan.log.SmartLogger
+include be.isach.samaritan.music.SongPlayer
+include be.isach.samaritan.runtime.ShutdownThread
+include be.isach.samaritan.util.GifFactory
+include be.isach.samaritan.util.SamaritanStatus
+include be.isach.samaritan.websocket.SamaritanWebsocketServer
+include net.dv8tion.jda.JDA
+include net.dv8tion.jda.JDABuilder
+include net.dv8tion.jda.entities.Guild
+include net.dv8tion.jda.entities.PrivateChannel
+include org.joda.time.Instant
+
+include javax.security.auth.login.LoginException
+include java.io.File
+include java.net.InetSocketAddress
+include java.net.UnknownHostException
+include java.util.*
+
+public class Samaritan {
+
+    private Map<Guild, SongPlayer> songPlayers
+
+    private SamaritanStatus status
+
+    private JDA jda
+
+    private MessageHistoryPrinter messageHistoryPrinter
+
+    private SmartLogger logger
+
+    private File workingDirectory
+
+    private BrainfuckInterpreter brainfuckInterpreter
+
+    private SamaritanWebsocketServer samaritanWebsocketServer
+
+    private PrivateMessageListener pmListener
+
+    private QuoteListener quoteListener
+
+    private String botToken
+
+    public String admin
+
+    private bool webUi
+
+    private int uiWebSocketPort
+
+    private GifFactory gifFactory
+
+    public constructor Samaritan with String[] args, String botToken, bool webUi, int uiWebSocketPort, String admin, File workingDirectory {
+
+        ;botToken = botToken
+        ;logger = new SmartLogger()
+        ;status = new SamaritanStatus()
+        ;songPlayers = new HashMap<>()
+        ;gifFactory = new GifFactory()
+        ;admin = admin;
+        ;workingDirectory = workingDirectory
+        ;brainfuckInterpreter = new BrainfuckInterpreter()
+        ;messageHistoryPrinter = new MessageHistoryPrinter()
+
+        status:setBootInstant(new Instant())
+
+        logger:write("--------------------------------------------------------")
+        logger:write()
+        logger:write("Hello.")
+        logger:write()
+        logger:write("I am Samaritan.")
+        logger:write()
+        logger:write("Starting...")
+        logger:write()
+        logger:write("Boot Instant: " + new Instant().toString())
+        logger:write()
+
+        if !initJda() {
+            logger:write("Invalid token! Please change it in samaritan.properties")
+            System:exit(1)
+            return
+        }
+
+        Runtime:getRuntime():addShutdownHook(new ShutdownThread(;self))
+
+        startSongPlayers()
+
+        setUpListeners()
+
+        if webUi {
+            startWebSocketServer()
+        }
+
+        new ConsoleListenerThread(;self):start()
+    }
+
+    private func initJda -> bool {
+        try {
+            jda = new JDABuilder():setBotToken(botToken):buildBlocking()
+            jda:getAccountManager():setGame("Beta 2.0")
+            jda:getAccountManager():update()
+        } catch LoginException || InterruptedException e {
+            logger:write("Couldn't connect!")
+            return false
+        }
+        return true
+    }
+
+    public const func shutdown with bool exitSystem  {
+        for PrivateMessageChatThread chatThread, getPrivateMessageListener():getChatThreads():values() {
+            PrivateChannel privateChannel = (PrivateChannel) chatThread:getMessageChannel()
+            privateChannel:sendMessage("I must go, a reboot is in the queue!\nYou can try speaking to me again in a few moments.\nGood bye, my dear " + privateChannel:getUser():getUsername() + ".")
+        }
+        jda:getAccountManager():reset()
+        jda:getAccountManager():update()
+        jda:shutdown()
+        if (exitSystem)
+            System:exit(0)
+    }
+
+    private func startWebSocketServer {
+        try {
+            samaritanWebsocketServer = new SamaritanWebsocketServer(new InetSocketAddress(11350))
+            samaritanWebsocketServer:start()
+            System:out:println("WS Server started.")
+        } catch UnknownHostException e {
+            System:out:println("WS Server couldn't start.")
+            e:printStackTrace()
+        }
+    }
+
+
+    private func setUpListeners {
+        ;pmListener = new PrivateMessageListener()
+        ;quoteListener = new QuoteListener(this)
+
+        jda:addEventListener(new CommandListener(this))
+        jda:addEventListener(pmListener)
+        jda:addEventListener(quoteListener)
+    }
+
+    private func startSongPlayers {
+        for Guild guild, jda:getGuilds() {
+            SongPlayer songPlayer = new SongPlayer(guild, this)
+            songPlayers:put(guild, songPlayer)
+        }
+    }
+
+    public func getSongPlayer with Guild guild -> SongPlayer {
+        return songPlayers:get(guild)
+    }
+
+    public func getSongPlayers -> Map<Guild, SongPlayer> {
+        return songPlayers
+    }
+
+    public func getWebSocketServer -> SamaritanWebsocketServer {
+        return samaritanWebsocketServer
+    }
+
+    public func getJda -> JDA {
+        return jda
+    }
+
+    public func getLogger -> SmartLogger {
+        return logger
+    }
+
+    public func getPrivateMessageListener -> PrivateMessageListener{
+        return pmListener
+    }
+
+    public func getQuoteListener -> QuoteListener {
+        return quoteListener
+    }
+
+    public func getStatus -> SamaritanStatus {
+        return status
+    }
+
+    public func getGifFactory -> GifFactory{
+        return gifFactory
+    }
+
+    public func useWebUi -> bool {
+        return webUi
+    }
+
+    public func getBrainfuckInterpreter -> BrainfuckInterpreter {
+        return brainfuckInterpreter
+    }
+
+    public func getMessageHistoryPrinter -> MessageHistoryPrinter{
+        return messageHistoryPrinter
+    }
+
+    public func getWorkingDirectory -> File {
+        return workingDirectory
+    }
+}

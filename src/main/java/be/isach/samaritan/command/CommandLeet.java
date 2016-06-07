@@ -1,13 +1,6 @@
 package be.isach.samaritan.command;
 
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.sun.deploy.net.URLEncoder;
-import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.MessageChannel;
-import org.luaj.vm2.ast.Str;
-
-import java.io.UnsupportedEncodingException;
 
 /**
  * Project: samaritan

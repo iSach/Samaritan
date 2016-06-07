@@ -3,6 +3,7 @@ package be.isach.samaritan.level;
 import be.isach.samaritan.Samaritan;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.utils.ApplicationUtil;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -94,7 +95,7 @@ public class AccessLevelManager {
     }
 
     public int getAccessLevel(User user) {
-        if(user.isBot()) return 4;
+        if (user.getId().equals(samaritan.getJda().getSelfInfo().getId())) return 4;
         try {
             return levelsMap.get(user.getId());
         } catch (Exception e) {
