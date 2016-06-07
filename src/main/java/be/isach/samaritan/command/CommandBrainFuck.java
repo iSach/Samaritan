@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
  * Created on: 05th juin, 2016
  * at 14:23
  */
-public class CommandBrainfuck extends Command {
+class CommandBrainfuck extends Command {
 
     ByteBuffer bytes = null;
     char[] code;
