@@ -16,6 +16,7 @@ import java.nio.ByteBuffer;
 class CommandBrainfuck extends Command {
 
     ByteBuffer bytes = null;
+
     char[] code;
 
     /**
