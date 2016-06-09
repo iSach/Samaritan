@@ -30,6 +30,7 @@ import java.util.*;
  * Package: be.isach.samaritan
  * Created by: Sacha
  * Created on: 15th May, 2016
+ * <p>
  * Description: Represents a Samaritan Instance.
  */
 public class Samaritan {
@@ -132,6 +133,7 @@ public class Samaritan {
         this.brainfuckInterpreter = new BrainfuckInterpreter();
         this.messageHistoryPrinter = new MessageHistoryPrinter();
         this.accessLevelManager = new AccessLevelManager(this);
+        this.webUi = webUi;
 
         status.setBootInstant(new Instant());
 
