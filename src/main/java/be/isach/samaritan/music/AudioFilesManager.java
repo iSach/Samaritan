@@ -34,7 +34,9 @@ public class AudioFilesManager {
 
     private static void convert(File file) {
         File webmFile = file.getAbsoluteFile();
-        File mp3File = new File(file.getAbsolutePath().replace(".webm", ".mp3"));
+        String spacedName = webmFile.getName().replace(".webm", ".mp3");
+        webmFile.renameTo(new File(webmFile.getAbsolutePath().replace(" ", "")));
+        File mp3File = new File(webmFile.getAbsolutePath().replace(".webm", ".mp3"));
 
         try {
             FFmpeg ffmpeg = null;
@@ -55,6 +57,8 @@ public class AudioFilesManager {
             executor.createJob(builder).run();
 
             executor.createTwoPassJob(builder).run();
+
+            mp3File.renameTo(new File(spacedName));
         } catch (IOException e) {
             e.printStackTrace();
         }
