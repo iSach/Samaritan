@@ -30,7 +30,7 @@ public enum CommandType {
 
     BRAINFUCK(CommandBrainfuck.class, 0, "Runs BrainFuck code", "brainfuck", "bf"),
     CAT(CommandCat.class, 0, "Shows a cat image", "cat"),
-    //    DOWNLOAD(CommandDownload.class, false, "Downloads a Youtube Video.", "download"),
+    DOWNLOAD(CommandDownload.class, 2, "Downloads a Youtube Video.", "download"),
     EVAL(CommandEval.class, 2, "Runs JS code.", "eval"),
     FIND_THE_NUMBER(CommandFindTheNumber.class, 0, "Starts a Find The Number game.", "findthenumber", "ftn"),
     GIF(CommandGif.class, 0, "Sends a gif", "gif"),
