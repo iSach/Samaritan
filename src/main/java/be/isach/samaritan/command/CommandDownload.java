@@ -1,5 +1,6 @@
 package be.isach.samaritan.command;
 
+import be.isach.samaritan.music.AudioFilesManager;
 import com.github.axet.vget.VGet;
 import com.github.axet.vget.info.VGetParser;
 import com.github.axet.vget.info.VideoInfo;
@@ -116,14 +117,9 @@ class CommandDownload extends Command {
 
             v.download(user, stop, notify);
 
-            cleanMp4();
+            AudioFilesManager.checkforSongsToConvert();
         } catch (MalformedURLException | RuntimeException e) {
             e.printStackTrace();
         }
-    }
-
-    private static void cleanMp4() {
-        File file = new File("/home/samaritan/music");
-        Arrays.asList(file.listFiles()).stream().filter(file1 -> file1.getName().endsWith(".mp4")).forEach(File::delete);
     }
 }
