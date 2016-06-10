@@ -52,7 +52,8 @@ public enum CommandType {
     SHUTDOWN(CommandShutdown.class, 4, "Stops Samaritan [!!]", "stop", "shutdown"),
     TIC_TAC_TOE(CommandTicTacToe.class, 0, "Starts a Tic Tac Toe Game", "tictactoe", "ttt"),
     UPTIME(CommandUptime.class, 0, "Shows uptime", "uptime"),
-    USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info");
+    USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info"),
+    TWEET(CommandTweet.class, 2, "Tweets", "tweet");
 
     /**
      * Command class.
