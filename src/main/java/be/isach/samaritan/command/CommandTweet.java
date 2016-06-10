@@ -35,8 +35,8 @@ class CommandTweet extends Command {
     void onExecute(String[] args) {
         Twitter twitter = TwitterFactory.getSingleton();
         try {
-            twitter.updateStatus(buildStringFromArgs());
-            getMessageChannel().sendMessage("I tweeted:\n`" + buildStringFromArgs() + "`\nsuccessfully on the account: @" + twitter.showUser(twitter.getScreenName()).getName());
+            Status status = twitter.updateStatus(buildStringFromArgs());
+            getMessageChannel().sendMessage("I tweeted:\n`" + buildStringFromArgs() + "`\nsuccessfully on the account: @" + twitter.showUser(twitter.getScreenName()).getDescription() + "\n\n" + status.getSource());
         } catch (TwitterException e) {
             getMessageChannel().sendMessage("Oh, something went wrong. (" + e.getMessage());
         }
