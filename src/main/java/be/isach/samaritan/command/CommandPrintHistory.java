@@ -2,18 +2,14 @@ package be.isach.samaritan.command;
 
 import net.dv8tion.jda.entities.MessageChannel;
 
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-
 /**
  * Project: samaritan
  * Package: be.isach.samaritan.command
  * Created by: Sacha
- * Created on: 05th juin, 2016
- * at 15:46
+ * Created on: 10th juin, 2016
+ * at 11:14
  */
-public class CommandPrintHistory extends Command {
+class CommandPrintHistory extends Command{
 
     /**
      * Command Constructor.
@@ -26,28 +22,26 @@ public class CommandPrintHistory extends Command {
         super(messageChannel, commandData, args);
     }
 
-    /**
-     * Called on command Execution.
-     *
-     * @param args Arguments provided by user.
-     */
     @Override
     void onExecute(String[] args) {
+        MessageChannel messageChannel = getMessageChannel();
         int size = 100;
         if (args != null) {
             try {
                 size = Integer.parseInt(args[0]);
             } catch (Exception ignored) {
-                getMessageChannel().sendMessage("Invalid Number provided.");
+                messageChannel.sendMessage("Invalid Number provided.");
             }
+
         } else {
-            getMessageChannel().sendMessage("How many messages do you want to print to hastebin?");
+            messageChannel.sendMessage("How many messages do you want to print to hastebin?");
             try {
-                size = Integer.parseInt(nextMessage().getContent().split(" ")[0]);
-            } catch (Exception ignored) {
-                getMessageChannel().sendMessage("Invalid Number provided.");
+                size = Integer.parseInt(nextMessage().getContent());
+            } catch (Exception exc) {
+                messageChannel.sendMessage("Invalid Number provided.");
             }
+
         }
-        getSamaritan().getMessageHistoryPrinter().printHistory(size, getMessageChannel());
+        getSamaritan().getMessageHistoryPrinter().printHistory(size, messageChannel);
     }
 }
