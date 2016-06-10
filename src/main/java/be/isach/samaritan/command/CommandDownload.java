@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -114,8 +115,15 @@ class CommandDownload extends Command {
             System.out.println("Download URL: " + info.getSource());
 
             v.download(user, stop, notify);
+
+            cleanMp4();
         } catch (MalformedURLException | RuntimeException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void cleanMp4() {
+        File file = new File("/home/samaritan/music");
+        Arrays.asList(file.listFiles()).stream().filter(file1 -> file1.getName().endsWith(".mp4")).forEach(File::delete);
     }
 }
