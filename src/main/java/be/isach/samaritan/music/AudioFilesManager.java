@@ -41,6 +41,7 @@ public class AudioFilesManager {
         file = new File("music/" + file.getName());
         String spacedName = file.getName();
         file.renameTo(new File(file.getPath().replace(" ", "")));
+        file = new File(spacedName.replace(" ", ""));
         System.out.println(file.getPath());
         String s = file.getPath();
         String[] command = {
