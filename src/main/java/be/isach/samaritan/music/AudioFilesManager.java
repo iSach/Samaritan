@@ -29,8 +29,12 @@ public class AudioFilesManager {
         }
     }
 
-    private static void convert(File file) {
-//        System.out.println("Trying to convert: " + file.getName());
+    private static void convert(File f) {
+        new Thread() {
+            @Override
+            public void run() {
+                File file = f;
+               // System.out.println("Trying to convert: " + file.getName());
 //        String spacedName = file.getName().replace(".webm", ".mp3");
 //        File webmFile = file.getAbsoluteFile();
 //        webmFile.renameTo(new File(webmFile.getAbsolutePath().replace(" ", "")));
@@ -38,22 +42,29 @@ public class AudioFilesManager {
 //
 //        System.out.println("\nExists: " + webmFile.exists() + "\n");
 
-        file = new File("music/" + file.getName());
-        String spacedName = file.getName();
-        file.renameTo(new File(file.getPath().replace(" ", "")));
-        file = new File(spacedName.replace(" ", ""));
-        System.out.println(file.getPath());
-        String s = file.getPath();
-        String[] command = {
-                "ffmpeg",
-                "-i",
-                file.getPath(),
-                file.getPath().replace(".webm", ".mp3")
-        };
+                file = new File("music/" + file.getName());
+                String spacedName = file.getName();
+                file.renameTo(new File(file.getPath().replace(" ", "")));
+                file = new File(spacedName.replace(" ", ""));
+                System.out.println(file.getPath());
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                String s = file.getPath();
+                String[] command = {
+                        "ffmpeg",
+                        "-i",
+                        file.getPath(),
+                        file.getPath().replace(".webm", ".mp3")
+                };
 
-        System.out.println(Arrays.asList(command));
-        execProcess(command);
+                System.out.println(Arrays.asList(command));
+                execProcess(command);
 //        mp3File.renameTo(new File(spacedName));
+            }
+        }.start();
     }
 
     private static void execProcess(String[] args) {
