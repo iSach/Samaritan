@@ -46,7 +46,7 @@ public class AudioFilesManager {
         String[] command = {
                 "ffmpeg",
                 "-i",
-                "\"music/ab.webm\"",
+                "\"" + "music/a.webm" + "\"",
                 "\"" + file.getPath().replace(".webm", ".mp3") + "\""
         };
 
