@@ -42,10 +42,11 @@ public class AudioFilesManager {
         String spacedName = file.getName();
         file.renameTo(new File(file.getPath().replace(" ", "")));
         System.out.println(file.getPath());
+        String s = file.getPath();
         String[] command = {
                 "ffmpeg",
                 "-i",
-                "\"" + file.getPath() + "\"",
+                "\"" + s+ "\"",
                 "\"" + file.getPath().replace(".webm", ".mp3") + "\""
         };
 
