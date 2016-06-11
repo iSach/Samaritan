@@ -38,36 +38,41 @@ public class AudioFilesManager {
 //
 //        System.out.println("\nExists: " + webmFile.exists() + "\n");
 
-        try {
-            String[] command = {
-//                    "ls"
-                    "ffmpeg",
-                    "-i",
-//                    "\"" + file.getAbsolutePath() + "\"",
-//                    "\"" + file.getAbsolutePath().replace(".webm", ".mp3") + "\""
-                    "\"" + "music/a b.webm".replace(" ", "\\ ") + "\"",
-                    "\"" + "music/a b.mp3" + "\""
-            };
+        String[] commandCD = {
+                "cd music",
+        };
+        String[] command = {
+                "ffmpeg",
+                "-i",
+                "\"" + "a b.webm".replace(" ", "\\ ") + "\"",
+                "\"" + "a b.mp3" + "\""
+        };
 
-            System.out.println(Arrays.asList(command));
-            Process p = Runtime.getRuntime().exec(command);
+        System.out.println(Arrays.asList(command));
+        execProcess(commandCD);
+        execProcess(command);
+//        mp3File.renameTo(new File(spacedName));
+    }
+
+    private static void execProcess(String[] args) {
+        try {
+            Process p = Runtime.getRuntime().exec(args);
             BufferedReader output = getOutput(p);
             BufferedReader error = getError(p);
-            String ligne = "";
+            String line = "";
 
-            while ((ligne = output.readLine()) != null) {
-                System.out.println(ligne);
+            while ((line = output.readLine()) != null) {
+                System.out.println(line);
             }
 
-            while ((ligne = error.readLine()) != null) {
-                System.out.println(ligne);
+            while ((line = error.readLine()) != null) {
+                System.out.println(line);
             }
 
             p.waitFor();
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-//        mp3File.renameTo(new File(spacedName));
     }
 
     private static BufferedReader getOutput(Process p) {
