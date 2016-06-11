@@ -30,6 +30,7 @@ public enum CommandType {
 
     BRAINFUCK(CommandBrainfuck.class, 0, "Runs BrainFuck code", "brainfuck", "bf"),
     CAT(CommandCat.class, 0, "Shows a cat image", "cat"),
+    CONVERT(CommandConvert.class, 2, "Converts WebM -> mp3", "convert"),
     DOWNLOAD(CommandDownload.class, 2, "Downloads a Youtube Video.", "download"),
     EVAL(CommandEval.class, 2, "Runs JS code.", "eval"),
     FIND_THE_NUMBER(CommandFindTheNumber.class, 0, "Starts a Find The Number game.", "findthenumber", "ftn"),
@@ -51,9 +52,9 @@ public enum CommandType {
     SONGS(CommandSongs.class, 0, "Lists songs", "songs"),
     SHUTDOWN(CommandShutdown.class, 4, "Stops Samaritan [!!]", "stop", "shutdown"),
     TIC_TAC_TOE(CommandTicTacToe.class, 0, "Starts a Tic Tac Toe Game", "tictactoe", "ttt"),
+    TWEET(CommandTweet.class, 2, "Tweets", "tweet"),
     UPTIME(CommandUptime.class, 0, "Shows uptime", "uptime"),
-    USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info"),
-    TWEET(CommandTweet.class, 2, "Tweets", "tweet");
+    USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info");
 
     /**
      * Command class.

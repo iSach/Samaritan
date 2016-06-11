@@ -15,7 +15,7 @@ import java.util.Arrays;
  * Created by: Sacha
  * Created on: 10th juin, 2016
  * at 23:11
- *
+ * <p>
  * REQUIRES FFMPEG.
  */
 public class AudioFilesManager {
@@ -42,7 +42,7 @@ public class AudioFilesManager {
         System.out.println("SpacedName: " + spacedName);
 
         try {
-            Process process = Runtime.getRuntime().exec("ffmpeg -i " + webmFile.getAbsolutePath() + " " + mp3File.getAbsolutePath());
+            Runtime.getRuntime().exec("ffmpeg -i " + webmFile.getAbsolutePath() + " " + mp3File.getAbsolutePath());
             mp3File.renameTo(new File(spacedName));
         } catch (IOException e) {
             e.printStackTrace();
