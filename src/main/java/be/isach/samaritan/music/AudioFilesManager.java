@@ -43,7 +43,6 @@ public class AudioFilesManager {
                         "ffmpeg",
                         "-i",
                         webmFile.getAbsolutePath(),
-                        " ",
                         mp3File.getAbsolutePath()
                 };
                 Process p = Runtime.getRuntime().exec(command);
