@@ -40,10 +40,11 @@ public class AudioFilesManager {
 
         try {
             String[] command = {
-                    "ffmpeg",
-                    "-i",
-                    "\"" + file.getAbsolutePath() + "\"",
-                    "\"" + file.getAbsolutePath().replace(".webm", ".mp3") + "\""
+                    "ls"
+//                    "ffmpeg",
+//                    "-i",
+//                    "\"" + file.getAbsolutePath() + "\"",
+//                    "\"" + file.getAbsolutePath().replace(".webm", ".mp3") + "\""
             };
 
             System.out.println(Arrays.asList(command));
