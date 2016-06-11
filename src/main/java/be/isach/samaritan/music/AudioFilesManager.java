@@ -45,8 +45,8 @@ public class AudioFilesManager {
                     "-i",
 //                    "\"" + file.getAbsolutePath() + "\"",
 //                    "\"" + file.getAbsolutePath().replace(".webm", ".mp3") + "\""
-                    "music/a.webm",
-                    "music/a.mp3"
+                    "\"" + "music/a b.webm" + "\"",
+                    "\"" + "music/a b.mp3" + "\""
             };
 
             System.out.println(Arrays.asList(command));
