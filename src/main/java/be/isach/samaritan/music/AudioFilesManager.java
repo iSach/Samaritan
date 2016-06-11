@@ -43,11 +43,6 @@ public class AudioFilesManager {
 
         try {
             Process process = Runtime.getRuntime().exec("ffmpeg -i " + webmFile.getAbsolutePath() + " " + mp3File.getAbsolutePath());
-            try {
-                process.waitFor();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             mp3File.renameTo(new File(spacedName));
         } catch (IOException e) {
             e.printStackTrace();
