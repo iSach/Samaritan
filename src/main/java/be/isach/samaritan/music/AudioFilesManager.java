@@ -33,19 +33,22 @@ public class AudioFilesManager {
     }
 
     private static void convert(File file) {
+        System.out.println("Trying to convert: " + file.getName());
         String spacedName = file.getName().replace(".webm", ".mp3");
         File webmFile = file.getAbsoluteFile();
         webmFile.renameTo(new File(webmFile.getAbsolutePath().replace(" ", "")));
         System.out.println(webmFile.getAbsolutePath());
         File mp3File = new File(webmFile.getAbsolutePath().replace(".webm", ".mp3"));
 
+        System.out.println(spacedName);
+
         try {
-            FFmpeg ffmpeg = null;
-            ffmpeg = new FFmpeg("/usr/bin/ffmpeg");
-            FFprobe ffprobe = new FFprobe("/usr/bin/ffprobe");
-
-            Runtime.getRuntime().exec("ffmpeg -i " + webmFile.getAbsolutePath() + " " + mp3File.getAbsolutePath());
-
+            Process process = Runtime.getRuntime().exec("ffmpeg -i " + webmFile.getAbsolutePath() + " " + mp3File.getAbsolutePath());
+            try {
+                process.waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             mp3File.renameTo(new File(spacedName));
         } catch (IOException e) {
             e.printStackTrace();
