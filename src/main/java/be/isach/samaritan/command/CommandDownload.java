@@ -52,10 +52,6 @@ class CommandDownload extends Command {
             AtomicBoolean stop = new AtomicBoolean(false);
             Runnable notify = () -> {
                 VideoInfo i1 = info;
-//                    DownloadInfo i2 = i1.getInfo();
-
-                // notify app or save download state
-                // you can extract information from DownloadInfo info;
                 switch (i1.getState()) {
                     case EXTRACTING:
                     case EXTRACTING_DONE:
@@ -69,6 +65,8 @@ class CommandDownload extends Command {
                         } else {
                             System.out.println("downloading unknown quality");
                         }
+
+                        AudioFilesManager.checkforSongsToConvert();
                         break;
                     case RETRYING:
                         System.out.println(i1.getState() + " " + i1.getDelay());
@@ -77,22 +75,6 @@ class CommandDownload extends Command {
                         long now = System.currentTimeMillis();
                         if (now - 1000 > last) {
                             last = now;
-
-                            String parts = "";
-
-//                                List<Part> pp = i2.getParts();
-//                                if (pp != null) {
-//                                    // multipart download
-//                                    for (Part p : pp) {
-//                                        if (p.getState().equals(States.DOWNLOADING)) {
-//                                            parts += String.format("Part#%d(%.2f) ", p.getNumber(), p.getCount()
-//                                                    / (float) p.getLength());
-//                                        }
-//                                    }
-//                                }
-
-//                                System.out.println(String.format("%s %.2f %s", i1.getState(),
-//                                        i2.getCount() / (float) i2.getLength(), parts));
                         }
                         break;
                     default:
@@ -106,7 +88,7 @@ class CommandDownload extends Command {
             user = VGet.parser(web);
             info = user.info(web);
 
-            File path = new File("/home/samaritan/music");
+            File path = new File("music");
 
             VGet v = new VGet(info, path);
 
@@ -116,8 +98,6 @@ class CommandDownload extends Command {
             System.out.println("Download URL: " + info.getSource());
 
             v.download(user, stop, notify);
-
-            AudioFilesManager.checkforSongsToConvert();
         } catch (MalformedURLException | RuntimeException e) {
             e.printStackTrace();
         }

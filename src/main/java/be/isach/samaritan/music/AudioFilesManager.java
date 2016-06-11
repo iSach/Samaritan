@@ -41,11 +41,6 @@ public class AudioFilesManager {
                     convert(f);
                     return;
                 }
-                try {
-                    sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
 
                 String s = file.getPath();
                 String[] command = {
@@ -56,6 +51,8 @@ public class AudioFilesManager {
                 };
 
                 execProcess(command);
+
+                f.delete();
             }
         }.start();
     }
