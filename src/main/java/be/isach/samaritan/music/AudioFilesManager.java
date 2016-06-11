@@ -30,20 +30,20 @@ public class AudioFilesManager {
     }
 
     private static void convert(File file) {
-        System.out.println("Trying to convert: " + file.getName());
-        String spacedName = file.getName().replace(".webm", ".mp3");
-        File webmFile = file.getAbsoluteFile();
-        webmFile.renameTo(new File(webmFile.getAbsolutePath().replace(" ", "")));
-        File mp3File = new File(webmFile.getAbsolutePath().replace(" ", "").replace(".webm", ".mp3"));
-
-        System.out.println("\nExists: " + webmFile.exists() + "\n");
+//        System.out.println("Trying to convert: " + file.getName());
+//        String spacedName = file.getName().replace(".webm", ".mp3");
+//        File webmFile = file.getAbsoluteFile();
+//        webmFile.renameTo(new File(webmFile.getAbsolutePath().replace(" ", "")));
+//        File mp3File = new File(webmFile.getAbsolutePath().replace(" ", "").replace(".webm", ".mp3"));
+//
+//        System.out.println("\nExists: " + webmFile.exists() + "\n");
 
         try {
             String[] command = {
                     "ffmpeg",
                     "-i",
-                    "\"" + webmFile.getAbsolutePath().replace(" ", "") + "\"",
-                    "\"" + mp3File.getAbsolutePath() + "\""
+                    "\"" + file.getAbsolutePath() + "\"",
+                    "\"" + file.getAbsolutePath().replace(".webm", ".mp3") + "\""
             };
 
             System.out.println(Arrays.asList(command));
