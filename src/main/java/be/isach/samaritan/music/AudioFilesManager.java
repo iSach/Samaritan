@@ -38,30 +38,31 @@ public class AudioFilesManager {
 
         System.out.println("SpacedName: " + spacedName);
 
-            try {
-                String[] command = {
-                        "ffmpeg",
-                        "-i",
-                        "\"" + webmFile.getAbsolutePath().replace(" ", "") + "\"",
-                        "\"" +mp3File.getAbsolutePath() + "\""
-                };
-                Process p = Runtime.getRuntime().exec(command);
-                BufferedReader output = getOutput(p);
-                BufferedReader error = getError(p);
-                String ligne = "";
+        try {
+            String[] command = {
+                    "ffmpeg",
+                    "-i",
+                    "\"" + webmFile.getAbsolutePath().replace(" ", "") + "\"",
+                    "\"" + mp3File.getAbsolutePath() + "\""
+            };
+            System.out.println(Arrays.asList(command));
+            Process p = Runtime.getRuntime().exec(command);
+            BufferedReader output = getOutput(p);
+            BufferedReader error = getError(p);
+            String ligne = "";
 
-                while ((ligne = output.readLine()) != null) {
-                    System.out.println(ligne);
-                }
-
-                while ((ligne = error.readLine()) != null) {
-                    System.out.println(ligne);
-                }
-
-                p.waitFor();
-            } catch (IOException | InterruptedException e) {
-                e.printStackTrace();
+            while ((ligne = output.readLine()) != null) {
+                System.out.println(ligne);
             }
+
+            while ((ligne = error.readLine()) != null) {
+                System.out.println(ligne);
+            }
+
+            p.waitFor();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
 //        mp3File.renameTo(new File(spacedName));
     }
 
