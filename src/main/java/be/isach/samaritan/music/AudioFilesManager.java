@@ -62,7 +62,7 @@ public class AudioFilesManager {
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
-        mp3File.renameTo(new File(spacedName));
+//        mp3File.renameTo(new File(spacedName));
     }
 
     private static BufferedReader getOutput(Process p) {
@@ -75,6 +75,6 @@ public class AudioFilesManager {
 
     private static void cleanMp4() {
         File file = new File("/home/samaritan/music");
-        Arrays.asList(file.listFiles()).stream().filter(file1 -> file1.getName().endsWith(".mp4")).forEach(File::delete);
+//        Arrays.asList(file.listFiles()).stream().filter(file1 -> file1.getName().endsWith(".mp4")).forEach(File::delete);
     }
 }
