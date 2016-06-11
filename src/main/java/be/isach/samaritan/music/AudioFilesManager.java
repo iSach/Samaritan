@@ -1,12 +1,9 @@
 package be.isach.samaritan.music;
 
-import net.bramp.ffmpeg.FFmpeg;
-import net.bramp.ffmpeg.FFmpegExecutor;
-import net.bramp.ffmpeg.FFprobe;
-import net.bramp.ffmpeg.builder.FFmpegBuilder;
-
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 /**
@@ -41,19 +38,40 @@ public class AudioFilesManager {
 
         System.out.println("SpacedName: " + spacedName);
 
-        try {
-            String[] command = {
-                    "ffmpeg",
-                    "-i",
-                    webmFile.getAbsolutePath(),
-                    " ",
-                    mp3File.getAbsolutePath()
-            };
-            Runtime.getRuntime().exec(command);
-            mp3File.renameTo(new File(spacedName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            try {
+                String[] command = {
+                        "ffmpeg",
+                        "-i",
+                        webmFile.getAbsolutePath(),
+                        " ",
+                        mp3File.getAbsolutePath()
+                };
+                Process p = Runtime.getRuntime().exec(command);
+                BufferedReader output = getOutput(p);
+                BufferedReader error = getError(p);
+                String ligne = "";
+
+                while ((ligne = output.readLine()) != null) {
+                    System.out.println(ligne);
+                }
+
+                while ((ligne = error.readLine()) != null) {
+                    System.out.println(ligne);
+                }
+
+                p.waitFor();
+            } catch (IOException | InterruptedException e) {
+                e.printStackTrace();
+            }
+        mp3File.renameTo(new File(spacedName));
+    }
+
+    private static BufferedReader getOutput(Process p) {
+        return new BufferedReader(new InputStreamReader(p.getInputStream()));
+    }
+
+    private static BufferedReader getError(Process p) {
+        return new BufferedReader(new InputStreamReader(p.getErrorStream()));
     }
 
     private static void cleanMp4() {
