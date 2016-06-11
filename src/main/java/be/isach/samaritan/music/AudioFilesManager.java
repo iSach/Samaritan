@@ -33,7 +33,7 @@ public class AudioFilesManager {
         System.out.println("Trying to convert: " + file.getName());
         String spacedName = file.getName().replace(".webm", ".mp3");
         File webmFile = file.getAbsoluteFile();
-        webmFile.renameTo(new File(webmFile.getAbsolutePath().replace(" ", "")));
+//        webmFile.renameTo(new File(webmFile.getAbsolutePath().replace(" ", "")));
         File mp3File = new File(webmFile.getAbsolutePath().replace(".webm", ".mp3"));
 
         System.out.println("SpacedName: " + spacedName);
@@ -42,8 +42,8 @@ public class AudioFilesManager {
                 String[] command = {
                         "ffmpeg",
                         "-i",
-                        webmFile.getAbsolutePath(),
-                        mp3File.getAbsolutePath()
+                        "\"" + webmFile.getAbsolutePath() + "\"",
+                        "\"" +mp3File.getAbsolutePath() + "\""
                 };
                 Process p = Runtime.getRuntime().exec(command);
                 BufferedReader output = getOutput(p);
