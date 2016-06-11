@@ -41,6 +41,7 @@ public class AudioFilesManager {
         file = new File("music/" + file.getName());
         String spacedName = file.getName();
         file.renameTo(new File(file.getPath().replace(" ", "")));
+        System.out.println(file.getPath());
         String[] command = {
                 "ffmpeg",
                 "-i",
