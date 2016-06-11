@@ -39,12 +39,12 @@ public class AudioFilesManager {
 //        System.out.println("\nExists: " + webmFile.exists() + "\n");
 
         String[] commandCD = {
-                "cd music",
+                "cd music/",
         };
         String[] command = {
                 "ffmpeg",
                 "-i",
-                "\"" + "a b.webm".replace(" ", "\\ ") + "\"",
+                "\"" + "a b.webm" + "\"",
                 "\"" + "a b.mp3" + "\""
         };
 
