@@ -37,10 +37,9 @@ public class AudioFilesManager {
         String spacedName = file.getName().replace(".webm", ".mp3");
         File webmFile = file.getAbsoluteFile();
         webmFile.renameTo(new File(webmFile.getAbsolutePath().replace(" ", "")));
-        System.out.println(webmFile.getAbsolutePath());
         File mp3File = new File(webmFile.getAbsolutePath().replace(".webm", ".mp3"));
 
-        System.out.println(spacedName);
+        System.out.println("SpacedName: " + spacedName);
 
         try {
             Process process = Runtime.getRuntime().exec("ffmpeg -i " + webmFile.getAbsolutePath() + " " + mp3File.getAbsolutePath());
