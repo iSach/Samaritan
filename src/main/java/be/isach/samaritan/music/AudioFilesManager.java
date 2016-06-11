@@ -45,7 +45,7 @@ public class AudioFilesManager {
                     "-i",
 //                    "\"" + file.getAbsolutePath() + "\"",
 //                    "\"" + file.getAbsolutePath().replace(".webm", ".mp3") + "\""
-                    "\"" + "music/a b.webm" + "\"",
+                    "\"" + "music/a b.webm".replace(" ", "\\ ") + "\"",
                     "\"" + "music/a b.mp3" + "\""
             };
 
