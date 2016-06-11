@@ -58,5 +58,4 @@ public class AudioFilesManager {
         File file = new File("/home/samaritan/music");
         Arrays.asList(file.listFiles()).stream().filter(file1 -> file1.getName().endsWith(".mp4")).forEach(File::delete);
     }
-
 }
