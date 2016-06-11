@@ -41,10 +41,6 @@ public class AudioFilesManager {
         file = new File("music/" + file.getName());
         String spacedName = file.getName();
         file.renameTo(new File(file.getPath().replace(" ", "")));
-
-        String[] commandCD = {
-                "cd music/",
-        };
         String[] command = {
                 "ffmpeg",
                 "-i",
@@ -53,7 +49,6 @@ public class AudioFilesManager {
         };
 
         System.out.println(Arrays.asList(command));
-        execProcess(commandCD);
         execProcess(command);
 //        mp3File.renameTo(new File(spacedName));
     }
