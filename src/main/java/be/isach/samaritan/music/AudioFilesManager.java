@@ -36,7 +36,7 @@ public class AudioFilesManager {
         webmFile.renameTo(new File(webmFile.getAbsolutePath().replace(" ", "")));
         File mp3File = new File(webmFile.getAbsolutePath().replace(" ", "").replace(".webm", ".mp3"));
 
-        System.out.println("SpacedName: " + spacedName);
+        System.out.println("\nExists: " + webmFile.exists() + "\n");
 
         try {
             String[] command = {
@@ -45,6 +45,7 @@ public class AudioFilesManager {
                     "\"" + webmFile.getAbsolutePath().replace(" ", "") + "\"",
                     "\"" + mp3File.getAbsolutePath() + "\""
             };
+
             System.out.println(Arrays.asList(command));
             Process p = Runtime.getRuntime().exec(command);
             BufferedReader output = getOutput(p);
