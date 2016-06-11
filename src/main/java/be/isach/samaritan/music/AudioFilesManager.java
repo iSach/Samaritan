@@ -42,7 +42,14 @@ public class AudioFilesManager {
         System.out.println("SpacedName: " + spacedName);
 
         try {
-            Runtime.getRuntime().exec("ffmpeg -i " + webmFile.getAbsolutePath() + " " + mp3File.getAbsolutePath());
+            String[] command = {
+                    "ffmpeg",
+                    "-i",
+                    webmFile.getAbsolutePath(),
+                    " ",
+                    mp3File.getAbsolutePath()
+            };
+            Runtime.getRuntime().exec(command);
             mp3File.renameTo(new File(spacedName));
         } catch (IOException e) {
             e.printStackTrace();
