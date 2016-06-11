@@ -38,14 +38,18 @@ public class AudioFilesManager {
 //
 //        System.out.println("\nExists: " + webmFile.exists() + "\n");
 
+        file = new File("music/" + file.getName());
+        String spacedName = file.getName();
+        file.renameTo(new File(file.getPath().replace(" ", "")));
+
         String[] commandCD = {
                 "cd music/",
         };
         String[] command = {
                 "ffmpeg",
                 "-i",
-                "\"" + "a b.webm" + "\"",
-                "\"" + "a b.mp3" + "\""
+                "\"" + file.getPath() + "\"",
+                "\"" + file.getPath().replace(".webm", ".mp3") + "\""
         };
 
         System.out.println(Arrays.asList(command));
