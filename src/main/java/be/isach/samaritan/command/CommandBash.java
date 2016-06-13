@@ -44,8 +44,8 @@ public class CommandBash extends Command {
             BufferedReader error = getError(p);
             String line = "";
 
-            stringBuilder.append("```shell\nExecuted in Bash as ROOT:\n\n");
-            stringBuilder.append("Command: ").append(buildStringFromArgs()).append("\nResult:\n");
+            stringBuilder.append("```bash\nExecuted in Bash as ROOT:\n");
+            stringBuilder.append("Command: ").append(buildStringFromArgs()).append("\n\nResult:\n");
             while ((line = output.readLine()) != null) {
                 stringBuilder.append(line).append("\n");
             }
