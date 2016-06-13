@@ -11,7 +11,7 @@ import net.dv8tion.jda.entities.MessageChannel;
  */
 class CommandLeet extends Command {
 
-    public final static String[] ENGLISH_ARRAY = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Z"};
+    public final static String[] ENGLISH_ARRAY = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     public final static String[] LEET_ARRAY = {"4", "8", "(", "[)", "3", "|=", "6", "#", "1", "_|", "X", "1", "|v|", "^/", "0", "|*", "(_,)", "2", "5", "7", "(_)", "\\/", "\\/\\/", "><", "7", "≥"};
 
     /**
