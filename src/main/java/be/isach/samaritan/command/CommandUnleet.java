@@ -37,10 +37,17 @@ public class CommandUnleet extends Command {
         String str = buildStringFromArgs();
         String[] clonedArray = Arrays.copyOf(CommandLeet.LEET_ARRAY, CommandLeet.LEET_ARRAY.length);
         Arrays.sort(clonedArray, (s1, s2) -> (s2.length() - s1.length()));
-        for (int i = 0; i < clonedArray.length; i++) {
-            str = str.replace(clonedArray[i], CommandLeet.ENGLISH_ARRAY[i]);
+        for (String aClonedArray : clonedArray) {
+            str = str.replace(aClonedArray, CommandLeet.ENGLISH_ARRAY[getIndex(aClonedArray)]);
         }
         getMessageChannel().sendMessage("```" + str + "```");
+    }
+
+    private int getIndex(String s) {
+        for(int i = 0; i < CommandLeet.LEET_ARRAY.length; i++) {
+            if(CommandLeet.LEET_ARRAY[i].toLowerCase().equals(s.toLowerCase())) return i;
+        }
+        return 0;
     }
 
 }
