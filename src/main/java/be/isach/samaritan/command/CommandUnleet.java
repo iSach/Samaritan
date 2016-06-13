@@ -35,19 +35,11 @@ public class CommandUnleet extends Command {
     void onExecute(String[] args) {
         getMessageChannel().sendTyping();
         String str = buildStringFromArgs();
-        List<String> organizedList = new ArrayList<>();
-
         String[] clonedArray = Arrays.copyOf(CommandLeet.LEET_ARRAY, CommandLeet.LEET_ARRAY.length);
         Arrays.sort(clonedArray, (s1, s2) -> (s2.length() - s1.length()));
-        Arrays.asList(clonedArray).forEach(System.out::println);
-
-        String leetMessage = "```";
-        System.out.println();
-        for (int i = 0; i < CommandLeet.LEET_ARRAY.length; i++) {
-            str = str.replace(CommandLeet.LEET_ARRAY[i], CommandLeet.ENGLISH_ARRAY[i]);
-            System.out.println(str);
+        for (int i = 0; i < clonedArray.length; i++) {
+            str = str.replace(clonedArray[i], CommandLeet.ENGLISH_ARRAY[i]);
         }
-        System.out.println("");
         getMessageChannel().sendMessage("```" + str + "```");
     }
 
