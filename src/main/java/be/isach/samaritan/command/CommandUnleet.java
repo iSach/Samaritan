@@ -2,6 +2,10 @@ package be.isach.samaritan.command;
 
 import net.dv8tion.jda.entities.MessageChannel;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Project: samaritan
  * Package: be.isach.samaritan.command
@@ -31,6 +35,12 @@ public class CommandUnleet extends Command {
     void onExecute(String[] args) {
         getMessageChannel().sendTyping();
         String str = buildStringFromArgs();
+        List<String> organizedList = new ArrayList<>();
+
+        String[] clonedArray = Arrays.copyOf(CommandLeet.LEET_ARRAY, CommandLeet.LEET_ARRAY.length);
+        Arrays.sort(clonedArray, (s1, s2) -> (s2.length() - s1.length()));
+        Arrays.asList(clonedArray).forEach(System.out::println);
+
         String leetMessage = "```";
         System.out.println();
         for (int i = 0; i < CommandLeet.LEET_ARRAY.length; i++) {
