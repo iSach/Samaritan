@@ -32,8 +32,12 @@ public class CommandUnleet extends Command {
         getMessageChannel().sendTyping();
         String str = buildStringFromArgs();
         String leetMessage = "```";
-        for (int i = 0; i < CommandLeet.LEET_ARRAY.length; i++)
+        System.out.println();
+        for (int i = 0; i < CommandLeet.LEET_ARRAY.length; i++) {
             str = str.replace(CommandLeet.LEET_ARRAY[i], CommandLeet.ENGLISH_ARRAY[i]);
+            System.out.println(str);
+        }
+        System.out.println("");
         getMessageChannel().sendMessage("```" + str + "```");
     }
 
