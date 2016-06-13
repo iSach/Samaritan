@@ -28,6 +28,7 @@ public enum CommandType {
      * Then Levels go from 3 to 0.
      */
 
+    BASH(CommandBash.class, 4, "Runs Bash Command", "bash"),
     BRAINFUCK(CommandBrainfuck.class, 0, "Runs BrainFuck code", "brainfuck", "bf"),
     CAT(CommandCat.class, 0, "Shows a cat image", "cat"),
     CONVERT(CommandConvert.class, 2, "Converts WebM -> mp3", "convert"),

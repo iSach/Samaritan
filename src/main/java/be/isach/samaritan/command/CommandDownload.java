@@ -98,6 +98,8 @@ class CommandDownload extends Command {
             System.out.println("Download URL: " + info.getSource());
 
             v.download(user, stop, notify);
+
+            System.out.println("Download finished. Converting.");
         } catch (MalformedURLException | RuntimeException e) {
             e.printStackTrace();
         }
