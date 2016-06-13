@@ -32,10 +32,10 @@ public class CommandLeet extends Command {
     void onExecute(String[] args) {
         getMessageChannel().sendTyping();
         String str = buildStringFromArgs();
-        String leetMessage = "";
+        String leetMessage = "```";
         for (int i = 0; i < str.length(); ++i)
             leetMessage += getLeetFromChar(str.charAt(i) + "");
-        getMessageChannel().sendMessage(leetMessage);
+        getMessageChannel().sendMessage(leetMessage +"```");
     }
 
     private String getLeetFromChar(String s) {
