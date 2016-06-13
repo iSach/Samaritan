@@ -38,20 +38,25 @@ public class CommandBash extends Command {
 
     private void execProcess(String[] args) {
         try {
+            StringBuilder stringBuilder = new StringBuilder();
             Process p = Runtime.getRuntime().exec(args);
             BufferedReader output = getOutput(p);
             BufferedReader error = getError(p);
             String line = "";
 
+            stringBuilder.append("```bash\nExecuted in Bash as ROOT:\n\n");
             while ((line = output.readLine()) != null) {
-                getMessageChannel().sendMessage(line);
+                stringBuilder.append(line).append("\n");
             }
 
             while ((line = error.readLine()) != null) {
-                getMessageChannel().sendMessage("ERR: " + line);
+                stringBuilder.append("ERR: ").append(line).append("\n");
             }
+            stringBuilder.append("```");
 
             p.waitFor();
+
+            getMessageChannel().sendMessage(stringBuilder.toString());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
