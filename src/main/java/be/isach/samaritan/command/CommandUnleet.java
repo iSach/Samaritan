@@ -6,13 +6,10 @@ import net.dv8tion.jda.entities.MessageChannel;
  * Project: samaritan
  * Package: be.isach.samaritan.command
  * Created by: Sacha
- * Created on: 05th juin, 2016
- * at 16:02
+ * Created on: 13th June, 2016
+ * at 22:19
  */
-class CommandLeet extends Command {
-
-    public final static String[] ENGLISH_ARRAY = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Z"};
-    public final static String[] LEET_ARRAY = {"4", "8", "(", "[)", "3", "|=", "6", "#", "1", "_|", "X", "1", "|v|", "^/", "0", "|*", "(_,)", "2", "5", "7", "(_)", "\\/", "\\/\\/", "><", "7", "≥"};
+public class CommandUnleet extends Command {
 
     /**
      * Command Constructor.
@@ -21,11 +18,13 @@ class CommandLeet extends Command {
      * @param commandData    The Command Data, providing the Guild, the executor and the Samaritan instance.
      * @param args           The args provided when command was called.
      */
-    CommandLeet(MessageChannel messageChannel, CommandData commandData, String[] args) {
+    CommandUnleet(MessageChannel messageChannel, CommandData commandData, String[] args) {
         super(messageChannel, commandData, args);
     }
 
     /**
+     * Called when command is executed.
+     *
      * @param args Arguments provided by user.
      */
     @Override
@@ -34,14 +33,15 @@ class CommandLeet extends Command {
         String str = buildStringFromArgs();
         String leetMessage = "```";
         for (int i = 0; i < str.length(); ++i)
-            leetMessage += getLeetFromChar(str.charAt(i) + "");
+            leetMessage += getCharFromLeet(str.charAt(i) + "");
         getMessageChannel().sendMessage(leetMessage +"```");
     }
 
-    private String getLeetFromChar(String s) {
-        for (int i = 0; i < ENGLISH_ARRAY.length; i++) {
-            if (s.toLowerCase().equals(ENGLISH_ARRAY[i].toLowerCase())) return LEET_ARRAY[i];
+    private String getCharFromLeet(String s) {
+        for (int i = 0; i < CommandLeet.LEET_ARRAY.length; i++) {
+            if (s.toLowerCase().equals(CommandLeet.LEET_ARRAY[i].toLowerCase())) return CommandLeet.ENGLISH_ARRAY[i];
         }
         return s;
     }
+
 }
