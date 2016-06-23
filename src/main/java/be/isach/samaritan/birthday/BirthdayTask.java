@@ -20,19 +20,18 @@ public class BirthdayTask extends TimerTask {
 
     private Samaritan samaritan;
 
-    private static DateTimeFormatter dateFormat = null;
-
     public BirthdayTask(Samaritan samaritan) {
-        dateFormat = new DateTimeFormatterBuilder().appendPattern("").toFormatter();
         this.samaritan = samaritan;
         this.birthdays.put(samaritan.getJda().getUserById("93721838093352960"), new DateTime(2000, 6, 24, 0, 58, 0));
     }
 
     @Override
     public void run() {
+        System.out.println("Checking for birthdays.");
         // Hard coding lelele | .toString("dd/MM/yyyy HH:mm:ss")
         DateTime dt = new DateTime();
         DateTime dateTime = dt.withZone(DateTimeZone.forID("Europe/Paris")).plusMinutes(1);
+        System.out.println(birthdays.entrySet());
         for(Map.Entry entry : birthdays.entrySet()) {
             User user = (User) entry.getKey();
             DateTime birthdayDate = (DateTime) entry.getValue();
