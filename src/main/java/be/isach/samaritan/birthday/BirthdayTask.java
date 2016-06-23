@@ -2,6 +2,7 @@ package be.isach.samaritan.birthday;
 
 import be.isach.samaritan.Samaritan;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Instant;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
@@ -23,7 +24,7 @@ public class BirthdayTask extends TimerTask {
     public void run() {
         // Hard coding lelele
         DateTime dateTime = new DateTime();
-        String message = dateTime.toString();
+        String message = dateTime.withZone(DateTimeZone.forID("Europe/Paris")).toString();
         samaritan.getJda().getGuildById("184045680245997568").getTextChannels().get(0).sendMessage(message);
     }
 
