@@ -16,7 +16,7 @@ import java.util.TimerTask;
 
 public class BirthdayTask extends TimerTask {
 
-    private  Map<User, DateTime> birthdays = Maps.newHashMap();
+    private Map<User, DateTime> birthdays = Maps.newHashMap();
 
     private Samaritan samaritan;
 
@@ -32,23 +32,23 @@ public class BirthdayTask extends TimerTask {
         DateTime dt = new DateTime();
         DateTime dateTime = dt.withZone(DateTimeZone.forID("Europe/Paris")).plusMinutes(1);
         System.out.println(birthdays.entrySet());
-        for(Map.Entry entry : birthdays.entrySet()) {
+        for (Map.Entry entry : birthdays.entrySet()) {
             User user = (User) entry.getKey();
             DateTime birthdayDate = (DateTime) entry.getValue();
             System.out.println(birthdayDate.getHourOfDay() + " | " + dateTime.getHourOfDay());
             System.out.println(birthdayDate.getMinuteOfHour() + " | " + dateTime.getMinuteOfHour());
             System.out.println(birthdayDate.getDayOfMonth() + " | " + dateTime.getDayOfMonth());
             System.out.println(birthdayDate.getMonthOfYear() + " | " + dateTime.getMonthOfYear());
-            if(birthdayDate.getHourOfDay() == dateTime.getHourOfDay()
+            if (birthdayDate.getHourOfDay() == dateTime.getHourOfDay()
                     && birthdayDate.getMinuteOfHour() == dateTime.getMinuteOfHour()
                     && birthdayDate.getDayOfMonth() == dateTime.getDayOfMonth()
                     && birthdayDate.getMonthOfYear() == dateTime.getMonthOfYear()) {
-                for(Guild guild : samaritan.getJda().getGuilds()) {
+                samaritan.getJda().getGuilds().stream().filter(guild -> guild.getId().equals("184045680245997568")).forEachOrdered(guild -> {
                     String stringBuilder = ("Happy birthday " + user.getAsMention() + " !\n") +
                             "You are now " + (dateTime.getYear() - birthdayDate.getYear()) + " years old!\n" +
                             "Birthday is at exactly: " + birthdayDate.toString("dd/MM/yyyy HH:mm:ss");
                     guild.getTextChannels().get(0).sendMessage(stringBuilder);
-                }
+                });
             }
         }
     }
