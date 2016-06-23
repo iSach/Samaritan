@@ -16,9 +16,9 @@ import java.time.format.DateTimeFormatter;
  * <p>
  * Quotes a message.
  */
-class CommandQuote extends Command {
+public class CommandQuote extends Command {
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     /**
      * Command Constructor.

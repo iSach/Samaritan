@@ -1,5 +1,6 @@
 package be.isach.samaritan;
 
+import be.isach.samaritan.birthday.BirthdayTask;
 import be.isach.samaritan.brainfuck.BrainfuckInterpreter;
 import be.isach.samaritan.chat.PrivateMessageChatThread;
 import be.isach.samaritan.command.console.ConsoleListenerThread;
@@ -106,6 +107,16 @@ public class Samaritan {
     private GifFactory gifFactory;
 
     /**
+     * Birthday task
+     */
+    private BirthdayTask birthdayTask;
+
+    /**
+     * Timer.
+     */
+    private Timer timer;
+
+    /**
      * Users Acess Level Manager.
      */
     private AccessLevelManager accessLevelManager;
@@ -153,6 +164,10 @@ public class Samaritan {
             System.exit(1);
             return;
         }
+
+        birthdayTask = new BirthdayTask(this);
+
+        timer.schedule(birthdayTask, 0L, 1000L * 30L);
 
         this.accessLevelManager.loadUsers();
 
