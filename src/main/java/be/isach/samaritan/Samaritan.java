@@ -168,7 +168,7 @@ public class Samaritan {
         this.birthdayTask = new BirthdayTask(this);
         this.timer = new Timer();
 
-        timer.schedule(birthdayTask, 0L, 1000L * 30L);
+        timer.schedule(birthdayTask, 0L, 1000L * 60L);
 
         this.accessLevelManager.loadUsers();
 
