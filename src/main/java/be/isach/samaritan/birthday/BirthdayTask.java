@@ -25,7 +25,7 @@ public class BirthdayTask extends TimerTask {
     public BirthdayTask(Samaritan samaritan) {
         dateFormat = new DateTimeFormatterBuilder().appendPattern("").toFormatter();
         this.samaritan = samaritan;
-        this.birthdays.put(samaritan.getJda().getUserById("93721838093352960"), new DateTime(2000, 6, 24, 0, 56, 0));
+        this.birthdays.put(samaritan.getJda().getUserById("93721838093352960"), new DateTime(2000, 6, 24, 0, 58, 0));
     }
 
     @Override
@@ -36,6 +36,10 @@ public class BirthdayTask extends TimerTask {
         for(Map.Entry entry : birthdays.entrySet()) {
             User user = (User) entry.getKey();
             DateTime birthdayDate = (DateTime) entry.getValue();
+            System.out.println(birthdayDate.getHourOfDay() + " | " + dateTime.getHourOfDay());
+            System.out.println(birthdayDate.getMinuteOfHour() + " | " + dateTime.getMinuteOfHour());
+            System.out.println(birthdayDate.getDayOfMonth() + " | " + dateTime.getDayOfMonth());
+            System.out.println(birthdayDate.getMonthOfYear() + " | " + dateTime.getMonthOfYear());
             if(birthdayDate.getHourOfDay() == dateTime.getHourOfDay()
                     && birthdayDate.getMinuteOfHour() == dateTime.getMinuteOfHour()
                     && birthdayDate.getDayOfMonth() == dateTime.getDayOfMonth()
