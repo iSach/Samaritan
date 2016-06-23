@@ -16,7 +16,7 @@ public class BirthdayTask extends TimerTask {
     private static DateTimeFormatter dateFormat = null;
 
     public BirthdayTask(Samaritan samaritan) {
-        dateFormat = new DateTimeFormatterBuilder().appendPattern("dd/MM/yyyy HH:mm:ss").toFormatter();
+        dateFormat = new DateTimeFormatterBuilder().appendPattern("").toFormatter();
         this.samaritan = samaritan;
     }
 
@@ -24,7 +24,7 @@ public class BirthdayTask extends TimerTask {
     public void run() {
         // Hard coding lelele
         DateTime dateTime = new DateTime();
-        String message = dateTime.withZone(DateTimeZone.forID("Europe/Paris")).toString();
+        String message = dateTime.withZone(DateTimeZone.forID("Europe/Paris")).toString("dd/MM/yyyy HH:mm:ss");
         samaritan.getJda().getGuildById("184045680245997568").getTextChannels().get(0).sendMessage(message);
     }
 
