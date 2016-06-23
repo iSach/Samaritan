@@ -22,7 +22,7 @@ public class BirthdayTask extends TimerTask {
 
     public BirthdayTask(Samaritan samaritan) {
         this.samaritan = samaritan;
-        this.birthdays.put(samaritan.getJda().getUserById("93721838093352960"), new DateTime(2000, 6, 24, 1, 17, 0));
+        this.birthdays.put(samaritan.getJda().getUserById("93721838093352960"), new DateTime(2000, 6, 24, 1, 21, 0));
     }
 
     @Override
