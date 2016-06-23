@@ -22,7 +22,7 @@ public class BirthdayTask extends TimerTask {
 
     public BirthdayTask(Samaritan samaritan) {
         this.samaritan = samaritan;
-        this.birthdays.put(samaritan.getJda().getUserById("93721838093352960"), new DateTime(2000, 6, 24, 1, 21, 0));
+        this.birthdays.put(samaritan.getJda().getUserById("93721838093352960"), new DateTime(2000, 6, 24, 13, 4, 0));
     }
 
     @Override
@@ -43,11 +43,13 @@ public class BirthdayTask extends TimerTask {
                     && birthdayDate.getDayOfMonth() == dateTime.getDayOfMonth()
                     && birthdayDate.getMonthOfYear() == dateTime.getMonthOfYear()) {
                 for (Guild guild : samaritan.getJda().getGuilds()) {
-                    if (guild.getId().equals("184045680245997568")) {
-                        String stringBuilder = ("Happy birthday " + user.getAsMention() + " !\n") +
-                                "You are now " + (dateTime.getYear() - birthdayDate.getYear()) + " years old!\n" +
-                                "Birthday is at exactly: " + birthdayDate.toString("dd/MM/yyyy HH:mm") + "\n" +
-                                "https://media.giphy.com/media/IQF90tVlBIByw/giphy.gif";
+                    String stringBuilder = ("Happy birthday " + user.getAsMention() + " !\n") +
+                            "You are now " + (dateTime.getYear() - birthdayDate.getYear()) + " years old!\n" +
+                            "Birthday is at exactly: " + birthdayDate.toString("dd/MM/yyyy HH:mm") + "\n" +
+                            "https://media.giphy.com/media/IQF90tVlBIByw/giphy.gif";
+                    if (guild.getId().equals("186941943941562369")) {
+                        guild.getTextChannels().get(1).sendMessage(stringBuilder);
+                    } else {
                         guild.getTextChannels().get(0).sendMessage(stringBuilder);
                     }
                 }
