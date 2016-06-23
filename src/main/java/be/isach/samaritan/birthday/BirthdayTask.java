@@ -46,8 +46,8 @@ public class BirthdayTask extends TimerTask {
                     if (guild.getId().equals("184045680245997568")) {
                         String stringBuilder = ("Happy birthday " + user.getAsMention() + " !\n") +
                                 "You are now " + (dateTime.getYear() - birthdayDate.getYear()) + " years old!\n" +
-                                "Birthday is at exactly: " + birthdayDate.toString("dd/MM/yyyy HH:mm\n" +
-                                "https://media.giphy.com/media/IQF90tVlBIByw/giphy.gif");
+                                "Birthday is at exactly: " + birthdayDate.toString("dd/MM/yyyy HH:mm") + "\n" +
+                                "https://media.giphy.com/media/IQF90tVlBIByw/giphy.gif";
                         guild.getTextChannels().get(0).sendMessage(stringBuilder);
                     }
                 }
