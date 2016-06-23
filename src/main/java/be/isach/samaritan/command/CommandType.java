@@ -56,7 +56,8 @@ public enum CommandType {
     TWEET(CommandTweet.class, 2, "Tweets", "tweet"),
     UNLEET(CommandUnleet.class, 0, "Unleets a message", "unleet"),
     UPTIME(CommandUptime.class, 0, "Shows uptime", "uptime"),
-    USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info");
+    USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info"),
+    CLEAN(CommandClean.class, 2, "Cleans fail lol", "clean");
 
     /**
      * Command class.
