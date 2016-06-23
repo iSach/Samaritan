@@ -24,7 +24,7 @@ public class BirthdayTask extends TimerTask {
     public void run() {
         // Hard coding lelele
         DateTime dateTime = new DateTime();
-        String message = dateTime.withZone(DateTimeZone.forID("Europe/Paris")).toString("dd/MM/yyyy HH:mm:ss");
+        String message = dateTime.withZone(DateTimeZone.forID("Europe/Paris")).plusMinutes(1).toString("dd/MM/yyyy HH:mm:ss");
         samaritan.getJda().getGuildById("184045680245997568").getTextChannels().get(0).sendMessage(message);
     }
 
