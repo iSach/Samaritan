@@ -1,6 +1,7 @@
 package be.isach.samaritan.birthday;
 
 import be.isach.samaritan.Samaritan;
+import org.joda.time.DateTime;
 import org.joda.time.Instant;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
@@ -22,7 +23,7 @@ public class BirthdayTask extends TimerTask {
     public void run() {
         // Hard coding lelele
         Instant instant = new Instant();
-        instant.plus(1000 * 60 * 60 * 2 - 1000 * 60);
+        DateTime dateTime = instant.toDateTime().plusHours(2).minusMinutes(1);
         samaritan.getJda().getGuildById("184045680245997568").getTextChannels().get(0).sendMessage(instant.toString(dateFormat));
     }
 
