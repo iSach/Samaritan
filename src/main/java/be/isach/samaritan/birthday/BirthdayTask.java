@@ -22,13 +22,12 @@ public class BirthdayTask extends TimerTask {
 
     public BirthdayTask(Samaritan samaritan) {
         this.samaritan = samaritan;
-        this.birthdays.put(samaritan.getJda().getUserById("93721838093352960"), new DateTime(2000, 6, 24, 1, 8, 0));
+        this.birthdays.put(samaritan.getJda().getUserById("93721838093352960"), new DateTime(2000, 6, 24, 1, 12, 0));
     }
 
     @Override
     public void run() {
         System.out.println("Checking for birthdays.");
-        // Hard coding lelele | .toString("dd/MM/yyyy HH:mm:ss")
         DateTime dt = new DateTime();
         DateTime dateTime = dt.withZone(DateTimeZone.forID("Europe/Paris")).plusMinutes(1);
         System.out.println(birthdays.entrySet());
@@ -46,7 +45,7 @@ public class BirthdayTask extends TimerTask {
                 samaritan.getJda().getGuilds().stream().filter(guild -> guild.getId().equals("184045680245997568")).forEachOrdered(guild -> {
                     String stringBuilder = ("Happy birthday " + user.getAsMention() + " !\n") +
                             "You are now " + (dateTime.getYear() - birthdayDate.getYear()) + " years old!\n" +
-                            "Birthday is at exactly: " + birthdayDate.toString("dd/MM/yyyy HH:mm:ss");
+                            "Birthday is at exactly: " + birthdayDate.toString("dd/MM/yyyy HH:mm");
                     guild.getTextChannels().get(0).sendMessage(stringBuilder);
                 });
             }
