@@ -23,7 +23,7 @@ public class BirthdayTask extends TimerTask {
     public void run() {
         // Hard coding lelele
         Instant instant = new Instant();
-        DateTime dateTime = instant.toDateTime().plusHours(2).minusMinutes(1);
+        DateTime dateTime = instant.toDateTime().minusHours(2).minusMinutes(1);
         samaritan.getJda().getGuildById("184045680245997568").getTextChannels().get(0).sendMessage(dateTime.toString(dateFormat));
     }
 
