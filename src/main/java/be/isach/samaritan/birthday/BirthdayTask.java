@@ -29,7 +29,7 @@ public class BirthdayTask extends TimerTask {
     public void run() {
         System.out.println("Checking for birthdays.");
         DateTime dt = new DateTime();
-        DateTime dateTime = dt.withZone(DateTimeZone.forID("Europe/Paris")).plusMinutes(2);
+        DateTime dateTime = dt.withZone(DateTimeZone.forID("Europe/Paris"));
         System.out.println(birthdays.entrySet());
         for (Map.Entry entry : birthdays.entrySet()) {
             User user = (User) entry.getKey();
