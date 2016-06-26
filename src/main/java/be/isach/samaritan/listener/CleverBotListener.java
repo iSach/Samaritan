@@ -58,7 +58,7 @@ public class CleverBotListener extends Thread implements EventListener {
      */
     private void createBotSessions() {
         try {
-            bot = botFactory.create(ChatterBotType.JABBERWACKY);
+            bot = botFactory.create(ChatterBotType.CLEVERBOT);
             botSession = bot.createSession();
         } catch (Exception e) {
             interrupt();
@@ -72,7 +72,8 @@ public class CleverBotListener extends Thread implements EventListener {
             if (event.getMessage().getMentionedUsers().get(0).getId().equals(jda.getSelfInfo().getId())) {
                 event.getChannel().sendTyping();
                 try {
-                    event.getChannel().sendMessage(botSession.think(event.getMessage().getContent().replace(jda.getSelfInfo().getAsMention() + " ", "")));
+                    String s = event.getMessage().getContent().replace(jda.getSelfInfo().getAsMention() + " ", "");
+                    event.getChannel().sendMessage(s);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
