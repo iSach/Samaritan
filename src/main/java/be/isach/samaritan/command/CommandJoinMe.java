@@ -40,5 +40,6 @@ class CommandJoinMe extends Command {
             return;
         }
         voiceChannel.getGuild().getAudioManager().openAudioConnection(voiceChannel);
+        getMessageChannel().sendMessage("I joined the channel *" + voiceChannel.getName() + "* which I believe you are in!");
     }
 }
