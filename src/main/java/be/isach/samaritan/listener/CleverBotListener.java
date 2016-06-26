@@ -58,7 +58,7 @@ public class CleverBotListener extends Thread implements EventListener {
      */
     private void createBotSessions() {
         try {
-            bot = botFactory.create(ChatterBotType.PANDORABOTS);
+            bot = botFactory.create(ChatterBotType.JABBERWACKY);
             botSession = bot.createSession();
         } catch (Exception e) {
             interrupt();
