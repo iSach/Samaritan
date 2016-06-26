@@ -6,6 +6,7 @@ import be.isach.samaritan.chat.PrivateMessageChatThread;
 import be.isach.samaritan.command.console.ConsoleListenerThread;
 import be.isach.samaritan.history.MessageHistoryPrinter;
 import be.isach.samaritan.level.AccessLevelManager;
+import be.isach.samaritan.listener.CleverBotListener;
 import be.isach.samaritan.listener.CommandListener;
 import be.isach.samaritan.listener.PrivateMessageListener;
 import be.isach.samaritan.log.SmartLogger;
@@ -80,6 +81,11 @@ public class Samaritan {
      * Private Message Listener.
      */
     private PrivateMessageListener pmListener;
+
+    /**
+     * Private Message Listener.
+     */
+    private CleverBotListener cleverBotListener;
 
     /**
      * Bot Token.
@@ -240,6 +246,7 @@ public class Samaritan {
      */
     private void setUpListeners() {
         this.pmListener = new PrivateMessageListener();
+        this.cleverBotListener = new CleverBotListener(getJda());
 
         jda.addEventListener(new CommandListener(this));
         jda.addEventListener(pmListener);

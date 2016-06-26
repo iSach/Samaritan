@@ -74,6 +74,7 @@ public abstract class MessageScanningThread extends Thread implements EventListe
             if (event.getTextChannel() != messageChannel) return;
             if (event.getAuthor().isBot()) return;
             if (!event.getAuthor().equals(executor)) return;
+            event.getChannel().sendTyping();
             setScannedMessaged(event.getMessage());
         }
     }

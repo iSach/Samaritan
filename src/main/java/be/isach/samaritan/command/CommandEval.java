@@ -1,6 +1,7 @@
 package be.isach.samaritan.command;
 
 import net.dv8tion.jda.entities.MessageChannel;
+import net.dv8tion.jda.hooks.ListenerAdapter;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
