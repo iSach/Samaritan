@@ -40,7 +40,7 @@ public class CommandQuote extends Command {
     void onExecute(String[] args) {
         String s = buildStringFromArgs();
         MessageHistory messageHistory = new MessageHistory(getMessageChannel());
-        messageHistory.retrieve(150);
+        messageHistory.retrieve(1500);
         for (Message message : messageHistory.getRecent()) {
             if (message.getContent().toLowerCase().contains(s.toLowerCase())
                     && !message.getContent().startsWith("-")
