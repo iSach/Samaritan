@@ -69,6 +69,7 @@ public class CleverBotListener extends Thread implements EventListener {
     public void onEvent(Event eevent) {
         if (eevent instanceof MessageReceivedEvent) {
             MessageReceivedEvent event = (MessageReceivedEvent) eevent;
+            if(event.getMessage().getMentionedUsers().isEmpty()) return;
             if (event.getMessage().getMentionedUsers().get(0).getId().equals(jda.getSelfInfo().getId())) {
                 event.getChannel().sendTyping();
                 try {
