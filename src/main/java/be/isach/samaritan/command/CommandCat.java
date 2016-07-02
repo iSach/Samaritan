@@ -32,6 +32,7 @@ class CommandCat extends Command {
      */
     @Override
     void onExecute(String[] args) {
+        getMessageChannel().sendMessage("Here is a cat Gif! Because everybody likes cats.")
         getMessageChannel().sendMessage(getSamaritan().getGifFactory().getRandomGif("cat"));
     }
 }
