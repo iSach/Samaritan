@@ -40,7 +40,7 @@ public class QuoteHandler extends Thread implements EventListener {
             try {
                 List<Message> messages = new ArrayList<>();
                 MessageHistory messageHistory = new MessageHistory(messageChannel);
-                messageHistory.retrieve(1000);
+                messageHistory.retrieve(2000);
                 messages.addAll(messageHistory.getRecent());
                 messageChannelListMap.put(messageChannel, messages);
                 System.out.println("[Quote Handler]: Loaded 1000 messages in channel: " + messageChannel.getName());
