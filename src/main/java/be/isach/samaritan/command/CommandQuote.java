@@ -42,14 +42,11 @@ public class CommandQuote extends Command {
         String s = buildStringFromArgs();
         getMessageChannel().sendTyping();
         QuoteHandler quoteHandler = getSamaritan().getQuoteHandler();
-        System.out.println("AA");
         Message message = quoteHandler.searchForQuote(s, getMessageChannel());
         if(message == null) {
-            System.out.println("BB");
             getMessageChannel().sendMessage("No message found.");
             return;
         } else {
-            System.out.println("CC");
             String messageToSend = "```\n" +
                         "(" +
                         message.getTime().toZonedDateTime().withZoneSameInstant(ZoneId.of("Europe/Paris")).format(DATE_FORMAT) +

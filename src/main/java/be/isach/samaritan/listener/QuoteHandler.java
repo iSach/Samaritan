@@ -51,10 +51,8 @@ public class QuoteHandler extends Thread implements EventListener {
     }
 
     public Message searchForQuote(String str, MessageChannel messageChannel) {
-        System.out.println("a");
         if (!messageChannelListMap.containsKey(messageChannel) || messageChannelListMap.get(messageChannel) == null)
             return null;
-        System.out.println("b");
 
         for (Message message : messageChannelListMap.get(messageChannel)) {
             if (message.getContent().toLowerCase().contains(str.toLowerCase())
@@ -63,7 +61,6 @@ public class QuoteHandler extends Thread implements EventListener {
                 return message;
             }
         }
-        System.out.println("c");
         return null;
     }
 

@@ -27,22 +27,20 @@ public class BirthdayTask extends TimerTask {
 
     @Override
     public void run() {
-        System.out.println("Checking for birthdays.");
+        System.out.println("[Birthday Manager]: Checking for birthdays...");
         DateTime dt = new DateTime();
         DateTime dateTime = dt.withZone(DateTimeZone.forID("Europe/Paris"));
-        System.out.println(birthdays.entrySet());
+        boolean atLeastOneFound = false;
         for (Map.Entry entry : birthdays.entrySet()) {
             User user = (User) entry.getKey();
             DateTime birthdayDate = (DateTime) entry.getValue();
-            System.out.println(birthdayDate.getHourOfDay() + " | " + dateTime.getHourOfDay());
-            System.out.println(birthdayDate.getMinuteOfHour() + " | " + dateTime.getMinuteOfHour());
-            System.out.println(birthdayDate.getDayOfMonth() + " | " + dateTime.getDayOfMonth());
-            System.out.println(birthdayDate.getMonthOfYear() + " | " + dateTime.getMonthOfYear());
             if (birthdayDate.getHourOfDay() == dateTime.getHourOfDay()
                     && birthdayDate.getMinuteOfHour() == dateTime.getMinuteOfHour()
                     && birthdayDate.getDayOfMonth() == dateTime.getDayOfMonth()
                     && birthdayDate.getMonthOfYear() == dateTime.getMonthOfYear()) {
                 for (Guild guild : samaritan.getJda().getGuilds()) {
+                    atLeastOneFound = true;
+                    System.out.println("[Birthday Manager]: Birthday found! For: " + user.getUsername());
                     String stringBuilder = ("Happy birthday " + user.getAsMention() + " !\n") +
                             "You are now " + (dateTime.getYear() - birthdayDate.getYear()) + " years old!\n" +
                             "Birthday is at exactly: " + birthdayDate.toString("dd/MM/yyyy HH:mm") + "\n" +
@@ -54,6 +52,9 @@ public class BirthdayTask extends TimerTask {
                     }
                 }
             }
+        }
+        if(!atLeastOneFound) {
+            System.out.println("[Birthday Manager]: No Birthday found.");
         }
     }
 
