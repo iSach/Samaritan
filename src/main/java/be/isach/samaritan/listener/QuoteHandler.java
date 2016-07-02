@@ -37,12 +37,16 @@ public class QuoteHandler extends Thread implements EventListener {
     public void loadData() {
         System.out.println("[Quote Handler]: Loading channel histories...");
         for (TextChannel messageChannel : jda.getTextChannels()) {
-            List<Message> messages = new ArrayList<>();
-            MessageHistory messageHistory = new MessageHistory(messageChannel);
-            messageHistory.retrieve(1000);
-            messages.addAll(messageHistory.getRecent());
-            messageChannelListMap.put(messageChannel, messages);
-            System.out.println("[Quote Handler]: Loaded 1000 messages in channel: " + messageChannel.getName());
+            try {
+                List<Message> messages = new ArrayList<>();
+                MessageHistory messageHistory = new MessageHistory(messageChannel);
+                messageHistory.retrieve(1000);
+                messages.addAll(messageHistory.getRecent());
+                messageChannelListMap.put(messageChannel, messages);
+                System.out.println("[Quote Handler]: Loaded 1000 messages in channel: " + messageChannel.getName());
+            } catch (Exception exc) {
+                continue;
+            }
         }
     }
 
