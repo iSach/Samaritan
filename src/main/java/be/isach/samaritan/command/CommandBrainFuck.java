@@ -11,8 +11,8 @@ import java.nio.ByteBuffer;
  * Package: be.isach.samaritan.command
  * Created by: Sacha
  * Created on: 05th juin, 2016
- * at 14:23
- */
+// * at 14:23
+// */
 class CommandBrainfuck extends Command {
 
     ByteBuffer bytes = null;

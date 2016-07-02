@@ -39,8 +39,11 @@ public class CommandQuote extends Command {
     @Override
     void onExecute(String[] args) {
         String s = buildStringFromArgs();
+        getMessageChannel().sendTyping();
+        getMessageChannel().sendMessage("Retrieving last 1500 messages...");
         MessageHistory messageHistory = new MessageHistory(getMessageChannel());
         messageHistory.retrieve(1500);
+        getMessageChannel().sendMessage("Messages retrieved. Searching for " + s + " ...");
         for (Message message : messageHistory.getRecent()) {
             if (message.getContent().toLowerCase().contains(s.toLowerCase())
                     && !message.getContent().startsWith("-")
