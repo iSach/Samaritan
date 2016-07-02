@@ -42,6 +42,7 @@ public class CommandQuote extends Command {
     void onExecute(String[] args) {
         String s = buildStringFromArgs();
         getMessageChannel().sendTyping();
+        System.out.println("quote command called.");
         QuoteHandler quoteHandler = getSamaritan().getQuoteHandler();
 
         if(!quoteHandler.getMessageChannelListMap().containsKey(getMessageChannel())) {

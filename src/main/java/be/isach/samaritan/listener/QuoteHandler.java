@@ -29,8 +29,7 @@ public class QuoteHandler extends Thread implements EventListener {
     }
 
     @Override
-    public synchronized void start() {
-        super.start();
+    public void run() {
         loadData();
     }
 
