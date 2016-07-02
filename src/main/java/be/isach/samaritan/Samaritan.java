@@ -9,6 +9,7 @@ import be.isach.samaritan.level.AccessLevelManager;
 import be.isach.samaritan.listener.CleverBotListener;
 import be.isach.samaritan.listener.CommandListener;
 import be.isach.samaritan.listener.PrivateMessageListener;
+import be.isach.samaritan.listener.QuoteHandler;
 import be.isach.samaritan.log.SmartLogger;
 import be.isach.samaritan.music.SongPlayer;
 import be.isach.samaritan.runtime.ShutdownThread;
@@ -128,6 +129,11 @@ public class Samaritan {
     private AccessLevelManager accessLevelManager;
 
     /**
+     * Manages quotes.
+     */
+    private QuoteHandler quoteHandler;
+
+    /**
      * Samaritan Constructor.
      *
      * @param args            Program Arguments.
@@ -171,8 +177,11 @@ public class Samaritan {
             return;
         }
 
+        this.quoteHandler = new QuoteHandler(jda);
         this.birthdayTask = new BirthdayTask(this);
         this.timer = new Timer();
+
+        quoteHandler.start();
 
         timer.schedule(birthdayTask, 0L, 1000L * 60L);
 
@@ -359,5 +368,12 @@ public class Samaritan {
      */
     public String getOwnerId() {
         return ownerId;
+    }
+
+    /**
+     * @return Quote Handler.
+     */
+    public QuoteHandler getQuoteHandler() {
+        return quoteHandler;
     }
 }

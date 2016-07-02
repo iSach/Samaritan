@@ -1,5 +1,6 @@
 package be.isach.samaritan.command;
 
+import be.isach.samaritan.listener.QuoteHandler;
 import net.dv8tion.jda.MessageHistory;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.MessageChannel;
@@ -40,15 +41,13 @@ public class CommandQuote extends Command {
     void onExecute(String[] args) {
         String s = buildStringFromArgs();
         getMessageChannel().sendTyping();
-        getMessageChannel().sendMessage("Retrieving last 1500 messages...");
-        MessageHistory messageHistory = new MessageHistory(getMessageChannel());
-        messageHistory.retrieve(1500);
-        getMessageChannel().sendMessage("Messages retrieved. Searching for " + s + " ...");
-        for (Message message : messageHistory.getRecent()) {
-            if (message.getContent().toLowerCase().contains(s.toLowerCase())
-                    && !message.getContent().startsWith("-")
-                    && !message.getAuthor().isBot()) {
-                String messageToSend = "```\n" +
+        QuoteHandler quoteHandler = getSamaritan().getQuoteHandler();
+        Message message = quoteHandler.searchForQuote(s, getMessageChannel());
+        if(message == null) {
+            getMessageChannel().sendMessage("No message found.");
+            return;
+        } else {
+            String messageToSend = "```\n" +
                         "(" +
                         message.getTime().toZonedDateTime().withZoneSameInstant(ZoneId.of("Europe/Paris")).format(DATE_FORMAT) +
                         " " +
@@ -58,9 +57,6 @@ public class CommandQuote extends Command {
                         "\n" +
                         "```";
                 getMessageChannel().sendMessage(messageToSend);
-                return;
-            }
         }
-        getMessageChannel().sendMessage("No message found.");
     }
 }
