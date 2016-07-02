@@ -64,7 +64,9 @@ public class QuoteHandler extends Thread implements EventListener {
         return null;
     }
 
-
+    public Map<MessageChannel, List<Message>> getMessageChannelListMap() {
+        return messageChannelListMap;
+    }
 
     @Override
     public void onEvent(Event eevent) {

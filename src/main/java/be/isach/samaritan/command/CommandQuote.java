@@ -5,6 +5,7 @@ import net.dv8tion.jda.MessageHistory;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.MessageChannel;
 import net.dv8tion.jda.entities.TextChannel;
+
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
@@ -42,21 +43,28 @@ public class CommandQuote extends Command {
         String s = buildStringFromArgs();
         getMessageChannel().sendTyping();
         QuoteHandler quoteHandler = getSamaritan().getQuoteHandler();
+
+        if(!quoteHandler.getMessageChannelListMap().containsKey(getMessageChannel())) {
+            getMessageChannel().sendMessage("Channel History hasn't be fully loaded yet. Please wait a few moments.");
+            return;
+        }
+
         Message message = quoteHandler.searchForQuote(s, getMessageChannel());
-        if(message == null) {
+
+        if (message == null) {
             getMessageChannel().sendMessage("No message found.");
             return;
-        } else {
-            String messageToSend = "```\n" +
-                        "(" +
-                        message.getTime().toZonedDateTime().withZoneSameInstant(ZoneId.of("Europe/Paris")).format(DATE_FORMAT) +
-                        " " +
-                        message.getAuthor().getUsername() +
-                        "): " +
-                        message.getContent() +
-                        "\n" +
-                        "```";
-                getMessageChannel().sendMessage(messageToSend);
         }
+
+        String messageToSend = "```\n" +
+                "(" +
+                message.getTime().toZonedDateTime().withZoneSameInstant(ZoneId.of("Europe/Paris")).format(DATE_FORMAT) +
+                " " +
+                message.getAuthor().getUsername() +
+                "): " +
+                message.getContent() +
+                "\n" +
+                "```";
+        getMessageChannel().sendMessage(messageToSend);
     }
 }
