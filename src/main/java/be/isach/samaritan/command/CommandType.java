@@ -57,7 +57,8 @@ public enum CommandType {
     UNLEET(CommandUnleet.class, 0, "Unleets a message", "unleet"),
     UPTIME(CommandUptime.class, 0, "Shows uptime", "uptime"),
     USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info"),
-    CLEAN(CommandClean.class, 2, "Cleans fail lol", "clean");
+    CLEAN(CommandClean.class, 2, "Cleans fail lol", "clean"),
+    GITHUB(CommandGithub.class, 0, "Shows Github link", "git", "github");
 
     /**
      * Command class.
