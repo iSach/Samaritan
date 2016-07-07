@@ -27,35 +27,39 @@ include java.util.*
 
 public class Samaritan {
 
-    private Map<Guild, SongPlayer> songPlayers
+    private {
+        Map<Guild, SongPlayer> songPlayers
 
-    private SamaritanStatus status
+        SamaritanStatus status
 
-    private JDA jda
+        JDA jda
 
-    private MessageHistoryPrinter messageHistoryPrinter
+        MessageHistoryPrinter messageHistoryPrinter
 
-    private SmartLogger logger
+        SmartLogger logger
 
-    private File workingDirectory
+        File workingDirectory
 
-    private BrainfuckInterpreter brainfuckInterpreter
+        BrainfuckInterpreter brainfuckInterpreter
 
-    private SamaritanWebsocketServer samaritanWebsocketServer
+        SamaritanWebsocketServer samaritanWebsocketServer
 
-    private PrivateMessageListener pmListener
+        PrivateMessageListener pmListener
 
-    private QuoteListener quoteListener
+        QuoteListener quoteListener
 
-    private String botToken
+        String botToken
 
-    public String admin
+        bool webUi
 
-    private bool webUi
+        int uiWebSocketPort
 
-    private int uiWebSocketPort
+        GifFactory gifFactory
+    }
 
-    private GifFactory gifFactory
+    public {
+        String admin
+    }
 
     public constructor Samaritan with String[] args, String botToken, bool webUi, int uiWebSocketPort, String admin, File workingDirectory {
 
