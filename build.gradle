@@ -15,6 +15,7 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -35,6 +36,7 @@ dependencies {
     compile 'com.googlecode.json-simple:json-simple:1.1.1'
     compile 'org.twitter4j:twitter4j-core:[4.0,)'
     compile 'net.bramp.ffmpeg:ffmpeg:0.5'
+    compile 'com.github.Grover-c13:PokeGOAPI-Java:master-SNAPSHOT'
 }
 
 task fatJar(type: Jar) {

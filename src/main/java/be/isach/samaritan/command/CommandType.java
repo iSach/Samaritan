@@ -31,11 +31,13 @@ public enum CommandType {
     BASH(CommandBash.class, 4, "Runs Bash Command", "bash"),
     BRAINFUCK(CommandBrainfuck.class, 0, "Runs BrainFuck code", "brainfuck", "bf"),
     CAT(CommandCat.class, 0, "Shows a cat image", "cat"),
+    CLEAN(CommandClean.class, 2, "Cleans fail lol", "clean"),
     CONVERT(CommandConvert.class, 2, "Converts WebM -> mp3", "convert"),
     DOWNLOAD(CommandDownload.class, 2, "Downloads a Youtube Video.", "download"),
     EVAL(CommandEval.class, 2, "Runs JS code.", "eval"),
     FIND_THE_NUMBER(CommandFindTheNumber.class, 0, "Starts a Find The Number game.", "findthenumber", "ftn"),
     GIF(CommandGif.class, 0, "Sends a gif", "gif"),
+    GITHUB(CommandGithub.class, 0, "Shows Github link", "git", "github"),
     HASTE(CommandHaste.class, 0, "Prints Hastebin Code.", "haste"),
     HELP(CommandHelp.class, 0, "Prints this", "help"),
     JOIN_ME(CommandJoinMe.class, 2, "Joins Admin.", "joinme"),
@@ -43,7 +45,7 @@ public enum CommandType {
     //    LUA(CommandLua.class, true, "Runs LUA code.", "lua"),
     PLAY(CommandPlay.class, 2, "Plays a Music", "play"),
     PRINT_HISTORY(CommandPrintHistory.class, 0, "Prints History of given size", "history"),
-    //    MEME(CommandMeme.class, false, "Shows a cool meme.", "meme"),
+    MEME(CommandMeme.class, false, "Shows a cool meme.", "meme"),
     QUOTE(CommandQuote.class, 0, "Quotes a message", "quote"),
     SAY(CommandSay.class, 2, "Says a message", "say", "print"),
     SEND(CommandSend.class, 2, "Sends a WebSocket", "send", "socket"),
@@ -56,9 +58,7 @@ public enum CommandType {
     TWEET(CommandTweet.class, 2, "Tweets", "tweet"),
     UNLEET(CommandUnleet.class, 0, "Unleets a message", "unleet"),
     UPTIME(CommandUptime.class, 0, "Shows uptime", "uptime"),
-    USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info"),
-    CLEAN(CommandClean.class, 2, "Cleans fail lol", "clean"),
-    GITHUB(CommandGithub.class, 0, "Shows Github link", "git", "github");
+    USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info");
 
     /**
      * Command class.
