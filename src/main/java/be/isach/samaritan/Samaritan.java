@@ -19,6 +19,7 @@ import be.isach.samaritan.runtime.ShutdownThread;
 import be.isach.samaritan.util.GifFactory;
 import be.isach.samaritan.util.SamaritanStatus;
 import be.isach.samaritan.websocket.SamaritanWebsocketServer;
+import com.google.maps.GeoApiContext;
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.auth.GoogleLogin;
 import com.pokegoapi.exceptions.LoginFailedException;
