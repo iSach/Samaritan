@@ -243,7 +243,7 @@ public class Samaritan {
                         RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(pokeGoLoginData.getUsername(), pokeGoLoginData.getPassword());
                         AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
                         JSONObject jsonObject = object.getJSONObject("pokemongo-login");
-                        jsonObject.put("token", auth.getToken().toString());
+                        jsonObject.put("token", auth.getToken().getContents());
                         object.put("pokemongo-login", jsonObject);
                         Files.write(Paths.get("config.json"), object.toString(4).getBytes());
                         pokemonGo = new PokemonGo(auth, httpClient);
