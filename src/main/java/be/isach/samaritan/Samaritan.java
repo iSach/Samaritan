@@ -175,16 +175,6 @@ public class Samaritan {
         this.accessLevelManager = new AccessLevelManager(this);
         this.webUi = webUi;
         this.pokemonGoLoginData = pokeGoLoginData;
-        try {
-            OkHttpClient httpClient = new OkHttpClient();
-            RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(pokeGoLoginData.getUsername(), pokeGoLoginData.getPassword());
-            this.pokemonGo = new PokemonGo(auth, httpClient);
-            System.out.println("Pokémon Go -> Successfully logged in.");
-        } catch (LoginFailedException | RemoteServerException e) {
-            this.pokemonGo = null;
-            System.out.println("Pokémon Go -> Failed to log in.");
-            e.printStackTrace();
-        }
 
         status.setBootInstant(new Instant());
 
@@ -224,6 +214,18 @@ public class Samaritan {
         if (webUi) startWebSocketServer();
 
         new ConsoleListenerThread(this).start();
+
+        try {
+            logger.write("Pokémon Go -> Trying to connect.");
+            OkHttpClient httpClient = new OkHttpClient();
+            RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(pokeGoLoginData.getUsername(), pokeGoLoginData.getPassword());
+            this.pokemonGo = new PokemonGo(auth, httpClient);
+            System.out.println("Pokémon Go -> Successfully logged in.");
+        } catch (LoginFailedException | RemoteServerException e) {
+            this.pokemonGo = null;
+            System.out.println("Pokémon Go -> Failed to log in.");
+            e.printStackTrace();
+        }
     }
 
     /**
