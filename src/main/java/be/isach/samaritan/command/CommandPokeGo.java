@@ -6,6 +6,7 @@ import be.isach.samaritan.util.TextUtil;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import com.pokegoapi.api.PokemonGo;
+import com.pokegoapi.api.inventory.Item;
 import com.pokegoapi.api.inventory.Pokeball;
 import com.pokegoapi.api.map.pokemon.CatchResult;
 import com.pokegoapi.api.map.pokemon.CatchablePokemon;
@@ -17,6 +18,7 @@ import net.dv8tion.jda.entities.MessageChannel;
 import okhttp3.OkHttpClient;
 
 import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -120,6 +122,16 @@ public class CommandPokeGo extends Command {
                         stringBuilder.append("\n");
                     }
                     getMessageChannel().sendMessage("PokéBank:\n" + stringBuilder.toString());
+                    break;
+                case "inv":
+                    Collection<Item> items = go.getInventories().getItemBag().getItems();
+                    StringBuilder sb = new StringBuilder();
+                    for (Item item : items) {
+                        sb.append("  ");
+                        sb.append(TextUtil.beautifyString(item.getItemId().name()));
+                        sb.append("\n");
+                    }
+                    getMessageChannel().sendMessage("PokéBank:\n" + sb.toString());
                     break;
                 default:
                     getMessageChannel().sendMessage("subcommand not found.");
