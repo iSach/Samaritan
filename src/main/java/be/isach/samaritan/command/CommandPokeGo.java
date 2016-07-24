@@ -137,6 +137,15 @@ public class CommandPokeGo extends Command {
                     }
                     getMessageChannel().sendMessage("```Items:\n" + sb.toString() + "```");
                     break;
+                case "stoplist":
+                    try {
+                        StringBuilder sbbb = new StringBuilder();
+                        for (Pokestop pokestop : go.getMap().getMapObjects().getPokestops()) {
+                            sbbb.append(pokestop.getDetails().getName() + "\n");
+                        }
+                        getMessageChannel().sendMessage(sbbb.toString());
+                    } catch (Exception exc) {}
+                    break;
                 case "stop":
                     try {
                         StringBuilder sbb = new StringBuilder();
@@ -184,11 +193,8 @@ public class CommandPokeGo extends Command {
     }
 
     private String makeExpBar(PlayerProfile playerProfile) {
-        System.out.println(playerProfile.getStats().getPrevLevelXp());
-        System.out.println(playerProfile.getStats().getNextLevelXp());
-        System.out.println(playerProfile.getStats().getExperience());
-        double min = (double) playerProfile.getStats().getPrevLevelXp();
-        double max = (double) playerProfile.getStats().getNextLevelXp();
+        double min = (double) playerProfile.getStats().getExperience() ;
+        double max = (double) playerProfile.getStats().getNextLevelXp() - 6000;
         double ratio = min / max;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(playerProfile.getStats().getLevel());
