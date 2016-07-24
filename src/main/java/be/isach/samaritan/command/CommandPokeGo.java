@@ -128,6 +128,8 @@ public class CommandPokeGo extends Command {
                     StringBuilder sb = new StringBuilder();
                     for (Item item : items) {
                         sb.append("  ");
+                        sb.append(item.getCount());
+                        sb.append("x ");
                         sb.append(TextUtil.beautifyString(item.getItemId().name()));
                         sb.append("\n");
                     }
