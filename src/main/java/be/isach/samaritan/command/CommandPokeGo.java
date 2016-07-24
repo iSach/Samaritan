@@ -81,7 +81,7 @@ public class CommandPokeGo extends Command {
                         getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
                         StringBuilder stringBuilder = new StringBuilder();
                         for (CatchablePokemon p : catchablePokemons) {
-                            stringBuilder.append("  (" + getDistanceFromLatLonInKm(lat, lng, p.getLatitude(), p.getLongitude()) + ") " + TextUtil.beautifyString(p.getPokemonId().name()));
+                            stringBuilder.append("  (" + getDistanceFromLatLonInKm(lat, lng, p.getLatitude(), p.getLongitude()) + "m) -> " + TextUtil.beautifyString(p.getPokemonId().name()) + "[ID:" + p.getPokemonId().getNumber() + "]");
                             stringBuilder.append("\n");
                         }
                         getMessageChannel().sendMessage("```Catchable Pokémons there:" + "\n" +  stringBuilder.toString() + "```");
@@ -90,7 +90,7 @@ public class CommandPokeGo extends Command {
                     }
                     break;
                 default:
-                    System.out.println("c");
+                    System.out.println("subcommand not found.");
                     break;
             }
         }
