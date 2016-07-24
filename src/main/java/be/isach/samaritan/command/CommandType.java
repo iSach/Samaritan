@@ -24,7 +24,7 @@ public enum CommandType {
     /**
      * REMINDER:
      * Access Levels.
-     * 4: Owner or Admin. OWner Access can't be changed.
+     * 4: Owner or Admin. Owner Access can't be changed.
      * Then Levels go from 3 to 0.
      */
 
@@ -45,7 +45,7 @@ public enum CommandType {
     //    LUA(CommandLua.class, true, "Runs LUA code.", "lua"),
     PLAY(CommandPlay.class, 2, "Plays a Music", "play"),
     PRINT_HISTORY(CommandPrintHistory.class, 0, "Prints History of given size", "history"),
-    MEME(CommandMeme.class, false, "Shows a cool meme.", "meme"),
+    MEME(CommandMeme.class, 0, "Shows a cool meme.", "meme"),
     QUOTE(CommandQuote.class, 0, "Quotes a message", "quote"),
     SAY(CommandSay.class, 2, "Says a message", "say", "print"),
     SEND(CommandSend.class, 2, "Sends a WebSocket", "send", "socket"),

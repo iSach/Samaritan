@@ -1,6 +1,12 @@
 package be.isach.samaritan.command;
 
+import POGOProtos.Networking.Envelopes.RequestEnvelopeOuterClass;
+import com.pokegoapi.api.PokemonGo;
+import com.pokegoapi.auth.GoogleLogin;
+import com.pokegoapi.exceptions.LoginFailedException;
+import com.pokegoapi.exceptions.RemoteServerException;
 import net.dv8tion.jda.entities.MessageChannel;
+import okhttp3.OkHttpClient;
 
 /**
  * Package: be.isach.samaritan.command
@@ -23,6 +29,14 @@ public class CommandPokeGo extends Command {
 
     @Override
     void onExecute(String[] args) {
-        getMessageChannel().sendMessage()
+        try {
+            OkHttpClient httpClient = new OkHttpClient();
+            RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login("token");
+            PokemonGo go = null;
+            go = new PokemonGo(auth, httpClient);
+            getMessageChannel().sendMessage(go.getPlayerProfile().getUsername());
+        } catch (LoginFailedException | RemoteServerException e) {
+            e.printStackTrace();
+        }
     }
 }
