@@ -60,12 +60,11 @@ public class CommandPokeGo extends Command {
             stringBuilder.append("```");
             getMessageChannel().sendMessage(stringBuilder.toString());
         } else {
-            System.out.println(args[0]);
             switch (args[0]) {
                 case "goto":
-                    System.out.println("b");
                     String s = buildStringFromArgs(1);
                     try {
+                        System.out.println(s);
                         GeocodingResult result =  GeocodingApi.geocode(getSamaritan().getGeoApiContext(), s).await()[0];
                         double latitude = result.geometry.location.lat;
                         double longitude = result.geometry.location.lng;
