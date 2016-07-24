@@ -6,6 +6,7 @@ import be.isach.samaritan.util.TextUtil;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import com.pokegoapi.api.PokemonGo;
+import com.pokegoapi.api.inventory.Pokeball;
 import com.pokegoapi.api.map.pokemon.CatchResult;
 import com.pokegoapi.api.map.pokemon.CatchablePokemon;
 import com.pokegoapi.auth.GoogleLogin;
