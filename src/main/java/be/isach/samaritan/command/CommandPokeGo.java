@@ -186,16 +186,15 @@ public class CommandPokeGo extends Command {
     private String makeExpBar(PlayerProfile playerProfile) {
         double min = (double) playerProfile.getStats().getExperience();
         double max = (double) playerProfile.getStats().getNextLevelXp();
-        double outOfFifteen = (min / max * 15d);
-        double outOfHundred = (min / max * 100d);
+        double ratio = min / max;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(playerProfile.getStats().getLevel());
         stringBuilder.append(" ");
-        for (int i = 1; i <= 15; i++) stringBuilder.append(outOfFifteen >= i ? "■" : "□");
+        for (int i = 1; i <= 15; i++) stringBuilder.append((ratio >= i * 15d) ? "■" : "□");
         stringBuilder.append(" ");
         stringBuilder.append(playerProfile.getStats().getLevel() + 1);
         stringBuilder.append("   (");
-        stringBuilder.append(outOfHundred);
+        stringBuilder.append((ratio >= i * 100d));
         stringBuilder.append("% | ");
         stringBuilder.append(min + "/" + max + ")");
         return stringBuilder.toString();
