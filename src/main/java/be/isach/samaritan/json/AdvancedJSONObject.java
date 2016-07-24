@@ -1,5 +1,6 @@
 package be.isach.samaritan.json;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
@@ -21,7 +22,11 @@ public class AdvancedJSONObject extends JSONObject {
     }
 
     public void addDefault(String path, Object jsonObject) {
-        if(get(path) == null) {
+        try {
+            if (get(path) == null) {
+                put(path, jsonObject);
+            }
+        } catch (JSONException exc) {
             put(path, jsonObject);
         }
     }
