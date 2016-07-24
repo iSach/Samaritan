@@ -60,8 +60,10 @@ public class CommandPokeGo extends Command {
             stringBuilder.append("```");
             getMessageChannel().sendMessage(stringBuilder.toString());
         } else {
+            System.out.println(args[0]);
             switch (args[0]) {
                 case "goto":
+                    System.out.println("b");
                     String s = buildStringFromArgs(1);
                     try {
                         GeocodingResult result =  GeocodingApi.geocode(getSamaritan().getGeoApiContext(), s).await()[0];
@@ -69,14 +71,14 @@ public class CommandPokeGo extends Command {
                         double longitude = result.geometry.location.lng;
                         go.setLatitude(latitude);
                         go.setLongitude(longitude);
-                        getMessageChannel().sendMessage("Formatted Adress: " + result.formattedAddress
+                        getMessageChannel().sendMessage("Formatted Address: " + result.formattedAddress
                         + "\n" + go.getMap().getCatchablePokemon());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 default:
-
+                    System.out.println("c");
                     break;
             }
         }
