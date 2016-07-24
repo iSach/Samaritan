@@ -12,6 +12,7 @@ import be.isach.samaritan.listener.PrivateMessageListener;
 import be.isach.samaritan.listener.QuoteHandler;
 import be.isach.samaritan.log.SmartLogger;
 import be.isach.samaritan.music.SongPlayer;
+import be.isach.samaritan.pokemongo.LoginData;
 import be.isach.samaritan.runtime.ShutdownThread;
 import be.isach.samaritan.util.GifFactory;
 import be.isach.samaritan.util.SamaritanStatus;
@@ -132,6 +133,11 @@ public class Samaritan {
      * Manages quotes.
      */
     private QuoteHandler quoteHandler;
+
+    /**
+     * Pokémon Go Login Data.
+     */
+    private LoginData pokemonGoLoginData;
 
     /**
      * Samaritan Constructor.
@@ -375,5 +381,9 @@ public class Samaritan {
      */
     public QuoteHandler getQuoteHandler() {
         return quoteHandler;
+    }
+
+    public LoginData getPokemonGoLoginData() {
+        return pokemonGoLoginData;
     }
 }

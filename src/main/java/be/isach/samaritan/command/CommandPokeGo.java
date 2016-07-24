@@ -1,6 +1,7 @@
 package be.isach.samaritan.command;
 
 import POGOProtos.Networking.Envelopes.RequestEnvelopeOuterClass;
+import be.isach.samaritan.pokemongo.LoginData;
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.auth.GoogleLogin;
 import com.pokegoapi.exceptions.LoginFailedException;
@@ -31,11 +32,12 @@ public class CommandPokeGo extends Command {
     void onExecute(String[] args) {
         try {
             OkHttpClient httpClient = new OkHttpClient();
-            RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login("token");
-            PokemonGo go = null;
-            go = new PokemonGo(auth, httpClient);
+            LoginData loginData = getSamaritan().getPokemonGoLoginData();
+            RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(loginData.getUsername(), loginData.getPassword());
+            PokemonGo go = new PokemonGo(auth, httpClient);
             getMessageChannel().sendMessage(go.getPlayerProfile().getUsername());
         } catch (LoginFailedException | RemoteServerException e) {
+            System.out.println("Pokémon Go -> Failed to log in.");
             e.printStackTrace();
         }
     }

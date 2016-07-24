@@ -47,10 +47,14 @@ public class CommandListener extends ListenerAdapter {
             for (CommandType commandType : CommandType.values()) {
                 if (commandType.correspondsTo(commandLabel)) {
                     if (!samaritan.getAccessLevelManager().hasAccessLevel(commandType.getRequiredAccessLevel(), event.getAuthor())) {
-                        event.getMessage().deleteMessage();
                         event.getChannel().sendMessage("You don't have the required access level for that! (you have: "
                                 + samaritan.getAccessLevelManager().getAccessLevel(event.getAuthor()) + ", required: " +
                                 commandType.getRequiredAccessLevel() + ")");
+                        try {
+                            event.getMessage().deleteMessage();
+                        } catch (Exception exc) {
+                            System.out.println("Samaritan -> Couldn't delete message: " + event.getMessage().getId());
+                        }
                         return;
                     }
                     String[] g = commandFiltered.split(" ");

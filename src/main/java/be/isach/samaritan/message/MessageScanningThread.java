@@ -122,4 +122,8 @@ public abstract class MessageScanningThread extends Thread implements EventListe
     }
 
     protected abstract void onRun();
+
+    public Message getScannedMessaged() {
+        return scannedMessaged;
+    }
 }

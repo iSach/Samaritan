@@ -1,6 +1,7 @@
 package be.isach.samaritan.start;
 
 import be.isach.samaritan.Samaritan;
+import be.isach.samaritan.json.AdvancedJSONObject;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -42,7 +43,7 @@ public class SamaritanMain {
         musicFolder.mkdir();
 
         try {
-            JSONObject obj = new JSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
+            AdvancedJSONObject obj = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
             String botToken = obj.getString("bot-token");
             boolean webUi = obj.getBoolean("web-ui");
             int uiWebSocketPort = obj.getInt("web-ui-websocket-port");
