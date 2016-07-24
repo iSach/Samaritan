@@ -6,6 +6,7 @@ import be.isach.samaritan.brainfuck.BrainfuckInterpreter;
 import be.isach.samaritan.chat.PrivateMessageChatThread;
 import be.isach.samaritan.command.console.ConsoleListenerThread;
 import be.isach.samaritan.history.MessageHistoryPrinter;
+import be.isach.samaritan.json.AdvancedJSONObject;
 import be.isach.samaritan.level.AccessLevelManager;
 import be.isach.samaritan.listener.CleverBotListener;
 import be.isach.samaritan.listener.CommandListener;
@@ -28,11 +29,15 @@ import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.PrivateChannel;
 import okhttp3.OkHttpClient;
 import org.joda.time.Instant;
+import org.json.JSONObject;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -215,17 +220,39 @@ public class Samaritan {
 
         new ConsoleListenerThread(this).start();
 
-        try {
-            logger.write("Pokémon Go -> Trying to connect.");
-            OkHttpClient httpClient = new OkHttpClient();
-            RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(pokeGoLoginData.getUsername(), pokeGoLoginData.getPassword());
-            this.pokemonGo = new PokemonGo(auth, httpClient);
-            System.out.println("Pokémon Go -> Successfully logged in.");
-        } catch (LoginFailedException | RemoteServerException e) {
-            this.pokemonGo = null;
-            System.out.println("Pokémon Go -> Failed to log in.");
-            e.printStackTrace();
-        }
+        connectToPokemonGo(pokeGoLoginData);
+    }
+
+    private void connectToPokemonGo(LoginData pokeGoLoginData) {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    logger.write("Pokémon Go -> Trying to connect with token.");
+                    AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
+                    JSONObject jsonObject = object.getJSONObject("pokemongo-login");
+                    String token = jsonObject.getString("token");
+                    OkHttpClient httpClient = new OkHttpClient();
+                    RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(token);
+                    pokemonGo = new PokemonGo(auth, httpClient);
+                } catch (Exception exc) {
+                    try {
+                        logger.write("Pokémon Go -> Failed to connect with token, trying with email and username.");
+                        OkHttpClient httpClient = new OkHttpClient();
+                        RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(pokeGoLoginData.getUsername(), pokeGoLoginData.getPassword());
+                        AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
+                        JSONObject jsonObject = object.getJSONObject("pokemongo-login");
+                        jsonObject.put("token", auth.getToken().toString());
+                        pokemonGo = new PokemonGo(auth, httpClient);
+                        System.out.println("Pokémon Go -> Successfully logged in.");
+                    } catch (LoginFailedException | IOException | RemoteServerException e) {
+                        pokemonGo = null;
+                        System.out.println("Pokémon Go -> Failed to log in.");
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
     }
 
     /**
