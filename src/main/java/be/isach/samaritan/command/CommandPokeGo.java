@@ -144,7 +144,7 @@ public class CommandPokeGo extends Command {
                         for (Pokestop pokestop : go.getMap().getMapObjects().getPokestops()) {
                             if(pokestop.canLoot()) {
                                 PokestopLootResult result = pokestop.loot();
-                                System.out.println(result);
+                                System.out.println(result.getResult());
                                 if(!result.wasSuccessful()) continue;
                                 sbb.append("  ").append(pokestop.getDetails().getName()).append(":").append("\n");
                                 sbb.append("    EXP dropped: ").append(result.getExperience()).append("\n");
