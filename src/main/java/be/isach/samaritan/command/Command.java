@@ -61,11 +61,27 @@ abstract class Command extends MessageScanningThread {
      *
      * @return easily a String containing the args
      */
-    final String buildStringFromArgs() {
+    final String buildStringFromArgs(int j) {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < args.length; i++)
+        for (int i = j; i < args.length; i++)
             stringBuilder.append(args[i] + (i == args.length - 1 ? "" : " "));
         return stringBuilder.toString();
+    }
+
+    /**
+     * Retrieves easily a String containing the args.
+     * <p>
+     * Won't add a space after last arg.
+     * <p>
+     * e.g:
+     * ["Hello", "How", "Are", "You"]
+     * ->
+     * "Hello How Are You"
+     *
+     * @return easily a String containing the args
+     */
+    final String buildStringFromArgs() {
+        return buildStringFromArgs(0);
     }
 
     /**

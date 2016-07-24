@@ -19,6 +19,7 @@ import be.isach.samaritan.runtime.ShutdownThread;
 import be.isach.samaritan.util.GifFactory;
 import be.isach.samaritan.util.SamaritanStatus;
 import be.isach.samaritan.websocket.SamaritanWebsocketServer;
+import com.google.maps.GaeRequestHandler;
 import com.google.maps.GeoApiContext;
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.auth.GoogleLogin;
@@ -229,7 +230,11 @@ public class Samaritan {
     }
 
     private void connectToGoogleMaps(String apiKey) {
-
+        try {
+            geoApiContext = new GeoApiContext(new GaeRequestHandler()).setApiKey(apiKey);
+        } catch (Exception exc) {
+            logger.write("Failed to connect to Google Maps API.");
+        }
     }
 
     private void connectToPokemonGo(LoginData pokeGoLoginData) {
@@ -452,5 +457,9 @@ public class Samaritan {
 
     public PokemonGo getPokemonGo() {
         return pokemonGo;
+    }
+
+    public GeoApiContext getGeoApiContext() {
+        return geoApiContext;
     }
 }
