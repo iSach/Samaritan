@@ -235,6 +235,7 @@ public class Samaritan {
                     OkHttpClient httpClient = new OkHttpClient();
                     RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(token);
                     pokemonGo = new PokemonGo(auth, httpClient);
+                    System.out.println("Pokémon Go -> Successfully logged in with token.");
                 } catch (Exception exc) {
                     try {
                         logger.write("Pokémon Go -> Failed to connect with token, trying with email and username.");
@@ -243,8 +244,10 @@ public class Samaritan {
                         AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
                         JSONObject jsonObject = object.getJSONObject("pokemongo-login");
                         jsonObject.put("token", auth.getToken().toString());
+                        object.put("pokemongo-login", jsonObject);
+                        Files.write(Paths.get("config.json"), object.toString(4).getBytes());
                         pokemonGo = new PokemonGo(auth, httpClient);
-                        System.out.println("Pokémon Go -> Successfully logged in.");
+                        System.out.println("Pokémon Go -> Successfully logged in. New token saved.");
                     } catch (LoginFailedException | IOException | RemoteServerException e) {
                         pokemonGo = null;
                         System.out.println("Pokémon Go -> Failed to log in.");
