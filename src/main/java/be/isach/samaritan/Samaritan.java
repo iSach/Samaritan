@@ -1,5 +1,6 @@
 package be.isach.samaritan;
 
+import POGOProtos.Networking.Envelopes.RequestEnvelopeOuterClass;
 import be.isach.samaritan.birthday.BirthdayTask;
 import be.isach.samaritan.brainfuck.BrainfuckInterpreter;
 import be.isach.samaritan.chat.PrivateMessageChatThread;
@@ -17,10 +18,15 @@ import be.isach.samaritan.runtime.ShutdownThread;
 import be.isach.samaritan.util.GifFactory;
 import be.isach.samaritan.util.SamaritanStatus;
 import be.isach.samaritan.websocket.SamaritanWebsocketServer;
+import com.pokegoapi.api.PokemonGo;
+import com.pokegoapi.auth.GoogleLogin;
+import com.pokegoapi.exceptions.LoginFailedException;
+import com.pokegoapi.exceptions.RemoteServerException;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.PrivateChannel;
+import okhttp3.OkHttpClient;
 import org.joda.time.Instant;
 
 import javax.security.auth.login.LoginException;
@@ -140,6 +146,11 @@ public class Samaritan {
     private LoginData pokemonGoLoginData;
 
     /**
+     * Pokémon Go instance.
+     */
+    private PokemonGo pokemonGo;
+
+    /**
      * Samaritan Constructor.
      *
      * @param args            Program Arguments.
@@ -164,6 +175,16 @@ public class Samaritan {
         this.accessLevelManager = new AccessLevelManager(this);
         this.webUi = webUi;
         this.pokemonGoLoginData = pokeGoLoginData;
+        try {
+            OkHttpClient httpClient = new OkHttpClient();
+            RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(pokeGoLoginData.getUsername(), pokeGoLoginData.getPassword());
+            this.pokemonGo = new PokemonGo(auth, httpClient);
+            System.out.println("Pokémon Go -> Successfully logged in.");
+        } catch (LoginFailedException | RemoteServerException e) {
+            this.pokemonGo = null;
+            System.out.println("Pokémon Go -> Failed to log in.");
+            e.printStackTrace();
+        }
 
         status.setBootInstant(new Instant());
 
@@ -386,5 +407,9 @@ public class Samaritan {
 
     public LoginData getPokemonGoLoginData() {
         return pokemonGoLoginData;
+    }
+
+    public PokemonGo getPokemonGo() {
+        return pokemonGo;
     }
 }

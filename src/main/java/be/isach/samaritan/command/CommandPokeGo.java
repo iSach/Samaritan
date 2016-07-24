@@ -30,15 +30,31 @@ public class CommandPokeGo extends Command {
 
     @Override
     void onExecute(String[] args) {
+        if(getSamaritan().getPokemonGo() == null) {
+            getMessageChannel().sendMessage("Pokemon Go Instance is null.");
+            return;
+        }
+
+        PokemonGo go = getSamaritan().getPokemonGo();
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("```");
+        stringBuilder.append("Username:").append(" ").append(go.getPlayerProfile().getUsername());
+        stringBuilder.append("\n");
+        stringBuilder.append("Team:").append(" ").append(go.getPlayerProfile().getTeam());
+        stringBuilder.append("\n");
+        stringBuilder.append("Level:").append(" ").append(go.getPlayerProfile().getStats().getLevel());
+        stringBuilder.append("\n");
+        stringBuilder.append("Altitude:").append(" ").append(go.getAltitude());
+        stringBuilder.append("\n");
+        stringBuilder.append("Longitude:").append(" ").append(go.getLongitude());
+        stringBuilder.append("\n");
         try {
-            OkHttpClient httpClient = new OkHttpClient();
-            LoginData loginData = getSamaritan().getPokemonGoLoginData();
-            RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(loginData.getUsername(), loginData.getPassword());
-            PokemonGo go = new PokemonGo(auth, httpClient);
-            getMessageChannel().sendMessage(go.getPlayerProfile().getUsername());
+            stringBuilder.append("Catchable Pokémons:").append(" ").append(go.getMap().getCatchablePokemon());
         } catch (LoginFailedException | RemoteServerException e) {
-            System.out.println("Pokémon Go -> Failed to log in.");
             e.printStackTrace();
         }
+        stringBuilder.append("```");
+        getMessageChannel().sendMessage(stringBuilder.toString());
     }
 }
