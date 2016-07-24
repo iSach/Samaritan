@@ -86,7 +86,7 @@ public class CommandPokeGo extends Command {
                         for (CatchablePokemon p : catchablePokemons) {
                             stringBuilder.append("  (" + distance(lat,
                                     lng, p.getLatitude(), p.getLongitude()) + "m) -> " +
-                                    NameRegistry.getFrenchName(TextUtil.beautifyString(p.getPokemonId().name())) + "" +
+                                    NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
                                     " [ID:" + p.getPokemonId().getNumber() + " | " + p.getEncounterId() + "]");
                             stringBuilder.append("\n");
                         }
@@ -101,7 +101,7 @@ public class CommandPokeGo extends Command {
                         List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
                         for (CatchablePokemon catchablePokemon : catchablePokemons) {
                             if (catchablePokemon.getEncounterId() == encounterId) {
-                                getMessageChannel().sendMessage("Trying to catch: " + NameRegistry.getFrenchName(TextUtil.beautifyString(catchablePokemon.getPokemonId().name())));
+                                getMessageChannel().sendMessage("Trying to catch: " + NameRegistry.getFrenchName(catchablePokemon.getPokemonId().name()));
                                 catchablePokemon.encounterPokemon();
                                 CatchResult catchResult = catchablePokemon.catchPokemon(Pokeball.POKEBALL, 5, 0);
                                 getMessageChannel().sendMessage("Result: " + TextUtil.beautifyString(catchResult.toString()));
@@ -116,8 +116,8 @@ public class CommandPokeGo extends Command {
                     List<Pokemon> pokemons = go.getInventories().getPokebank().getPokemons();
                     StringBuilder stringBuilder = new StringBuilder();
                     for (Pokemon p : pokemons) {
-                        stringBuilder.append("  ").append(p.getCp()).append("pc ").append(NameRegistry.getFrenchName(TextUtil.beautifyString(p.getPokemonId().name())) + "" +
-                                " [ID:" + p.getPokemonId().getNumber() + "]");
+                        stringBuilder.append("  ").append(p.getCp()).append("pc ").append((NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
+                                " [ID:" + p.getPokemonId().getNumber() + "]"));
                         stringBuilder.append("\n");
                     }
                     getMessageChannel().sendMessage("```PokéBank:\n" + stringBuilder.toString() + "```");
