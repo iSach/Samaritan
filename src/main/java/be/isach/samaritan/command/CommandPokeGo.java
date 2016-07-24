@@ -190,7 +190,7 @@ public class CommandPokeGo extends Command {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(playerProfile.getStats().getLevel());
         stringBuilder.append(" ");
-        for (int i = 1; i <= 15; i++) stringBuilder.append(cur * 15d >= i ? "■" : "□");
+        for (int i = 1; i <= 15; i++) stringBuilder.append(((double)cur * 15d) >= i ? "■" : "□");
         stringBuilder.append(" ");
         stringBuilder.append(playerProfile.getStats().getLevel() + 1);
         stringBuilder.append("   (");
