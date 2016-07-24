@@ -104,6 +104,7 @@ public class CommandPokeGo extends Command {
                         for (CatchablePokemon catchablePokemon : catchablePokemons) {
                             if (catchablePokemon.getEncounterId() == encounterId) {
                                 getMessageChannel().sendMessage("Trying to catch: " + TextUtil.beautifyString(catchablePokemon.getPokemonId().name()));
+                                catchablePokemon.encounterPokemon();
                                 CatchResult catchResult = catchablePokemon.catchPokemon(Pokeball.POKEBALL, 5, 0);
                                 getMessageChannel().sendMessage("Result: " + TextUtil.beautifyString(catchResult.toString()));
                                 break;
