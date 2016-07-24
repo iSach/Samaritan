@@ -37,7 +37,7 @@ public class CommandPokeGo extends Command {
 
         PokemonGo go = getSamaritan().getPokemonGo();
 
-        getMessageChannel().sendMessage(go.getPlayerProfile().toString());
+//        getMessageChannel().sendMessage(go.getPlayerProfile().toString());
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
@@ -57,6 +57,6 @@ public class CommandPokeGo extends Command {
             e.printStackTrace();
         }
         stringBuilder.append("```");
-//        getMessageChannel().sendMessage(stringBuilder.toString());
+        getMessageChannel().sendMessage(stringBuilder.toString());
     }
 }
