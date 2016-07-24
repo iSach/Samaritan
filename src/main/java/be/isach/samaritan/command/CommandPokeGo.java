@@ -184,7 +184,7 @@ public class CommandPokeGo extends Command {
     }
 
     private String makeExpBar(PlayerProfile playerProfile) {
-        double min = (double) playerProfile.getStats().getExperience();
+        double min = (double) playerProfile.getStats().getPrevLevelXp();
         double max = (double) playerProfile.getStats().getNextLevelXp();
         double ratio = min / max;
         StringBuilder stringBuilder = new StringBuilder();
@@ -196,7 +196,7 @@ public class CommandPokeGo extends Command {
         stringBuilder.append("   (");
         stringBuilder.append((ratio >= i * 100d));
         stringBuilder.append("% | ");
-        stringBuilder.append(min + "/" + max + ")");
+        stringBuilder.append(((int)min) + "/" + ((int)max) + ")");
         return stringBuilder.toString();
     }
 }
