@@ -6,6 +6,7 @@ import be.isach.samaritan.util.TextUtil;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import com.pokegoapi.api.PokemonGo;
+import com.pokegoapi.api.map.pokemon.CatchResult;
 import com.pokegoapi.api.map.pokemon.CatchablePokemon;
 import com.pokegoapi.auth.GoogleLogin;
 import com.pokegoapi.exceptions.LoginFailedException;
@@ -85,6 +86,30 @@ public class CommandPokeGo extends Command {
                             stringBuilder.append("\n");
                         }
                         getMessageChannel().sendMessage("```Catchable Pokémons there:" + "\n" +  stringBuilder.toString() + "```");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case "catch":
+                    String locString = buildStringFromArgs(1);
+                    try {
+                        System.out.println(locString + " | " + getSamaritan().getGeoApiContext());
+                        GeocodingResult result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), locString).await()[0];
+                        double lat = result.geometry.location.lat;
+                        double lng = result.geometry.location.lng;
+                        go.setLatitude(lat);
+                        go.setLongitude(lng);
+                        List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
+                        getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
+                        if(catchablePokemons.isEmpty()) {
+                            getMessageChannel().sendMessage("No Pokémon there m8.");
+                            return;
+                        } else {
+                            CatchablePokemon p = catchablePokemons.get(0);
+                            getMessageChannel().sendMessage("Trying to catch: " + TextUtil.beautifyString(p.getPokemonId().name()));
+                            CatchResult catchResult = p.catchPokemon();
+                            getMessageChannel().sendMessage("Result: " + TextUtil.beautifyString(catchResult.toString()));
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
