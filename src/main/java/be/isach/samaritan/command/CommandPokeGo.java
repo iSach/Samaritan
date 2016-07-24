@@ -60,7 +60,7 @@ public class CommandPokeGo extends Command {
             stringBuilder.append("\n");
             stringBuilder.append("Team:").append(" ").append(go.getPlayerProfile().getTeam());
             stringBuilder.append("\n");
-            stringBuilder.append("Level:").append(" ").append(go.getPlayerProfile().getStats().getLevel()).append(makeExpBar(go.getPlayerProfile()));
+            stringBuilder.append("Level:").append(" ").append(makeExpBar(go.getPlayerProfile()));
             stringBuilder.append("\n");
             stringBuilder.append("Altitude:").append(" ").append(go.getAltitude());
             stringBuilder.append("\n");
@@ -163,7 +163,10 @@ public class CommandPokeGo extends Command {
 
     private String makeExpBar(PlayerProfile playerProfile) {
         long min = playerProfile.getStats().getExperience();
+        System.out.println(min);
         long max = playerProfile.getStats().getNextLevelXp();
+        System.out.println(max);
+        System.out.println(min / max * 15d);
         int curr = (int) Math.floor(min / max * 15d);
         int curr2 = (int) Math.floor(min / max * 100d);
         StringBuilder stringBuilder = new StringBuilder();
