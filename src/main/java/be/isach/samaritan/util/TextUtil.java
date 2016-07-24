@@ -47,4 +47,11 @@ public class TextUtil {
         }
     }
 
+    public static String beautifyString(String s) {
+        s = s.toLowerCase();
+        char[] chars = s.toCharArray();
+        chars[0] = Character.toUpperCase(chars[0]);
+        return new String(chars);
+    }
+
 }

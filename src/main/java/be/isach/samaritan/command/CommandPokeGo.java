@@ -2,14 +2,18 @@ package be.isach.samaritan.command;
 
 import POGOProtos.Networking.Envelopes.RequestEnvelopeOuterClass;
 import be.isach.samaritan.pokemongo.LoginData;
+import be.isach.samaritan.util.TextUtil;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import com.pokegoapi.api.PokemonGo;
+import com.pokegoapi.api.map.pokemon.CatchablePokemon;
 import com.pokegoapi.auth.GoogleLogin;
 import com.pokegoapi.exceptions.LoginFailedException;
 import com.pokegoapi.exceptions.RemoteServerException;
 import net.dv8tion.jda.entities.MessageChannel;
 import okhttp3.OkHttpClient;
+
+import java.util.List;
 
 /**
  * Package: be.isach.samaritan.command
@@ -65,13 +69,19 @@ public class CommandPokeGo extends Command {
                     String s = buildStringFromArgs(1);
                     try {
                         System.out.println(s + " | " + getSamaritan().getGeoApiContext());
-                        GeocodingResult result =  GeocodingApi.geocode(getSamaritan().getGeoApiContext(), s).await()[0];
-                        double latitude = result.geometry.location.lat;
-                        double longitude = result.geometry.location.lng;
-                        go.setLatitude(latitude);
-                        go.setLongitude(longitude);
-                        getMessageChannel().sendMessage("Formatted Address: " + result.formattedAddress
-                        + "\n" + go.getMap().getCatchablePokemon());
+                        GeocodingResult result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), s).await()[0];
+                        double lat = result.geometry.location.lat;
+                        double lng = result.geometry.location.lng;
+                        go.setLatitude(lat);
+                        go.setLongitude(lng);
+                        List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
+                        getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (CatchablePokemon p : catchablePokemons) {
+                            stringBuilder.append("  (" + getDistanceFromLatLonInKm(lat, lng, p.getLatitude(), p.getLongitude()) + ") " + TextUtil.beautifyString(p.getPokemonId().name()));
+                            stringBuilder.append("\n");
+                        }
+                        getMessageChannel().sendMessage("```Catchable Pokémons there:" + "\n" +  stringBuilder.toString() + "```");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -81,5 +91,20 @@ public class CommandPokeGo extends Command {
                     break;
             }
         }
+    }
+    private double getDistanceFromLatLonInKm(double lat1,double lon1,double lat2,double lon2) {
+        double  R = 6371;
+        double  dLat = deg2rad(lat2-lat1);
+        double  dLon = deg2rad(lon2-lon1);
+        double  a = Math.sin(dLat/2) * Math.sin(dLat/2)
+                + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2))
+                * Math.sin(dLon/2) * Math.sin(dLon/2);
+        double  c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        double  d = R * c;
+        return d * 1000;
+    }
+
+    private double deg2rad(double deg) {
+        return deg * (Math.PI/180);
     }
 }
