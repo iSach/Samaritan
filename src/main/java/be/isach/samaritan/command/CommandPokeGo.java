@@ -1,7 +1,6 @@
 package be.isach.samaritan.command;
 
-import POGOProtos.Networking.Envelopes.RequestEnvelopeOuterClass;
-import be.isach.samaritan.pokemongo.LoginData;
+import be.isach.samaritan.pokemongo.NameRegistry;
 import be.isach.samaritan.util.TextUtil;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
@@ -12,12 +11,9 @@ import com.pokegoapi.api.map.pokemon.CatchResult;
 import com.pokegoapi.api.map.pokemon.CatchablePokemon;
 import com.pokegoapi.api.player.PlayerProfile;
 import com.pokegoapi.api.pokemon.Pokemon;
-import com.pokegoapi.auth.GoogleLogin;
 import com.pokegoapi.exceptions.LoginFailedException;
 import com.pokegoapi.exceptions.RemoteServerException;
 import net.dv8tion.jda.entities.MessageChannel;
-import okhttp3.OkHttpClient;
-import org.luaj.vm2.ast.Str;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
@@ -88,9 +84,9 @@ public class CommandPokeGo extends Command {
                         getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
                         StringBuilder stringBuilder = new StringBuilder();
                         for (CatchablePokemon p : catchablePokemons) {
-                            stringBuilder.append("  (" + getDistanceFromLatLonInKm(lat,
+                            stringBuilder.append("  (" + distance(lat,
                                     lng, p.getLatitude(), p.getLongitude()) + "m) -> " +
-                                    TextUtil.beautifyString(p.getPokemonId().name()) + "" +
+                                    NameRegistry.getFrenchName(TextUtil.beautifyString(p.getPokemonId().name())) + "" +
                                     " [ID:" + p.getPokemonId().getNumber() + " | " + p.getEncounterId() + "]");
                             stringBuilder.append("\n");
                         }
@@ -105,7 +101,7 @@ public class CommandPokeGo extends Command {
                         List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
                         for (CatchablePokemon catchablePokemon : catchablePokemons) {
                             if (catchablePokemon.getEncounterId() == encounterId) {
-                                getMessageChannel().sendMessage("Trying to catch: " + TextUtil.beautifyString(catchablePokemon.getPokemonId().name()));
+                                getMessageChannel().sendMessage("Trying to catch: " + NameRegistry.getFrenchName(TextUtil.beautifyString(catchablePokemon.getPokemonId().name())));
                                 catchablePokemon.encounterPokemon();
                                 CatchResult catchResult = catchablePokemon.catchPokemon(Pokeball.POKEBALL, 5, 0);
                                 getMessageChannel().sendMessage("Result: " + TextUtil.beautifyString(catchResult.toString()));
@@ -120,7 +116,7 @@ public class CommandPokeGo extends Command {
                     List<Pokemon> pokemons = go.getInventories().getPokebank().getPokemons();
                     StringBuilder stringBuilder = new StringBuilder();
                     for (Pokemon p : pokemons) {
-                        stringBuilder.append("  ").append(p.getCp()).append("pc ").append(TextUtil.beautifyString(p.getPokemonId().name()) + "" +
+                        stringBuilder.append("  ").append(p.getCp()).append("pc ").append(NameRegistry.getFrenchName(TextUtil.beautifyString(p.getPokemonId().name())) + "" +
                                 " [ID:" + p.getPokemonId().getNumber() + "]");
                         stringBuilder.append("\n");
                     }
@@ -145,7 +141,7 @@ public class CommandPokeGo extends Command {
         }
     }
 
-    private String getDistanceFromLatLonInKm(double lat1, double lon1, double lat2, double lon2) {
+    private String distance(double lat1, double lon1, double lat2, double lon2) {
         double R = 6371;
         double dLat = deg2rad(lat2 - lat1);
         double dLon = deg2rad(lon2 - lon1);
@@ -164,17 +160,15 @@ public class CommandPokeGo extends Command {
     private String makeExpBar(PlayerProfile playerProfile) {
         double min = (double) playerProfile.getStats().getExperience();
         double max = (double) playerProfile.getStats().getNextLevelXp();
-        System.out.println(min / max);
-        int curr = (int) Math.floor(min / max * 15d);
-        int curr2 = (int) Math.floor(min / max * 100d);
+        int cur = (int) Math.floor(min / max);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(playerProfile.getStats().getLevel());
         stringBuilder.append(" ");
-        for(int i = 1; i <= 15; i++) stringBuilder.append(curr >= i ? "■":"□");
+        for(int i = 1; i <= 15; i++) stringBuilder.append(cur * 15d >= i ? "■":"□");
         stringBuilder.append(" ");
         stringBuilder.append(playerProfile.getStats().getLevel() + 1);
         stringBuilder.append("   (");
-        stringBuilder.append(curr2);
+        stringBuilder.append(cur * 100d);
         stringBuilder.append("%)");
         return stringBuilder.toString();
     }
