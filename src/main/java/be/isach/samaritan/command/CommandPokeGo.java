@@ -13,6 +13,7 @@ import com.pokegoapi.exceptions.RemoteServerException;
 import net.dv8tion.jda.entities.MessageChannel;
 import okhttp3.OkHttpClient;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -22,6 +23,8 @@ import java.util.List;
  * Project: samaritan
  */
 public class CommandPokeGo extends Command {
+
+    private static final DecimalFormat format = new DecimalFormat("##.##");
 
     /**
      * Command Constructor.
@@ -92,7 +95,7 @@ public class CommandPokeGo extends Command {
             }
         }
     }
-    private double getDistanceFromLatLonInKm(double lat1,double lon1,double lat2,double lon2) {
+    private String getDistanceFromLatLonInKm(double lat1,double lon1,double lat2,double lon2) {
         double  R = 6371;
         double  dLat = deg2rad(lat2-lat1);
         double  dLon = deg2rad(lon2-lon1);
@@ -101,7 +104,7 @@ public class CommandPokeGo extends Command {
                 * Math.sin(dLon/2) * Math.sin(dLon/2);
         double  c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         double  d = R * c;
-        return d * 1000;
+        return format.format(d * 1000);
     }
 
     private double deg2rad(double deg) {
