@@ -64,7 +64,7 @@ public class CommandPokeGo extends Command {
                 case "goto":
                     String s = buildStringFromArgs(1);
                     try {
-                        System.out.println(s);
+                        System.out.println(s + " | " + getSamaritan().getGeoApiContext());
                         GeocodingResult result =  GeocodingApi.geocode(getSamaritan().getGeoApiContext(), s).await()[0];
                         double latitude = result.geometry.location.lat;
                         double longitude = result.geometry.location.lng;
