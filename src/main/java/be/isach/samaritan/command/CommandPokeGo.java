@@ -147,6 +147,7 @@ public class CommandPokeGo extends Command {
                         for (Pokestop pokestop : go.getMap().getMapObjects().getPokestops()) {
                             sbbb.append(pokestop.getDetails().getName() + "\n");
                         }
+                        getMessageChannel().sendMessage("stops:");
                         getMessageChannel().sendMessage(sbbb.toString());
                     } catch (Exception exc) {}
                     break;
