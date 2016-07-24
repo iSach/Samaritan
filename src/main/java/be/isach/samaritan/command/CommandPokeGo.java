@@ -1,5 +1,6 @@
 package be.isach.samaritan.command;
 
+import POGOProtos.Inventory.Item.ItemAwardOuterClass;
 import be.isach.samaritan.pokemongo.NameRegistry;
 import be.isach.samaritan.util.TextUtil;
 import com.google.maps.GeocodingApi;
@@ -7,6 +8,8 @@ import com.google.maps.model.GeocodingResult;
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.api.inventory.Item;
 import com.pokegoapi.api.inventory.Pokeball;
+import com.pokegoapi.api.map.fort.Pokestop;
+import com.pokegoapi.api.map.fort.PokestopLootResult;
 import com.pokegoapi.api.map.pokemon.CatchResult;
 import com.pokegoapi.api.map.pokemon.CatchablePokemon;
 import com.pokegoapi.api.player.PlayerProfile;
@@ -134,6 +137,26 @@ public class CommandPokeGo extends Command {
                     }
                     getMessageChannel().sendMessage("```Items:\n" + sb.toString() + "```");
                     break;
+                case "stop":
+                    try {
+                        StringBuilder sbb = new StringBuilder();
+                        sbb.append("```Pokéstops looted:" + "\n");
+                        for (Pokestop pokestop : go.getMap().getMapObjects().getPokestops()) {
+                            if(pokestop.canLoot()) {
+                                PokestopLootResult result = pokestop.loot();
+                                if(!result.wasSuccessful()) continue;
+                                sbb.append("  ").append(pokestop.getDetails().getName()).append(":").append("\n");
+                                sbb.append("    EXP dropped: ").append(result.getExperience()).append("\n");
+                                sbb.append("    Items: ").append("\n");
+                                for(ItemAwardOuterClass.ItemAward item : result.getItemsAwarded()) {
+                                    sbb.append("      ").append(item.getItemCount()).append("x ").append(TextUtil.beautifyString(item.getItemId().name()) + "\n");
+                                }
+                            }
+                        }
+                    } catch (LoginFailedException | RemoteServerException e) {
+                        e.printStackTrace();
+                    }
+                    break;
                 default:
                     getMessageChannel().sendMessage("subcommand not found.");
                     break;
@@ -164,7 +187,7 @@ public class CommandPokeGo extends Command {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(playerProfile.getStats().getLevel());
         stringBuilder.append(" ");
-        for(int i = 1; i <= 15; i++) stringBuilder.append(cur * 15d >= i ? "■":"□");
+        for (int i = 1; i <= 15; i++) stringBuilder.append(cur * 15d >= i ? "■" : "□");
         stringBuilder.append(" ");
         stringBuilder.append(playerProfile.getStats().getLevel() + 1);
         stringBuilder.append("   (");
