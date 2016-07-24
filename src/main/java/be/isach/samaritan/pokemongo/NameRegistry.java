@@ -1,5 +1,7 @@
 package be.isach.samaritan.pokemongo;
 
+import be.isach.samaritan.util.TextUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -173,7 +175,7 @@ public class NameRegistry {
 
     public static String getFrenchName(String englishName) {
         englishName = englishName.toLowerCase();
-        return NAMES.get(englishName);
+        return TextUtil.beautifyString(NAMES.get(englishName));
     }
 
 }
