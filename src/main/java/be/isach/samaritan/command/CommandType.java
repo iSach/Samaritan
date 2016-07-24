@@ -44,7 +44,7 @@ public enum CommandType {
     LEET(CommandLeet.class, 0, "Translates text to Leet.", "leet"),
     //    LUA(CommandLua.class, true, "Runs LUA code.", "lua"),
     PLAY(CommandPlay.class, 2, "Plays a Music", "play"),
-    POKE_GO(CommandPokeGo.class, 0, "Pokémon Go!", "pokego", "pokemon", "pokego"),
+    POKE_GO(CommandPokeGo.class, 2, "Pokémon Go!", "pokego", "pokemon", "pokego"),
     PRINT_HISTORY(CommandPrintHistory.class, 0, "Prints History of given size", "history"),
     MEME(CommandMeme.class, 0, "Shows a cool meme.", "meme"),
     QUOTE(CommandQuote.class, 0, "Quotes a message", "quote"),
