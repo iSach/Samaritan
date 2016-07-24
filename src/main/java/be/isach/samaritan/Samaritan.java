@@ -231,9 +231,12 @@ public class Samaritan {
 
     private void connectToGoogleMaps(String apiKey) {
         try {
+            logger.write("Google Maps -> Trying to connect with token.");
             geoApiContext = new GeoApiContext(new GaeRequestHandler()).setApiKey(apiKey);
+            logger.write("Google Maps -> Successfully connected to Google Maps API.");
         } catch (Exception exc) {
             logger.write("Failed to connect to Google Maps API.");
+            exc.printStackTrace();
         }
     }
 
