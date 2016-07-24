@@ -153,6 +153,8 @@ public class CommandPokeGo extends Command {
                                 }
                             }
                         }
+                        sbb.append("```");
+                        getMessageChannel().sendMessage(sbb.toString());
                     } catch (LoginFailedException | RemoteServerException e) {
                         e.printStackTrace();
                     }
