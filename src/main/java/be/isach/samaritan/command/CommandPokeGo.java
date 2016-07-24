@@ -118,11 +118,11 @@ public class CommandPokeGo extends Command {
                     List<Pokemon> pokemons = go.getInventories().getPokebank().getPokemons();
                     StringBuilder stringBuilder = new StringBuilder();
                     for (Pokemon p : pokemons) {
-                        stringBuilder.append("  ").append(TextUtil.beautifyString(p.getPokemonId().name()) + "" +
+                        stringBuilder.append("  ").append(p.getCp()).append("pc ").append(TextUtil.beautifyString(p.getPokemonId().name()) + "" +
                                 " [ID:" + p.getPokemonId().getNumber() + "]");
                         stringBuilder.append("\n");
                     }
-                    getMessageChannel().sendMessage("PokéBank:\n" + stringBuilder.toString());
+                    getMessageChannel().sendMessage("```PokéBank:\n" + stringBuilder.toString() + "```");
                     break;
                 case "inv":
                     Collection<Item> items = go.getInventories().getItemBag().getItems();
@@ -134,7 +134,7 @@ public class CommandPokeGo extends Command {
                         sb.append(TextUtil.beautifyString(item.getItemId().name()));
                         sb.append("\n");
                     }
-                    getMessageChannel().sendMessage("PokéBank:\n" + sb.toString());
+                    getMessageChannel().sendMessage("```Items:\n" + sb.toString() + "```");
                     break;
                 default:
                     getMessageChannel().sendMessage("subcommand not found.");
