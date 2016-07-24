@@ -9,6 +9,7 @@ import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.api.inventory.Pokeball;
 import com.pokegoapi.api.map.pokemon.CatchResult;
 import com.pokegoapi.api.map.pokemon.CatchablePokemon;
+import com.pokegoapi.api.pokemon.Pokemon;
 import com.pokegoapi.auth.GoogleLogin;
 import com.pokegoapi.exceptions.LoginFailedException;
 import com.pokegoapi.exceptions.RemoteServerException;
@@ -83,57 +84,63 @@ public class CommandPokeGo extends Command {
                         getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
                         StringBuilder stringBuilder = new StringBuilder();
                         for (CatchablePokemon p : catchablePokemons) {
-                            stringBuilder.append("  (" + getDistanceFromLatLonInKm(lat, lng, p.getLatitude(), p.getLongitude()) + "m) -> " + TextUtil.beautifyString(p.getPokemonId().name()) + "[ID:" + p.getPokemonId().getNumber() + "]");
+                            stringBuilder.append("  (" + getDistanceFromLatLonInKm(lat,
+                                    lng, p.getLatitude(), p.getLongitude()) + "m) -> " +
+                                    TextUtil.beautifyString(p.getPokemonId().name()) + "" +
+                                    " [ID:" + p.getPokemonId().getNumber() + " | " + p.getEncounterId() + "]");
                             stringBuilder.append("\n");
                         }
-                        getMessageChannel().sendMessage("```Catchable Pokémons there:" + "\n" +  stringBuilder.toString() + "```");
+                        getMessageChannel().sendMessage("```Catchable Pokémons there:" + "\n" + stringBuilder.toString() + "```");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
                 case "catch":
-                    String locString = buildStringFromArgs(1);
+                    long encounterId = Long.valueOf(args[1]);
                     try {
-                        System.out.println(locString + " | " + getSamaritan().getGeoApiContext());
-                        GeocodingResult result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), locString).await()[0];
-                        double lat = result.geometry.location.lat;
-                        double lng = result.geometry.location.lng;
-                        go.setLatitude(lat);
-                        go.setLongitude(lng);
                         List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
-                        getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
-                        if(catchablePokemons.isEmpty()) {
-                            getMessageChannel().sendMessage("No Pokémon there m8.");
-                            return;
-                        } else {
-                            CatchablePokemon p = catchablePokemons.get(0);
-                            getMessageChannel().sendMessage("Trying to catch: " + TextUtil.beautifyString(p.getPokemonId().name()));
-                            CatchResult catchResult = p.catchPokemon(Pokeball.POKEBALL, 5, 0);
-                            getMessageChannel().sendMessage("Result: " + TextUtil.beautifyString(catchResult.toString()));
+                        for (CatchablePokemon catchablePokemon : catchablePokemons) {
+                            if (catchablePokemon.getEncounterId() == encounterId) {
+                                getMessageChannel().sendMessage("Trying to catch: " + TextUtil.beautifyString(catchablePokemon.getPokemonId().name()));
+                                CatchResult catchResult = catchablePokemon.catchPokemon(Pokeball.POKEBALL, 5, 0);
+                                getMessageChannel().sendMessage("Result: " + TextUtil.beautifyString(catchResult.toString()));
+                                break;
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                     break;
+                case "bank":
+                    List<Pokemon> pokemons = go.getInventories().getPokebank().getPokemons();
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (Pokemon p : pokemons) {
+                        stringBuilder.append("  ").append(TextUtil.beautifyString(p.getPokemonId().name()) + "" +
+                                " [ID:" + p.getPokemonId().getNumber() + "]");
+                        stringBuilder.append("\n");
+                    }
+                    getMessageChannel().sendMessage("PokéBank:\n" + stringBuilder.toString());
+                    break;
                 default:
-                    System.out.println("subcommand not found.");
+                    getMessageChannel().sendMessage("subcommand not found.");
                     break;
             }
         }
     }
-    private String getDistanceFromLatLonInKm(double lat1,double lon1,double lat2,double lon2) {
-        double  R = 6371;
-        double  dLat = deg2rad(lat2-lat1);
-        double  dLon = deg2rad(lon2-lon1);
-        double  a = Math.sin(dLat/2) * Math.sin(dLat/2)
+
+    private String getDistanceFromLatLonInKm(double lat1, double lon1, double lat2, double lon2) {
+        double R = 6371;
+        double dLat = deg2rad(lat2 - lat1);
+        double dLon = deg2rad(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
                 + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2))
-                * Math.sin(dLon/2) * Math.sin(dLon/2);
-        double  c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        double  d = R * c;
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = R * c;
         return format.format(d * 1000);
     }
 
     private double deg2rad(double deg) {
-        return deg * (Math.PI/180);
+        return deg * (Math.PI / 180);
     }
 }
