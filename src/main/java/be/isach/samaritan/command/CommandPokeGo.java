@@ -10,12 +10,14 @@ import com.pokegoapi.api.inventory.Item;
 import com.pokegoapi.api.inventory.Pokeball;
 import com.pokegoapi.api.map.pokemon.CatchResult;
 import com.pokegoapi.api.map.pokemon.CatchablePokemon;
+import com.pokegoapi.api.player.PlayerProfile;
 import com.pokegoapi.api.pokemon.Pokemon;
 import com.pokegoapi.auth.GoogleLogin;
 import com.pokegoapi.exceptions.LoginFailedException;
 import com.pokegoapi.exceptions.RemoteServerException;
 import net.dv8tion.jda.entities.MessageChannel;
 import okhttp3.OkHttpClient;
+import org.luaj.vm2.ast.Str;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
@@ -58,7 +60,7 @@ public class CommandPokeGo extends Command {
             stringBuilder.append("\n");
             stringBuilder.append("Team:").append(" ").append(go.getPlayerProfile().getTeam());
             stringBuilder.append("\n");
-            stringBuilder.append("Level:").append(" ").append(go.getPlayerProfile().getStats().getLevel());
+            stringBuilder.append("Level:").append(" ").append(go.getPlayerProfile().getStats().getLevel()).append(makeExpBar(go.getPlayerProfile()));
             stringBuilder.append("\n");
             stringBuilder.append("Altitude:").append(" ").append(go.getAltitude());
             stringBuilder.append("\n");
@@ -157,5 +159,22 @@ public class CommandPokeGo extends Command {
 
     private double deg2rad(double deg) {
         return deg * (Math.PI / 180);
+    }
+
+    private String makeExpBar(PlayerProfile playerProfile) {
+        long min = playerProfile.getStats().getExperience();
+        long max = playerProfile.getStats().getNextLevelXp();
+        int curr = (int) Math.floor(min / max * 15d);
+        int curr2 = (int) Math.floor(min / max * 100d);
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(playerProfile.getStats().getLevel());
+        stringBuilder.append(" ");
+        for(int i = 1; i <= 15; i++) stringBuilder.append(curr >= i ? "■":"□");
+        stringBuilder.append(" ");
+        stringBuilder.append(playerProfile.getStats().getLevel() + 1);
+        stringBuilder.append("   (");
+        stringBuilder.append(curr2);
+        stringBuilder.append("%)");
+        return stringBuilder.toString();
     }
 }
