@@ -2,6 +2,7 @@ package be.isach.samaritan.start;
 
 import be.isach.samaritan.Samaritan;
 import be.isach.samaritan.json.AdvancedJSONObject;
+import be.isach.samaritan.pokemongo.LoginData;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -57,7 +58,9 @@ public class SamaritanMain {
             boolean webUi = object.getBoolean("web-ui");
             int uiWebSocketPort = object.getInt("web-ui-websocket-port");
             long ownerId = object.getLong("bot-owner-id");
-            new Samaritan(args, botToken, webUi, uiWebSocketPort, ownerId, workingDirectory);
+            String username = object.getJSONObject("pokemongo-login").getString("email");
+            String password = object.getJSONObject("pokemongo-login").getString("password");
+            new Samaritan(args, botToken, webUi, uiWebSocketPort, ownerId, workingDirectory, new LoginData(username, password));
         } catch (IOException e) {
             System.out.println("---------------------------");
             System.out.println("");

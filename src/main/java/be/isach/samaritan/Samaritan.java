@@ -151,7 +151,7 @@ public class Samaritan {
      * @param uiWebSocketPort Web UI Port.
      *                        From <samaritan.properties.
      */
-    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, long ownerId, File workingDirectory) {
+    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, long ownerId, File workingDirectory, LoginData pokeGoLoginData) {
         this.botToken = botToken;
         this.logger = new SmartLogger();
         this.status = new SamaritanStatus();
@@ -163,6 +163,7 @@ public class Samaritan {
         this.messageHistoryPrinter = new MessageHistoryPrinter();
         this.accessLevelManager = new AccessLevelManager(this);
         this.webUi = webUi;
+        this.pokemonGoLoginData = pokeGoLoginData;
 
         status.setBootInstant(new Instant());
 
