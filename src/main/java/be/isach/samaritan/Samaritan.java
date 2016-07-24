@@ -155,6 +155,8 @@ public class Samaritan {
      */
     private PokemonGo pokemonGo;
 
+    private GeoApiContext geoApiContext;
+
     /**
      * Samaritan Constructor.
      *
@@ -167,7 +169,7 @@ public class Samaritan {
      * @param uiWebSocketPort Web UI Port.
      *                        From <samaritan.properties.
      */
-    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, long ownerId, File workingDirectory, LoginData pokeGoLoginData) {
+    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, long ownerId, File workingDirectory, LoginData pokeGoLoginData, String googleMapsApiKey) {
         this.botToken = botToken;
         this.logger = new SmartLogger();
         this.status = new SamaritanStatus();
@@ -221,6 +223,12 @@ public class Samaritan {
         new ConsoleListenerThread(this).start();
 
         connectToPokemonGo(pokeGoLoginData);
+
+        connectToGoogleMaps(googleMapsApiKey);
+    }
+
+    private void connectToGoogleMaps(String apiKey) {
+
     }
 
     private void connectToPokemonGo(LoginData pokeGoLoginData) {

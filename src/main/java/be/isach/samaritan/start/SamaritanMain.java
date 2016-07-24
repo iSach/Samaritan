@@ -49,6 +49,7 @@ public class SamaritanMain {
             object.addDefault("web-ui", false);
             object.addDefault("web-ui-websocket-port", 11350);
             object.addDefault("bot-owner-id", 93721838093352960L);
+            object.addDefault("google-maps-api-key", "AIza...");
             AdvancedJSONObject jsonObject = new AdvancedJSONObject();
             jsonObject.addDefault("email", "test@gmail.com");
             jsonObject.addDefault("password", "123password123");
@@ -60,7 +61,8 @@ public class SamaritanMain {
             long ownerId = object.getLong("bot-owner-id");
             String username = object.getJSONObject("pokemongo-login").getString("email");
             String password = object.getJSONObject("pokemongo-login").getString("password");
-            new Samaritan(args, botToken, webUi, uiWebSocketPort, ownerId, workingDirectory, new LoginData(username, password));
+            String googleMapsApiKey = object.getString("google-maps-api-key");
+            new Samaritan(args, botToken, webUi, uiWebSocketPort, ownerId, workingDirectory, new LoginData(username, password), googleMapsApiKey);
         } catch (IOException e) {
             System.out.println("---------------------------");
             System.out.println("");
