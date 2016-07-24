@@ -139,6 +139,10 @@ public class CommandPokeGo extends Command {
                     break;
                 case "stoplist":
                     try {
+                        if(go.getMap().getMapObjects().getPokestops().isEmpty()) {
+                            getMessageChannel().sendMessage("No stops.");
+                            break;
+                        }
                         StringBuilder sbbb = new StringBuilder();
                         for (Pokestop pokestop : go.getMap().getMapObjects().getPokestops()) {
                             sbbb.append(pokestop.getDetails().getName() + "\n");
