@@ -2,6 +2,8 @@ package be.isach.samaritan.json;
 
 import org.json.JSONObject;
 
+import java.util.Objects;
+
 /**
  * Package: be.isach.samaritan.json
  * Created by: sachalewin
@@ -10,11 +12,15 @@ import org.json.JSONObject;
  */
 public class AdvancedJSONObject extends JSONObject {
 
+    public AdvancedJSONObject() {
+        super();
+    }
+
     public AdvancedJSONObject(String source) {
         super(source);
     }
 
-    public void addDefault(String path, JSONObject jsonObject) {
+    public void addDefault(String path, Object jsonObject) {
         if(get(path) == null) {
             put(path, jsonObject);
         }

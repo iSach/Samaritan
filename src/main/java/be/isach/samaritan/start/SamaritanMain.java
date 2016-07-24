@@ -43,11 +43,20 @@ public class SamaritanMain {
         musicFolder.mkdir();
 
         try {
-            AdvancedJSONObject obj = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
-            String botToken = obj.getString("bot-token");
-            boolean webUi = obj.getBoolean("web-ui");
-            int uiWebSocketPort = obj.getInt("web-ui-websocket-port");
-            long ownerId = obj.getLong("bot-owner-id");
+            AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
+            object.addDefault("bot-token", "");
+            object.addDefault("web-ui", false);
+            object.addDefault("web-ui-websocket-port", 11350);
+            object.addDefault("bot-owner-id", 93721838093352960L);
+            AdvancedJSONObject jsonObject = new AdvancedJSONObject();
+            jsonObject.addDefault("email", "test@gmail.com");
+            jsonObject.addDefault("password", "123password123");
+            object.addDefault("pokemongo-login", jsonObject);
+            Files.write(Paths.get("config.json"), object.toString(4).getBytes());
+            String botToken = object.getString("bot-token");
+            boolean webUi = object.getBoolean("web-ui");
+            int uiWebSocketPort = object.getInt("web-ui-websocket-port");
+            long ownerId = object.getLong("bot-owner-id");
             new Samaritan(args, botToken, webUi, uiWebSocketPort, ownerId, workingDirectory);
         } catch (IOException e) {
             System.out.println("---------------------------");
