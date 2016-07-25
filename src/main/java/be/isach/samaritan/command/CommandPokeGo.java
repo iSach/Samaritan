@@ -93,7 +93,7 @@ public class CommandPokeGo extends Command {
 
                         }
                     }
-                    showPokeBank(1);
+                    showPokeBank(page);
                     break;
                 case "inv":
                     showPokeInv();
@@ -223,7 +223,7 @@ public class CommandPokeGo extends Command {
         int totalScaleDesc = longestCp() + 6;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
-        stringBuilder.append(" \nPoké Bank: \n\n\n");
+        stringBuilder.append(" \nPoké Bank (Page " + page + "/" + getMaxPages() + "): \n\n");
         stringBuilder.append("Name").append(TextUtil.getSpaces(totalScale - "Name".length()));
         stringBuilder.append("CP").append(TextUtil.getSpaces(totalScaleDesc - "CP".length()));
         stringBuilder.append("ID");
