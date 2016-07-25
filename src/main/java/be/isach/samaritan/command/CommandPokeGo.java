@@ -3,6 +3,7 @@ package be.isach.samaritan.command;
 import POGOProtos.Inventory.Item.ItemAwardOuterClass;
 import POGOProtos.Networking.Responses.CatchPokemonResponseOuterClass;
 import be.isach.samaritan.pokemongo.NameRegistry;
+import be.isach.samaritan.util.SamaritanConstants;
 import be.isach.samaritan.util.TextUtil;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
@@ -175,17 +176,26 @@ public class CommandPokeGo extends Command {
     private void showPokeBank() {
         List<Pokemon> pokemons = go.getInventories().getPokebank().getPokemons();
         pokemons.sort((o1, o2) -> o2.getCp() - o1.getCp());
+        int totalScale = longestName() + 7;
+        int totalScaleDesc = longestCp() + 6;
         StringBuilder stringBuilder = new StringBuilder();
-        for (Pokemon p : pokemons) {
-            try {
-                stringBuilder.append("  ").append(p.getCp()).append("pc ").append((NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
-                        " [ID:" + p.getPokemonId().getNumber() + "]"));
-                stringBuilder.append("\n");
-            } catch (Exception exc) {
-                continue;
-            }
+        stringBuilder.append("```");
+        stringBuilder.append(" \nPoké Bank: \n\n\n");
+        stringBuilder.append("Name").append(TextUtil.getSpaces(totalScale - "Name".length())).append(" ");
+        stringBuilder.append("CP").append(TextUtil.getSpaces(totalScaleDesc - "CP".length()));
+        stringBuilder.append("ID");
+        stringBuilder.append("\n\n");
+        for (Pokemon pokemon : pokemons) {
+            String id = pokemon.getPokemonId().getNumber() + "";
+            String cp = pokemon.getCp() + TextUtil.getSpaces(totalScale - String.valueOf(pokemon.getCp()).length());
+            String name = NameRegistry.getFrenchName(pokemon) + TextUtil.getSpaces(totalScaleDesc - NameRegistry.getFrenchName(pokemon) .length());
+            stringBuilder.append(SamaritanConstants.PREFIX).append(name);
+            stringBuilder.append(cp);
+            stringBuilder.append(id);
+            stringBuilder.append("\n");
         }
-        getMessageChannel().sendMessage("```PokéBank:\n" + stringBuilder.toString() + "```");
+        stringBuilder.append("```");
+        getMessageChannel().sendMessage(stringBuilder.toString());
     }
 
     private void showPokeInv() {
@@ -338,5 +348,25 @@ public class CommandPokeGo extends Command {
         stringBuilder.append("% | ");
         stringBuilder.append(((int) min) + "/" + ((int) max) + ")");
         return stringBuilder.toString();
+    }
+
+    /**
+     * @return The length of the longest Command complete alias.
+     */
+    public int longestCp() {
+        int longest = 0;
+        for (Pokemon pokemon : go.getInventories().getPokebank().getPokemons())
+            longest = Math.max(longest, String.valueOf(pokemon.getCp()).length());
+        return longest;
+    }
+
+    /**
+     * @return The length of the longest Command complete alias.
+     */
+    public int longestName() {
+        int longest = 0;
+        for (Pokemon pokemon : go.getInventories().getPokebank().getPokemons())
+            longest = Math.max(longest, NameRegistry.getFrenchName(pokemon.getPokemonId().name()).length());
+        return longest;
     }
 }

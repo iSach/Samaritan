@@ -1,6 +1,7 @@
 package be.isach.samaritan.pokemongo;
 
 import be.isach.samaritan.util.TextUtil;
+import com.pokegoapi.api.pokemon.Pokemon;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -171,7 +172,10 @@ public class NameRegistry {
         NAMES.put("dragonite", "dracolosse");
         NAMES.put("mewtwo", "mewtwo");
         NAMES.put("mew", "mew");
-        NAMES.put("", "");
+    }
+
+    public static String getFrenchName(Pokemon pokemon) {
+        return getFrenchName(pokemon.getPokemonId().name());
     }
 
     public static String getFrenchName(String englishName) {
