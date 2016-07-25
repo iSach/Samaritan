@@ -86,9 +86,9 @@ public class CommandPokeGo extends Command {
                     break;
                 case "bank":
                     int page = 1;
-                    if(args.length > 0) {
+                    if(args.length > 1) {
                         try {
-                            page = Integer.parseInt(args[0]);
+                            page = Integer.parseInt(args[1]);
                         } catch (Exception ignored) {
 
                         }
