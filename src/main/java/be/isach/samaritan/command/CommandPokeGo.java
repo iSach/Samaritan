@@ -208,15 +208,17 @@ public class CommandPokeGo extends Command {
     private void showPokeBank(int page) {
         if(page > getMaxPages()) page = getMaxPages();
         if(page < 1) page = 1;
+        List<Pokemon> pokemonSs = go.getInventories().getPokebank().getPokemons();
+        pokemonSs.sort((o1, o2) -> o2.getCp() - o1.getCp());
         List<Pokemon> pokemons = new ArrayList<>();
         int from = 1;
         if (page > 1)
             from = 30 * (page - 1) + 1;
         int to = 30 * page;
         for (int h = from; h <= to; h++) {
-            if (h > go.getInventories().getPokebank().getPokemons().size())
+            if (h > pokemonSs.size())
                 break;
-            pokemons.add(go.getInventories().getPokebank().getPokemons().get(h - 1));
+            pokemons.add(pokemonSs.get(h - 1));
         }
         pokemons.sort((o1, o2) -> o2.getCp() - o1.getCp());
         int totalScale = longestName() + 7;
