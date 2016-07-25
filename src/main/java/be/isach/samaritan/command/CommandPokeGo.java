@@ -147,7 +147,7 @@ public class CommandPokeGo extends Command {
             List<CatchablePokemon> pokemons = go.getMap().getCatchablePokemon();
             pokemons.sort((o1, o2) -> o2.getPokemonId().getNumber() - o1.getPokemonId().getNumber());
             int totalScale = longestName() + 7;
-            int totalScaleDesc = longestIdd() + 6;
+            int totalScaleDesc = longestIdd();
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("```");
             stringBuilder.append(" \nCatchable Pokémons: \n\n\n");
