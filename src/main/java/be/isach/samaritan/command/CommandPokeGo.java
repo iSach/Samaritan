@@ -147,7 +147,7 @@ public class CommandPokeGo extends Command {
             List<CatchablePokemon> pokemons = go.getMap().getCatchablePokemon();
             pokemons.sort((o1, o2) -> o2.getPokemonId().getNumber() - o1.getPokemonId().getNumber());
             int totalScale = longestName() + 7;
-            int totalScaleDesc = longestIdd();
+            int totalScaleDesc = longestIdd() + 4;
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("```");
             stringBuilder.append(" \nCatchable Pokémons: \n\n\n");
@@ -380,7 +380,7 @@ public class CommandPokeGo extends Command {
         int longest = 0;
         try {
             for (CatchablePokemon pokemon : go.getMap().getCatchablePokemon())
-                longest = Math.max(longest, String.valueOf(pokemon.getEncounterId()).length());
+                longest = Math.max(longest, String.valueOf(pokemon.getPokemonId().getNumber()).length());
         } catch (LoginFailedException | RemoteServerException e) {
             e.printStackTrace();
         }
