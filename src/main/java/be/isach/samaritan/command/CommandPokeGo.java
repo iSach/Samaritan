@@ -206,8 +206,8 @@ public class CommandPokeGo extends Command {
     }
 
     private void showPokeBank(int page) {
-        page = Math.min(1, page);
-        page = Math.max(page, getMaxPages());
+//        page = Math.min(1, page);
+//        page = Math.max(page, getMaxPages());
         List<Pokemon> pokemons = new ArrayList<>();
         int from = 1;
         if (page > 1)
