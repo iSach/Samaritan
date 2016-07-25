@@ -119,9 +119,13 @@ public class CommandPokeGo extends Command {
                     List<Pokemon> pokemons = go.getInventories().getPokebank().getPokemons();
                     StringBuilder stringBuilder = new StringBuilder();
                     for (Pokemon p : pokemons) {
-                        stringBuilder.append("  ").append(p.getCp()).append("pc ").append((NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
-                                " [ID:" + p.getPokemonId().getNumber() + "]"));
-                        stringBuilder.append("\n");
+                        try {
+                            stringBuilder.append("  ").append(p.getCp()).append("pc ").append((NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
+                                    " [ID:" + p.getPokemonId().getNumber() + "]"));
+                            stringBuilder.append("\n");
+                        } catch (Exception exc){
+                            continue;
+                        }
                     }
                     getMessageChannel().sendMessage("```PokéBank:\n" + stringBuilder.toString() + "```");
                     break;
