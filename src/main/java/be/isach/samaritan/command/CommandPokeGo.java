@@ -98,6 +98,27 @@ public class CommandPokeGo extends Command {
                         e.printStackTrace();
                     }
                     break;
+                case "gotol":
+                    try {
+                        double lat = Double.valueOf(args[1]);
+                        double lng = Double.valueOf(args[2]);
+                        go.setLatitude(lat);
+                        go.setLongitude(lng);
+                        List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
+                        getMessageChannel().sendMessage("Okay, so we are at: " + "LAT: " + lat + ", LONG: " + lng);
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for (CatchablePokemon p : catchablePokemons) {
+                            stringBuilder.append("  (" + distance(lat,
+                                    lng, p.getLatitude(), p.getLongitude()) + "m) -> " +
+                                    NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
+                                    " [ID:" + p.getPokemonId().getNumber() + " | " + p.getEncounterId() + "]");
+                            stringBuilder.append("\n");
+                        }
+                        getMessageChannel().sendMessage("```Catchable Pokémons there:" + "\n" + stringBuilder.toString() + "```");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
                 case "catch":
                     long encounterId = Long.valueOf(args[1]);
                     try {
