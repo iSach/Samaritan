@@ -174,7 +174,7 @@ public class CommandPokeGo extends Command {
 
     private void showPokeBank() {
         List<Pokemon> pokemons = go.getInventories().getPokebank().getPokemons();
-        pokemons.sort((o1, o2) -> o1.getCp() - o2.getCp());
+        pokemons.sort((o1, o2) -> o2.getCp() - o1.getCp());
         StringBuilder stringBuilder = new StringBuilder();
         for (Pokemon p : pokemons) {
             try {
