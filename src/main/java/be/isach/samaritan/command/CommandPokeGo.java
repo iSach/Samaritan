@@ -21,6 +21,7 @@ import net.dv8tion.jda.entities.MessageChannel;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -173,6 +174,7 @@ public class CommandPokeGo extends Command {
 
     private void showPokeBank() {
         List<Pokemon> pokemons = go.getInventories().getPokebank().getPokemons();
+        pokemons.sort((o1, o2) -> o1.getCp() - o2.getCp());
         StringBuilder stringBuilder = new StringBuilder();
         for (Pokemon p : pokemons) {
             try {
