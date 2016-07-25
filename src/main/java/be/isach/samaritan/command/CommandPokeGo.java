@@ -206,10 +206,8 @@ public class CommandPokeGo extends Command {
     }
 
     private void showPokeBank(int page) {
-        System.out.println(page);
         if(page > getMaxPages()) page = getMaxPages();
         if(page < 1) page = 1;
-        System.out.println(page);
         List<Pokemon> pokemons = new ArrayList<>();
         int from = 1;
         if (page > 1)
@@ -376,7 +374,7 @@ public class CommandPokeGo extends Command {
     }
 
     private int getMaxPages() {
-        int max = 50;
+        int max = 30;
         List<Pokemon> commands = go.getInventories().getPokebank().getPokemons();
         int i = commands.size();
         if (i % max == 0) return Math.max(1, i / max);
