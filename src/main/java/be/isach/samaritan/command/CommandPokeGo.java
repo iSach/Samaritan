@@ -279,6 +279,7 @@ public class CommandPokeGo extends Command {
 
         String trhow = "", status = "";
 
+        if(catchResult.getActivityTypeList().size() > 2)
         switch (catchResult.getActivityTypeList().get(1)) {
             default:
                 trhow = TextUtil.beautifyString(catchResult.getActivityTypeList().get(1).name());
@@ -327,7 +328,8 @@ public class CommandPokeGo extends Command {
         stringBuilder.append("```");
         stringBuilder.append("Result:").append("\n");
         stringBuilder.append("  Status: ").append(status).append("\n");
-        stringBuilder.append("  Throw: ").append(trhow).append("\n");
+        if(catchResult.getActivityTypeList().size() > 2)
+            stringBuilder.append("  Activity: ").append(trhow).append("\n");
         stringBuilder.append("  Total Exp Dropped: ").append(totalExp).append("\n");
         stringBuilder.append("  Candies dropped: ").append(candies).append("\n");
         stringBuilder.append("  Stardust dropped: ").append(stardusts).append("\n");
