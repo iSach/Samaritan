@@ -1,6 +1,7 @@
 package be.isach.samaritan.command;
 
 import POGOProtos.Inventory.Item.ItemAwardOuterClass;
+import POGOProtos.Networking.Responses.CatchPokemonResponseOuterClass;
 import be.isach.samaritan.pokemongo.NameRegistry;
 import be.isach.samaritan.util.TextUtil;
 import com.google.maps.GeocodingApi;
@@ -32,6 +33,8 @@ public class CommandPokeGo extends Command {
 
     private static final DecimalFormat format = new DecimalFormat("##.##");
 
+    private PokemonGo go;
+
     /**
      * Command Constructor.
      *
@@ -50,7 +53,7 @@ public class CommandPokeGo extends Command {
             return;
         }
 
-        PokemonGo go = getSamaritan().getPokemonGo();
+        go = getSamaritan().getPokemonGo();
 
         if (args.length == 0) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -75,135 +78,230 @@ public class CommandPokeGo extends Command {
         } else {
             switch (args[0]) {
                 case "goto":
-                    String s = buildStringFromArgs(1);
-                    try {
-                        System.out.println(s + " | " + getSamaritan().getGeoApiContext());
-                        GeocodingResult result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), s).await()[0];
-                        double lat = result.geometry.location.lat;
-                        double lng = result.geometry.location.lng;
-                        go.setLatitude(lat);
-                        go.setLongitude(lng);
-                        List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
-                        getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (CatchablePokemon p : catchablePokemons) {
-                            stringBuilder.append("  (" + distance(lat,
-                                    lng, p.getLatitude(), p.getLongitude()) + "m) -> " +
-                                    NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
-                                    " [ID:" + p.getPokemonId().getNumber() + " | " + p.getEncounterId() + "]");
-                            stringBuilder.append("\n");
-                        }
-                        getMessageChannel().sendMessage("```Catchable Pokémons there:" + "\n" + stringBuilder.toString() + "```");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case "gotol":
-                    try {
-                        double lat = Double.valueOf(args[1]);
-                        double lng = Double.valueOf(args[2]);
-                        go.setLatitude(lat);
-                        go.setLongitude(lng);
-                        List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
-                        getMessageChannel().sendMessage("Okay, so we are at: " + "LAT: " + lat + ", LONG: " + lng);
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for (CatchablePokemon p : catchablePokemons) {
-                            stringBuilder.append("  (" + distance(lat,
-                                    lng, p.getLatitude(), p.getLongitude()) + "m) -> " +
-                                    NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
-                                    " [ID:" + p.getPokemonId().getNumber() + " | " + p.getEncounterId() + "]");
-                            stringBuilder.append("\n");
-                        }
-                        getMessageChannel().sendMessage("```Catchable Pokémons there:" + "\n" + stringBuilder.toString() + "```");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    goTo();
                     break;
                 case "catch":
-                    long encounterId = Long.valueOf(args[1]);
-                    try {
-                        List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
-                        for (CatchablePokemon catchablePokemon : catchablePokemons) {
-                            if (catchablePokemon.getEncounterId() == encounterId) {
-                                getMessageChannel().sendMessage("Trying to catch: " + NameRegistry.getFrenchName(catchablePokemon.getPokemonId().name()));
-                                catchablePokemon.encounterPokemon();
-                                CatchResult catchResult = catchablePokemon.catchPokemon(Pokeball.POKEBALL, 5, 0);
-                                getMessageChannel().sendMessage("Result: " + TextUtil.beautifyString(catchResult.toString()));
-                                break;
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                    catchPokemon();
                     break;
                 case "bank":
-                    List<Pokemon> pokemons = go.getInventories().getPokebank().getPokemons();
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (Pokemon p : pokemons) {
-                        try {
-                            stringBuilder.append("  ").append(p.getCp()).append("pc ").append((NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
-                                    " [ID:" + p.getPokemonId().getNumber() + "]"));
-                            stringBuilder.append("\n");
-                        } catch (Exception exc){
-                            continue;
-                        }
-                    }
-                    getMessageChannel().sendMessage("```PokéBank:\n" + stringBuilder.toString() + "```");
+                    showPokeBank();
                     break;
                 case "inv":
-                    Collection<Item> items = go.getInventories().getItemBag().getItems();
-                    StringBuilder sb = new StringBuilder();
-                    for (Item item : items) {
-                        sb.append("  ");
-                        sb.append(item.getCount());
-                        sb.append("x ");
-                        sb.append(TextUtil.beautifyString(item.getItemId().name()));
-                        sb.append("\n");
-                    }
-                    getMessageChannel().sendMessage("```Items:\n" + sb.toString() + "```");
+                    showPokeInv();
                     break;
                 case "stoplist":
-                    try {
-                        if(go.getMap().getMapObjects().getPokestops().isEmpty()) {
-                            getMessageChannel().sendMessage("No stops.");
-                            break;
-                        }
-                        StringBuilder sbbb = new StringBuilder();
-                        for (Pokestop pokestop : go.getMap().getMapObjects().getPokestops()) {
-                            sbbb.append(pokestop.getDetails().getName() + "\n");
-                        }
-                        getMessageChannel().sendMessage("stops:");
-                        getMessageChannel().sendMessage(sbbb.toString());
-                    } catch (Exception exc) {}
+                    showStopsNearby();
                     break;
                 case "stop":
-                    try {
-                        StringBuilder sbb = new StringBuilder();
-                        sbb.append("```Pokéstops looted:" + "\n");
-                        for (Pokestop pokestop : go.getMap().getMapObjects().getPokestops()) {
-                            if(pokestop.canLoot()) {
-                                PokestopLootResult result = pokestop.loot();
-                                System.out.println(result.getResult());
-                                if(!result.wasSuccessful()) continue;
-                                sbb.append("  ").append(pokestop.getDetails().getName()).append(":").append("\n");
-                                sbb.append("    EXP dropped: ").append(result.getExperience()).append("\n");
-                                sbb.append("    Items: ").append("\n");
-                                for(ItemAwardOuterClass.ItemAward item : result.getItemsAwarded()) {
-                                    sbb.append("      ").append(item.getItemCount()).append("x ").append(TextUtil.beautifyString(item.getItemId().name()) + "\n");
-                                }
-                            }
-                        }
-                        sbb.append("```");
-                        getMessageChannel().sendMessage(sbb.toString());
-                    } catch (LoginFailedException | RemoteServerException e) {
-                        e.printStackTrace();
-                    }
+                    lootStopsNearby();
                     break;
                 default:
                     getMessageChannel().sendMessage("subcommand not found.");
                     break;
             }
         }
+    }
+
+    private void goTo() {
+        String loc = "Liege, Belgium";
+        if (buildStringFromArgs(1).isEmpty()) {
+            getMessageChannel().sendMessage("Where to go?");
+            loc = nextMessage().getContent();
+        } else {
+            loc = buildStringFromArgs(1);
+        }
+        try {
+            GeocodingResult result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), loc).await()[0];
+            if (!result.formattedAddress.contains("Belgi")) {
+                getMessageChannel().sendMessage("Not in Belgium.");
+                return;
+            }
+
+            double lat = result.geometry.location.lat;
+            double lng = result.geometry.location.lng;
+            go.setLatitude(lat);
+            go.setLongitude(lng);
+
+            List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
+            getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (CatchablePokemon p : catchablePokemons) {
+                stringBuilder.append("  (" + distance(lat,
+                        lng, p.getLatitude(), p.getLongitude()) + "m) -> " +
+                        NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
+                        " [ID:" + p.getPokemonId().getNumber() + " | " + p.getEncounterId() + "]");
+                stringBuilder.append("\n");
+            }
+            getMessageChannel().sendMessage("```Catchable Pokémons there:" + "\n" + stringBuilder.toString() + "```");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void catchPokemon() {
+        String encId = "";
+        if (buildStringFromArgs(1).isEmpty()) {
+            getMessageChannel().sendMessage("What is its Encounter Id?");
+            encId = nextMessage().getContent();
+        } else {
+            encId = buildStringFromArgs(1);
+        }
+        long encounterId = 0L;
+        try {
+            encounterId = Long.valueOf(encId);
+        } catch (Exception exc) {
+            getMessageChannel().sendMessage("Invalid Encounter Id.");
+            return;
+        }
+        try {
+            List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
+            for (CatchablePokemon catchablePokemon : catchablePokemons) {
+                if (catchablePokemon.getEncounterId() == encounterId) {
+                    getMessageChannel().sendMessage("Attempting to catch: " + NameRegistry.getFrenchName(catchablePokemon.getPokemonId().name()) + " | " + encounterId);
+                    catchablePokemon.encounterPokemon();
+                    CatchResult catchResult = catchablePokemon.catchPokemon(Pokeball.POKEBALL, 5, 0);
+                    getMessageChannel().sendMessage(formatCatchResult(catchResult));
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showPokeBank() {
+        List<Pokemon> pokemons = go.getInventories().getPokebank().getPokemons();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Pokemon p : pokemons) {
+            try {
+                stringBuilder.append("  ").append(p.getCp()).append("pc ").append((NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
+                        " [ID:" + p.getPokemonId().getNumber() + "]"));
+                stringBuilder.append("\n");
+            } catch (Exception exc) {
+                continue;
+            }
+        }
+        getMessageChannel().sendMessage("```PokéBank:\n" + stringBuilder.toString() + "```");
+    }
+
+    private void showPokeInv() {
+        Collection<Item> items = go.getInventories().getItemBag().getItems();
+        StringBuilder sb = new StringBuilder();
+        for (Item item : items) {
+            sb.append("  ");
+            sb.append(item.getCount());
+            sb.append("x ");
+            sb.append(TextUtil.beautifyString(item.getItemId().name()));
+            sb.append("\n");
+        }
+        getMessageChannel().sendMessage("```Items:\n" + sb.toString() + "```");
+    }
+
+    private void showStopsNearby() {
+        try {
+            if (go.getMap().getMapObjects().getPokestops().isEmpty()) {
+                getMessageChannel().sendMessage("No stops.");
+                return;
+            }
+            StringBuilder sbbb = new StringBuilder();
+            for (Pokestop pokestop : go.getMap().getMapObjects().getPokestops()) {
+                if(pokestop.canLoot() && pokestop.inRange())
+                sbbb.append(pokestop.getDetails().getName() + "\n");
+            }
+            getMessageChannel().sendMessage("stops:");
+            getMessageChannel().sendMessage(sbbb.toString());
+        } catch (Exception exc) {
+        }
+    }
+
+    private void lootStopsNearby() {
+        try {
+            StringBuilder sbb = new StringBuilder();
+            sbb.append("```Pokéstops looted:" + "\n");
+            for (Pokestop pokestop : go.getMap().getMapObjects().getPokestops()) {
+                if (pokestop.canLoot()) {
+                    PokestopLootResult result = pokestop.loot();
+                    if (!result.wasSuccessful()) continue;
+                    sbb.append("  ").append(pokestop.getDetails().getName()).append(":").append("\n");
+                    sbb.append("    EXP dropped: ").append(result.getExperience()).append("\n");
+                    sbb.append("    Items: ").append("\n");
+                    for (ItemAwardOuterClass.ItemAward item : result.getItemsAwarded()) {
+                        sbb.append("      ").append(item.getItemCount()).append("x ").append(TextUtil.beautifyString(item.getItemId().name()) + "\n");
+                    }
+                }
+            }
+            sbb.append("```");
+            getMessageChannel().sendMessage(sbb.toString());
+        } catch (LoginFailedException | RemoteServerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private String formatCatchResult(CatchResult catchResult) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        String trhow = "", status = "";
+
+        switch (catchResult.getActivityTypeList().get(1)) {
+            default:
+                trhow = TextUtil.beautifyString(catchResult.getActivityTypeList().get(1).name());
+                break;
+            case ACTIVITY_CATCH_EXCELLENT_THROW:
+                trhow = "Tir excellent !";
+                break;
+            case ACTIVITY_CATCH_FIRST_THROW:
+                trhow = "Premier Tir !";
+                break;
+            case ACTIVITY_CATCH_GREAT_THROW:
+                trhow = "Super tir !";
+                break;
+            case ACTIVITY_CATCH_NICE_THROW:
+                trhow = "Bon tir !";
+                break;
+        }
+        switch (catchResult.getStatus()) {
+            case CATCH_ERROR:
+                status = "Erreur";
+                break;
+            case CATCH_ESCAPE:
+                status = "Le Pokémon s'est echappé.";
+                break;
+            case CATCH_FLEE:
+                status = "Pokémon échappé. (Flee: Softban Possible).";
+                break;
+            case CATCH_MISSED:
+                status = "Tir raté.";
+                break;
+            case CATCH_SUCCESS:
+                status = "Pokémon capturé !";
+                break;
+        }
+        int totalExp = 0, candies = 0, stardusts = 0;
+        for(int xp : catchResult.getXpList()) {
+            totalExp += xp;
+        }
+        for(int candy : catchResult.getCandyList()) {
+            candies += candy;
+        }
+        for(int stardust : catchResult.getStardustList()) {
+            stardusts += stardust;
+        }
+
+        stringBuilder.append("```");
+        stringBuilder.append("Result:").append("\n");
+        stringBuilder.append("  Status: ").append(status).append("\n");
+        stringBuilder.append("  Throw: ").append(trhow).append("\n");
+        stringBuilder.append("  Total Exp Dropped: ").append(totalExp).append("\n");
+        stringBuilder.append("  Candies dropped: ").append(candies).append("\n");
+        stringBuilder.append("  Stardust dropped: ").append(stardusts).append("\n");
+        if(catchResult.getStatus() != CatchPokemonResponseOuterClass.CatchPokemonResponse.CatchStatus.CATCH_SUCCESS) {
+            stringBuilder.append("  Miss Percent: ").append(catchResult.getMissPercent()).append("\n");
+        }
+        stringBuilder.append("```");
+
+        return stringBuilder.toString();
     }
 
     private String distance(double lat1, double lon1, double lat2, double lon2) {
@@ -236,7 +334,7 @@ public class CommandPokeGo extends Command {
         stringBuilder.append("   (");
         stringBuilder.append((ratio * 100d));
         stringBuilder.append("% | ");
-        stringBuilder.append(((int)min) + "/" + ((int)max) + ")");
+        stringBuilder.append(((int) min) + "/" + ((int) max) + ")");
         return stringBuilder.toString();
     }
 }
