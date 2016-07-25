@@ -171,11 +171,17 @@ public class NameRegistry {
         NAMES.put("dragonite", "dracolosse");
         NAMES.put("mewtwo", "mewtwo");
         NAMES.put("mew", "mew");
+        NAMES.put("", "");
     }
 
     public static String getFrenchName(String englishName) {
-        englishName = englishName.toLowerCase();
-        return TextUtil.beautifyString(NAMES.get(englishName));
+        if(englishName.contains("nidoran")) return englishName;
+        try {
+            englishName = englishName.toLowerCase();
+            return TextUtil.beautifyString(NAMES.get(englishName));
+        } catch (Exception exc) {
+            return englishName;
+        }
     }
 
 }
