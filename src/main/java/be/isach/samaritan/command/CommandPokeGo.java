@@ -187,9 +187,9 @@ public class CommandPokeGo extends Command {
         stringBuilder.append("\n\n");
         for (Pokemon pokemon : pokemons) {
             String id = pokemon.getPokemonId().getNumber() + "";
-            String cp = pokemon.getCp() + TextUtil.getSpaces(totalScale - String.valueOf(pokemon.getCp()).length());
-            String name = NameRegistry.getFrenchName(pokemon) + TextUtil.getSpaces(totalScaleDesc - NameRegistry.getFrenchName(pokemon) .length());
-            stringBuilder.append(SamaritanConstants.PREFIX).append(name);
+            String cp = pokemon.getCp() + TextUtil.getSpaces(totalScaleDesc - String.valueOf(pokemon.getCp()).length());
+            String name = NameRegistry.getFrenchName(pokemon) + TextUtil.getSpaces(totalScale - NameRegistry.getFrenchName(pokemon) .length());
+            stringBuilder.append(name);
             stringBuilder.append(cp);
             stringBuilder.append(id);
             stringBuilder.append("\n");
