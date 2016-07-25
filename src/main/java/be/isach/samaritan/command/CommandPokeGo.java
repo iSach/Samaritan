@@ -20,6 +20,7 @@ import com.pokegoapi.exceptions.RemoteServerException;
 import net.dv8tion.jda.entities.MessageChannel;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -84,7 +85,15 @@ public class CommandPokeGo extends Command {
                     catchPokemon();
                     break;
                 case "bank":
-                    showPokeBank();
+                    int page = 1;
+                    if(args.length > 0) {
+                        try {
+                            page = Integer.parseInt(args[0]);
+                        } catch (Exception ignored) {
+
+                        }
+                    }
+                    showPokeBank(1);
                     break;
                 case "inv":
                     showPokeInv();
@@ -196,8 +205,19 @@ public class CommandPokeGo extends Command {
         }
     }
 
-    private void showPokeBank() {
-        List<Pokemon> pokemons = go.getInventories().getPokebank().getPokemons();
+    private void showPokeBank(int page) {
+        page = Math.min(1, page);
+        page = Math.max(page, getMaxPages());
+        List<Pokemon> pokemons = new ArrayList<>();
+        int from = 1;
+        if (page > 1)
+            from = 30 * (page - 1) + 1;
+        int to = 30 * page;
+        for (int h = from; h <= to; h++) {
+            if (h > go.getInventories().getPokebank().getPokemons().size())
+                break;
+            pokemons.add(go.getInventories().getPokebank().getPokemons().get(h - 1));
+        }
         pokemons.sort((o1, o2) -> o2.getCp() - o1.getCp());
         int totalScale = longestName() + 7;
         int totalScaleDesc = longestCp() + 6;
@@ -351,6 +371,16 @@ public class CommandPokeGo extends Command {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double d = R * c;
         return format.format(d * 1000);
+    }
+
+    private int getMaxPages() {
+        int max = 50;
+        List<Pokemon> commands = go.getInventories().getPokebank().getPokemons();
+        int i = commands.size();
+        if (i % max == 0) return Math.max(1, i / max);
+        double j = i / max;
+        int h = (int) Math.floor(j * 100) / 100;
+        return Math.max(1, h + 1);
     }
 
     private double deg2rad(double deg) {
