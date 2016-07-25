@@ -181,7 +181,7 @@ public class CommandPokeGo extends Command {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
         stringBuilder.append(" \nPoké Bank: \n\n\n");
-        stringBuilder.append("Name").append(TextUtil.getSpaces(totalScale - "Name".length())).append(" ");
+        stringBuilder.append("Name").append(TextUtil.getSpaces(totalScale - "Name".length()));
         stringBuilder.append("CP").append(TextUtil.getSpaces(totalScaleDesc - "CP".length()));
         stringBuilder.append("ID");
         stringBuilder.append("\n\n");
