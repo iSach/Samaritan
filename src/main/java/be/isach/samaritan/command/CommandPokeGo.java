@@ -3,7 +3,6 @@ package be.isach.samaritan.command;
 import POGOProtos.Inventory.Item.ItemAwardOuterClass;
 import POGOProtos.Networking.Responses.CatchPokemonResponseOuterClass;
 import be.isach.samaritan.pokemongo.NameRegistry;
-import be.isach.samaritan.util.SamaritanConstants;
 import be.isach.samaritan.util.TextUtil;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
@@ -22,7 +21,6 @@ import net.dv8tion.jda.entities.MessageChannel;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -145,8 +143,33 @@ public class CommandPokeGo extends Command {
     private void catchPokemon() {
         String encId = "";
         if (buildStringFromArgs(1).isEmpty()) {
-            getMessageChannel().sendMessage("What is its Encounter Id?");
-            encId = nextMessage().getContent();
+            try {
+            List<CatchablePokemon> pokemons = go.getMap().getCatchablePokemon();
+            pokemons.sort((o1, o2) -> o2.getPokemonId().getNumber() - o1.getPokemonId().getNumber());
+            int totalScale = longestName() + 7;
+            int totalScaleDesc = longestIdd() + 6;
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("```");
+            stringBuilder.append(" \nCatchable Pokémons: \n\n\n");
+            stringBuilder.append("Name").append(TextUtil.getSpaces(totalScale - "Name".length()));
+            stringBuilder.append("ID").append(TextUtil.getSpaces(totalScaleDesc - "ID".length()));
+            stringBuilder.append("Encounter ID");
+            stringBuilder.append("\n\n");
+            for (CatchablePokemon pokemon : pokemons) {
+                String encounterId = pokemon.getEncounterId() + "";
+                String id = pokemon.getPokemonId().getNumber() + TextUtil.getSpaces(totalScaleDesc - String.valueOf(pokemon.getPokemonId().getNumber()).length());
+                String name = NameRegistry.getFrenchName(pokemon.getPokemonId().name()) + TextUtil.getSpaces(totalScale - NameRegistry.getFrenchName(pokemon.getPokemonId().name()) .length());
+                stringBuilder.append(name);
+                stringBuilder.append(id);
+                stringBuilder.append(id);
+                stringBuilder.append("\n");
+            }
+            stringBuilder.append("```");
+            getMessageChannel().sendMessage(stringBuilder.toString());
+            } catch (LoginFailedException | RemoteServerException e) {
+                e.printStackTrace();
+            }
+            return;
         } else {
             encId = buildStringFromArgs(1);
         }
@@ -348,6 +371,34 @@ public class CommandPokeGo extends Command {
         stringBuilder.append("% | ");
         stringBuilder.append(((int) min) + "/" + ((int) max) + ")");
         return stringBuilder.toString();
+    }
+
+    /**
+     * @return The length of the longest Command complete alias.
+     */
+    public int longestIdd() {
+        int longest = 0;
+        try {
+            for (CatchablePokemon pokemon : go.getMap().getCatchablePokemon())
+                longest = Math.max(longest, String.valueOf(pokemon.getEncounterId()).length());
+        } catch (LoginFailedException | RemoteServerException e) {
+            e.printStackTrace();
+        }
+        return longest;
+    }
+
+    /**
+     * @return The length of the longest Command complete alias.
+     */
+    public int longestNameE() {
+        int longest = 0;
+        try {
+            for (CatchablePokemon pokemon : go.getMap().getCatchablePokemon())
+                longest = Math.max(longest, NameRegistry.getFrenchName(pokemon.getPokemonId().name()).length());
+        } catch (LoginFailedException | RemoteServerException e) {
+            e.printStackTrace();
+        }
+        return longest;
     }
 
     /**
