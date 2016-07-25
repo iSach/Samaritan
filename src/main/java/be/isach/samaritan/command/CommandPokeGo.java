@@ -161,7 +161,7 @@ public class CommandPokeGo extends Command {
                 String name = NameRegistry.getFrenchName(pokemon.getPokemonId().name()) + TextUtil.getSpaces(totalScale - NameRegistry.getFrenchName(pokemon.getPokemonId().name()) .length());
                 stringBuilder.append(name);
                 stringBuilder.append(id);
-                stringBuilder.append(id);
+                stringBuilder.append(encounterId);
                 stringBuilder.append("\n");
             }
             stringBuilder.append("```");
