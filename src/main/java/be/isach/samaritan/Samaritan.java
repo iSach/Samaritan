@@ -253,9 +253,9 @@ public class Samaritan {
 
                         @Override
                         public void onTokenIdReceived(GoogleAuthTokenJson googleAuthTokenJson) {
-                            getOwner().getPrivateChannel().sendMessage("```" + "\n" +
+                            getOwner().getPrivateChannel().sendMessage("\n" +
                                     "Access Token:" + "\n" +
-                                    googleAuthTokenJson.getAccessToken() + "\n" + "``");
+                                    googleAuthTokenJson.getAccessToken() + "\n");
                         }
                     }), httpClient);
                 } catch (LoginFailedException | RemoteServerException e) {
