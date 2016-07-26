@@ -290,7 +290,7 @@ public class CommandPokeGo extends Command {
             else return 0;
         });
         StringBuilder sb = new StringBuilder();
-        for (EggPokemon egg : items) {
+        for (EggPokemon egg : eggs) {
             sb.append("  ");
             sb.append("[").append(egg.getCapturedCellId()).append("]");
             sb.append(":   ");
