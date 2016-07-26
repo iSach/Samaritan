@@ -4,8 +4,11 @@ import POGOProtos.Inventory.Item.ItemAwardOuterClass;
 import POGOProtos.Networking.Responses.CatchPokemonResponseOuterClass;
 import be.isach.samaritan.pokemongo.NameRegistry;
 import be.isach.samaritan.util.TextUtil;
+import com.google.maps.DirectionsApi;
 import com.google.maps.GeocodingApi;
+import com.google.maps.model.DistanceMatrixElement;
 import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.TravelMode;
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.api.inventory.Item;
 import com.pokegoapi.api.inventory.Pokeball;
@@ -61,7 +64,22 @@ public class CommandPokeGo extends Command {
             stringBuilder.append("```");
             stringBuilder.append("Username:").append(" ").append(go.getPlayerProfile().getUsername());
             stringBuilder.append("\n");
-            stringBuilder.append("Team:").append(" ").append(go.getPlayerProfile().getTeam());
+            String team = "Aucune";
+            switch (go.getPlayerProfile().getTeam()) {
+                case TEAM_MYSTIC:
+                    team = "Sagesse (mystic)";
+                    break;
+                case TEAM_INSTINCT:
+                    team = "Intuition (instinct)";
+                    break;
+                case TEAM_VALOR:
+                    team = "Bravoure (valor)";
+                    break;
+                case TEAM_NONE:
+                    team = "Aucune";
+                    break;
+            }
+            stringBuilder.append("Team:").append(" ").append(team);
             stringBuilder.append("\n");
             stringBuilder.append("Level:").append(" ").append(makeExpBar(go.getPlayerProfile()));
             stringBuilder.append("\n");
@@ -103,6 +121,9 @@ public class CommandPokeGo extends Command {
                     break;
                 case "stop":
                     lootStopsNearby();
+                    break;
+                case "rand":
+                    checkRandLoc();
                     break;
                 default:
                     getMessageChannel().sendMessage("subcommand not found.");
@@ -294,6 +315,10 @@ public class CommandPokeGo extends Command {
         } catch (LoginFailedException | RemoteServerException e) {
             e.printStackTrace();
         }
+    }
+
+    private void checkRandLoc() {
+
     }
 
     private String formatCatchResult(CatchResult catchResult) {
