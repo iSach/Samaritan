@@ -34,6 +34,8 @@ import java.util.List;
 public class CommandPokeGo extends Command {
 
     private static final DecimalFormat format = new DecimalFormat("##.##");
+    private static final DecimalFormat format2 = new DecimalFormat("#0.00");
+    private static final DecimalFormat format3 = new DecimalFormat("#0.##");
 
     private PokemonGo go;
 
@@ -288,7 +290,7 @@ public class CommandPokeGo extends Command {
             sb.append("  ");
             sb.append("[").append(egg.getCapturedCellId()).append("]");
             sb.append(":   ");
-            sb.append(egg.getEggKmWalked() + "/" + egg.getEggKmWalkedTarget() + "Km");
+            sb.append(format2.format(egg.getEggKmWalked()) + "/" + format3.format(egg.getEggKmWalkedTarget()) + "Km");
             sb.append("\n");
         }
         getMessageChannel().sendMessage("```Eggs:\n" + sb.toString() + "```");
