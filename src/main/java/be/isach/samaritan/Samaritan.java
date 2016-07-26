@@ -20,16 +20,18 @@ import be.isach.samaritan.runtime.ShutdownThread;
 import be.isach.samaritan.util.GifFactory;
 import be.isach.samaritan.util.SamaritanStatus;
 import be.isach.samaritan.websocket.SamaritanWebsocketServer;
-import com.google.maps.GaeRequestHandler;
 import com.google.maps.GeoApiContext;
 import com.pokegoapi.api.PokemonGo;
-import com.pokegoapi.auth.GoogleLogin;
+import com.pokegoapi.auth.GoogleAuthJson;
+import com.pokegoapi.auth.GoogleAuthTokenJson;
+import com.pokegoapi.auth.GoogleCredentialProvider;
 import com.pokegoapi.exceptions.LoginFailedException;
 import com.pokegoapi.exceptions.RemoteServerException;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.PrivateChannel;
+import net.dv8tion.jda.entities.User;
 import okhttp3.OkHttpClient;
 import org.joda.time.Instant;
 import org.json.JSONObject;
@@ -246,33 +248,24 @@ public class Samaritan {
         Thread t = new Thread() {
             @Override
             public void run() {
-
+                OkHttpClient httpClient = new OkHttpClient();
                 try {
-                    logger.write("Pokémon Go -> Trying to connect with token.");
-                    AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
-                    JSONObject jsonObject = object.getJSONObject("pokemongo-login");
-                    String token = jsonObject.getString("token");
-                    OkHttpClient httpClient = new OkHttpClient();
-                    RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new SamaritanLogin(httpClient, samaritan).login(token);
-                    pokemonGo = new PokemonGo(auth, httpClient);
-                    System.out.println("Pokémon Go -> Successfully logged in with token.");
-                } catch (Exception exc) {
-                    try {
-                        logger.write("Pokémon Go -> Failed to connect with token, trying with email and username.");
-                        OkHttpClient httpClient = new OkHttpClient();
-                        RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(pokeGoLoginData.getUsername(), pokeGoLoginData.getPassword());
-                        AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
-                        JSONObject jsonObject = object.getJSONObject("pokemongo-login");
-                        jsonObject.put("token", auth.getToken().getContents());
-                        object.put("pokemongo-login", jsonObject);
-                        Files.write(Paths.get("config.json"), object.toString(4).getBytes());
-                        pokemonGo = new PokemonGo(auth, httpClient);
-                        System.out.println("Pokémon Go -> Successfully logged in. New token saved.");
-                    } catch (LoginFailedException | IOException | RemoteServerException e) {
-                        pokemonGo = null;
-                        System.out.println("Pokémon Go -> Failed to log in.");
-                        e.printStackTrace();
-                    }
+                    pokemonGo = new PokemonGo(new GoogleCredentialProvider(httpClient, new GoogleCredentialProvider.OnGoogleLoginOAuthCompleteListener() {
+                        @Override
+                        public void onInitialOAuthComplete(GoogleAuthJson googleAuthJson) {
+                            System.out.println("Pokémon Go -> Login successful.");
+                            getOwner().getPrivateChannel().sendMessage("Successful login for Pokémon Go.");
+                        }
+
+                        @Override
+                        public void onTokenIdReceived(GoogleAuthTokenJson googleAuthTokenJson) {
+                            getOwner().getPrivateChannel().sendMessage("```" + "\n" +
+                                    "http://google.com/device" + "\n" +
+                                    googleAuthTokenJson.getAccessToken() + "\n" + "``");
+                        }
+                    }), httpClient);
+                } catch (LoginFailedException | RemoteServerException e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -468,5 +461,9 @@ public class Samaritan {
 
     public GeoApiContext getGeoApiContext() {
         return geoApiContext;
+    }
+
+    private User getOwner() {
+        return getJda().getUserById(getOwnerId());
     }
 }

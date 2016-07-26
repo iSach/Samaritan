@@ -4,7 +4,7 @@ import POGOProtos.Networking.Envelopes.RequestEnvelopeOuterClass;
 import be.isach.samaritan.Samaritan;
 import com.pokegoapi.auth.GoogleAuthJson;
 import com.pokegoapi.auth.GoogleAuthTokenJson;
-import com.pokegoapi.auth.GoogleLogin;
+import com.pokegoapi.auth.GoogleCredentialProvider;
 import com.pokegoapi.exceptions.LoginFailedException;
 import com.pokegoapi.util.Log;
 import com.squareup.moshi.Moshi;
@@ -21,18 +21,17 @@ import java.net.URISyntaxException;
  * Date: 26/07/16
  * Project: samaritan
  */
-public class SamaritanLogin extends GoogleLogin {
+public class SamaritanLogin extends GoogleCredentialProvider {
 
     private OkHttpClient clientt;
     private Samaritan samaritan;
 
     public SamaritanLogin(OkHttpClient client, Samaritan samaritan) {
-        super(client);
+//        super(client);
         clientt = client;
         this.samaritan = samaritan;
     }
 
-    @Override
     public RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo login(String username, String password) throws LoginFailedException {
         try {
             User admin = samaritan.getJda().getUserById(samaritan.getOwnerId());
