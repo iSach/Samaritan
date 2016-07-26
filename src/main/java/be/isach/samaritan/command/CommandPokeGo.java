@@ -49,83 +49,88 @@ public class CommandPokeGo extends Command {
 
     @Override
     void onExecute(String[] args) {
-        if (getSamaritan().getPokemonGo() == null) {
-            getMessageChannel().sendMessage("Pokemon Go Instance is null.");
-            return;
-        }
-
-        go = getSamaritan().getPokemonGo();
-
-        if (args.length == 0) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("```");
-            stringBuilder.append("Username:").append(" ").append(go.getPlayerProfile().getUsername());
-            stringBuilder.append("\n");
-            String team = "Aucune";
-            switch (go.getPlayerProfile().getTeam()) {
-                case TEAM_MYSTIC:
-                    team = "Sagesse (mystic)";
-                    break;
-                case TEAM_INSTINCT:
-                    team = "Intuition (instinct)";
-                    break;
-                case TEAM_VALOR:
-                    team = "Bravoure (valor)";
-                    break;
-                case TEAM_NONE:
-                    team = "Aucune";
-                    break;
+        try {
+            if (getSamaritan().getPokemonGo() == null) {
+                getMessageChannel().sendMessage("Pokemon Go Session is invalid.");
+                return;
             }
-            stringBuilder.append("Team:").append(" ").append(team);
-            stringBuilder.append("\n");
-            stringBuilder.append("Level:").append(" ").append(makeExpBar(go.getPlayerProfile()));
-            stringBuilder.append("\n");
-            stringBuilder.append("Altitude:").append(" ").append(go.getAltitude());
-            stringBuilder.append("\n");
-            stringBuilder.append("Longitude:").append(" ").append(go.getLongitude());
-            stringBuilder.append("\n");
-            stringBuilder.append("```");
-            getMessageChannel().sendMessage(stringBuilder.toString());
-            catchPokemon();
-        } else {
-            switch (args[0]) {
-                case "goto":
-                    goTo();
-                    break;
-                case "catch":
-                    catchPokemon();
-                    break;
-                case "bank":
-                    int page = 1;
-                    if (args.length > 1) {
-                        try {
-                            page = Integer.parseInt(args[1]);
-                        } catch (Exception ignored) {
 
+            go = getSamaritan().getPokemonGo();
+
+            if (args.length == 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("```");
+                stringBuilder.append("Username:").append(" ").append(go.getPlayerProfile().getUsername());
+                stringBuilder.append("\n");
+                String team = "Aucune";
+                switch (go.getPlayerProfile().getTeam()) {
+                    case TEAM_MYSTIC:
+                        team = "Sagesse (mystic)";
+                        break;
+                    case TEAM_INSTINCT:
+                        team = "Intuition (instinct)";
+                        break;
+                    case TEAM_VALOR:
+                        team = "Bravoure (valor)";
+                        break;
+                    case TEAM_NONE:
+                        team = "Aucune";
+                        break;
+                }
+                stringBuilder.append("Team:").append(" ").append(team);
+                stringBuilder.append("\n");
+                stringBuilder.append("Level:").append(" ").append(makeExpBar(go.getPlayerProfile()));
+                stringBuilder.append("\n");
+                stringBuilder.append("Altitude:").append(" ").append(go.getAltitude());
+                stringBuilder.append("\n");
+                stringBuilder.append("Longitude:").append(" ").append(go.getLongitude());
+                stringBuilder.append("\n");
+                stringBuilder.append("```");
+                getMessageChannel().sendMessage(stringBuilder.toString());
+                catchPokemon();
+            } else {
+                switch (args[0]) {
+                    case "goto":
+                        goTo();
+                        break;
+                    case "catch":
+                        catchPokemon();
+                        break;
+                    case "bank":
+                        int page = 1;
+                        if (args.length > 1) {
+                            try {
+                                page = Integer.parseInt(args[1]);
+                            } catch (Exception ignored) {
+
+                            }
                         }
-                    }
-                    showPokeBank(page);
-                    break;
-                case "inv":
-                    showPokeInv();
-                    break;
-                case "stoplist":
-                    showStopsNearby();
-                    break;
-                case "stop":
-                    lootStopsNearby();
-                    break;
-                case "next":
-                    goNextLoc();
-                    break;
-                default:
-                    getMessageChannel().sendMessage("subcommand not found.");
-                    break;
+                        showPokeBank(page);
+                        break;
+                    case "inv":
+                        showPokeInv();
+                        break;
+                    case "stoplist":
+                        showStopsNearby();
+                        break;
+                    case "stop":
+                        lootStopsNearby();
+                        break;
+                    case "next":
+                        goNextLoc();
+                        break;
+                    default:
+                        getMessageChannel().sendMessage("subcommand not found.");
+                        break;
+                }
             }
+        } catch (LoginFailedException exc) {
+            getMessageChannel().sendMessage("Session expired. Generating a new one.");
+            getSamaritan().connectToPokemonGo(getSamaritan().getPokemonGoLoginData());
         }
     }
 
-    private void goTo() {
+    private void goTo() throws LoginFailedException {
         String loc = "Liege, Belgium";
         if (buildStringFromArgs(1).isEmpty()) {
             getMessageChannel().sendMessage("Where to go?");
@@ -163,7 +168,7 @@ public class CommandPokeGo extends Command {
         }
     }
 
-    private void catchPokemon() {
+    private void catchPokemon() throws LoginFailedException {
         String encId = "";
         if (buildStringFromArgs(1).isEmpty()) {
             try {
@@ -352,7 +357,12 @@ public class CommandPokeGo extends Command {
         go.setLongitude(lng);
 
         getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
-        catchPokemon();
+        try {
+            catchPokemon();
+        } catch (LoginFailedException e) {
+            getMessageChannel().sendMessage("Session expired. Generating a new one.");
+            getSamaritan().connectToPokemonGo(getSamaritan().getPokemonGoLoginData());
+        }
     }
 
     private String formatCatchResult(CatchResult catchResult) {

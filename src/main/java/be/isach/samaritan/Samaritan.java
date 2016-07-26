@@ -240,7 +240,7 @@ public class Samaritan {
         }
     }
 
-    private void connectToPokemonGo(LoginData pokeGoLoginData) {
+    public void connectToPokemonGo(LoginData pokeGoLoginData) {
         new Thread() {
             @Override
             public void run() {
