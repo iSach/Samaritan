@@ -87,13 +87,9 @@ public class CommandPokeGo extends Command {
             stringBuilder.append("\n");
             stringBuilder.append("Longitude:").append(" ").append(go.getLongitude());
             stringBuilder.append("\n");
-            try {
-                stringBuilder.append("Catchable Pokémons:").append(" ").append(go.getMap().getCatchablePokemon());
-            } catch (LoginFailedException | RemoteServerException e) {
-                e.printStackTrace();
-            }
             stringBuilder.append("```");
             getMessageChannel().sendMessage(stringBuilder.toString());
+            catchPokemon();
         } else {
             switch (args[0]) {
                 case "goto":
