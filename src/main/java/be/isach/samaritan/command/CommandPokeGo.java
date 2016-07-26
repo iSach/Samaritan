@@ -171,7 +171,7 @@ public class CommandPokeGo extends Command {
         if (buildStringFromArgs(1).isEmpty()) {
             try {
                 List<CatchablePokemon> pokemons = go.getMap().getCatchablePokemon();
-                if(pokemons.isEmpty()) {
+                if (pokemons.isEmpty()) {
                     getMessageChannel().sendMessage("`No pokémons catchable nearby.`");
                     return;
                 }
@@ -207,6 +207,25 @@ public class CommandPokeGo extends Command {
         try {
             encounterId = Long.valueOf(encId);
         } catch (Exception exc) {
+            try {
+                boolean found = false;
+                for (CatchablePokemon catchablePokemon : go.getMap().getCatchablePokemon()) {
+                    if (NameRegistry.getFrenchName(catchablePokemon.getPokemonId().name()).equalsIgnoreCase(buildStringFromArgs(1))) {
+                        encounterId = catchablePokemon.getEncounterId();
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    getMessageChannel().sendMessage("No pokémon of that name is catchable.");
+                    return;
+                }
+            } catch (RemoteServerException | LoginFailedException e) {
+                getMessageChannel().sendMessage("Invalid Encounter Id.");
+            }
+            getMessageChannel().sendMessage("Invalid Encounter Id.");
+        }
+        if (encounterId == 0L) {
             getMessageChannel().sendMessage("Invalid Encounter Id.");
             return;
         }
