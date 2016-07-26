@@ -246,9 +246,9 @@ public class Samaritan {
                     pokemonGo = new PokemonGo(new GoogleCredentialProvider(httpClient, new GoogleCredentialProvider.OnGoogleLoginOAuthCompleteListener() {
                         @Override
                         public void onInitialOAuthComplete(GoogleAuthJson googleAuthJson) {
-                            getOwner().getPrivateChannel().sendMessage("```" + "\n" +
+                            getOwner().getPrivateChannel().sendMessage("\n" +
                                     googleAuthJson.getVerificationUrl() + "\n" +
-                                    googleAuthJson.getUserCode() + "\n" + "``");
+                                    googleAuthJson.getUserCode() + "\n");
                         }
 
                         @Override
