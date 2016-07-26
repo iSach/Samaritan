@@ -422,7 +422,7 @@ public class CommandPokeGo extends Command {
         stringBuilder.append(" ");
         stringBuilder.append(playerProfile.getStats().getLevel() + 1);
         stringBuilder.append("   (");
-        stringBuilder.append((ratio * 100d));
+        stringBuilder.append(format.format(ratio * 100d));
         stringBuilder.append("% | ");
         stringBuilder.append(((int) min) + "/" + ((int) max) + ")");
         return stringBuilder.toString();
