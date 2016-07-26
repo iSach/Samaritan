@@ -204,11 +204,11 @@ public class CommandPokeGo extends Command {
             encId = buildStringFromArgs(1);
         }
         long encounterId = 0L;
+        boolean found = false;
         try {
             encounterId = Long.valueOf(encId);
         } catch (Exception exc) {
             try {
-                boolean found = false;
                 for (CatchablePokemon catchablePokemon : go.getMap().getCatchablePokemon()) {
                     if (NameRegistry.getFrenchName(catchablePokemon.getPokemonId().name()).equalsIgnoreCase(buildStringFromArgs(1))) {
                         encounterId = catchablePokemon.getEncounterId();
@@ -223,7 +223,8 @@ public class CommandPokeGo extends Command {
             } catch (RemoteServerException | LoginFailedException e) {
                 getMessageChannel().sendMessage("Invalid Encounter Id.");
             }
-            getMessageChannel().sendMessage("Invalid Encounter Id.");
+            if (!found)
+                getMessageChannel().sendMessage("Invalid Encounter Id.");
         }
         if (encounterId == 0L) {
             getMessageChannel().sendMessage("Invalid Encounter Id.");
