@@ -426,6 +426,8 @@ public class CommandPokeGo extends Command {
         stringBuilder.append("  Stardust dropped: ").append(stardusts).append("\n");
         if (catchResult.getStatus() != CatchPokemonResponseOuterClass.CatchPokemonResponse.CatchStatus.CATCH_SUCCESS) {
             stringBuilder.append("  Miss Percent: ").append(catchResult.getMissPercent()).append("\n");
+        } else {
+            stringBuilder.append("  CP: " + go.getInventories().getPokebank().getPokemonById(catchResult.getCapturedPokemonId()).getCp());
         }
         stringBuilder.append("```");
 
