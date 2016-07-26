@@ -4,11 +4,8 @@ import POGOProtos.Inventory.Item.ItemAwardOuterClass;
 import POGOProtos.Networking.Responses.CatchPokemonResponseOuterClass;
 import be.isach.samaritan.pokemongo.NameRegistry;
 import be.isach.samaritan.util.TextUtil;
-import com.google.maps.DirectionsApi;
 import com.google.maps.GeocodingApi;
-import com.google.maps.model.DistanceMatrixElement;
 import com.google.maps.model.GeocodingResult;
-import com.google.maps.model.TravelMode;
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.api.inventory.Item;
 import com.pokegoapi.api.inventory.Pokeball;
@@ -118,8 +115,8 @@ public class CommandPokeGo extends Command {
                 case "stop":
                     lootStopsNearby();
                     break;
-                case "rand":
-                    checkRandLoc();
+                case "next":
+                    goNextLoc();
                     break;
                 default:
                     getMessageChannel().sendMessage("subcommand not found.");
@@ -337,8 +334,25 @@ public class CommandPokeGo extends Command {
         }
     }
 
-    private void checkRandLoc() {
+    private void goNextLoc() {
 
+        double lat = go.getLatitude();
+        double lng = go.getLongitude() - 0.0008;
+        GeocodingResult result = null;
+        try {
+            result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), lat + ", " + lng).await()[0];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        if (!result.formattedAddress.contains("Belgi")) {
+//            getMessageChannel().sendMessage("Not in Belgium.");
+//            return;
+//        }
+        go.setLatitude(lat);
+        go.setLongitude(lng);
+
+        getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
+        catchPokemon();
     }
 
     private String formatCatchResult(CatchResult catchResult) {
