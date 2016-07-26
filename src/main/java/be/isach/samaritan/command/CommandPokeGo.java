@@ -14,6 +14,7 @@ import com.pokegoapi.api.map.fort.PokestopLootResult;
 import com.pokegoapi.api.map.pokemon.CatchResult;
 import com.pokegoapi.api.map.pokemon.CatchablePokemon;
 import com.pokegoapi.api.player.PlayerProfile;
+import com.pokegoapi.api.pokemon.EggPokemon;
 import com.pokegoapi.api.pokemon.Pokemon;
 import com.pokegoapi.exceptions.LoginFailedException;
 import com.pokegoapi.exceptions.RemoteServerException;
@@ -87,14 +88,14 @@ public class CommandPokeGo extends Command {
                 stringBuilder.append("\n");
                 stringBuilder.append("```");
                 getMessageChannel().sendMessage(stringBuilder.toString());
-                catchPokemon();
+                catchPokemon(false);
             } else {
                 switch (args[0]) {
                     case "goto":
                         goTo();
                         break;
                     case "catch":
-                        catchPokemon();
+                        catchPokemon(false);
                         break;
                     case "bank":
                         int page = 1;
@@ -118,6 +119,9 @@ public class CommandPokeGo extends Command {
                         break;
                     case "next":
                         goNextLoc();
+                        break;
+                    case "eggs":
+                        showEggs();
                         break;
                     default:
                         getMessageChannel().sendMessage("subcommand not found.");
@@ -153,24 +157,15 @@ public class CommandPokeGo extends Command {
             List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
             getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
 
-            StringBuilder stringBuilder = new StringBuilder();
-
-            for (CatchablePokemon p : catchablePokemons) {
-                stringBuilder.append("  (" + distance(lat,
-                        lng, p.getLatitude(), p.getLongitude()) + "m) -> " +
-                        NameRegistry.getFrenchName(p.getPokemonId().name()) + "" +
-                        " [ID:" + p.getPokemonId().getNumber() + " | " + p.getEncounterId() + "]");
-                stringBuilder.append("\n");
-            }
-            getMessageChannel().sendMessage("```Catchable Pokémons there:" + "\n" + stringBuilder.toString() + "```");
+            catchPokemon(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void catchPokemon() throws LoginFailedException {
+    private void catchPokemon(boolean showCatchable) throws LoginFailedException {
         String encId = "";
-        if (buildStringFromArgs(1).isEmpty()) {
+        if (buildStringFromArgs(1).isEmpty() || showCatchable) {
             try {
                 List<CatchablePokemon> pokemons = go.getMap().getCatchablePokemon();
                 if (pokemons.isEmpty()) {
@@ -286,6 +281,19 @@ public class CommandPokeGo extends Command {
         getMessageChannel().sendMessage(stringBuilder.toString());
     }
 
+    private void showEggs() {
+        Collection<EggPokemon> items = go.getInventories().getHatchery().getEggs();
+        StringBuilder sb = new StringBuilder();
+        for (EggPokemon egg : items) {
+            sb.append("  ");
+            sb.append("[").append(egg.getCapturedCellId()).append("]");
+            sb.append(":   ");
+            sb.append(egg.getEggKmWalked() + "/" + egg.getEggKmWalkedTarget() + "Km");
+            sb.append("\n");
+        }
+        getMessageChannel().sendMessage("```Eggs:\n" + sb.toString() + "```");
+    }
+
     private void showPokeInv() {
         Collection<Item> items = go.getInventories().getItemBag().getItems();
         StringBuilder sb = new StringBuilder();
@@ -358,7 +366,7 @@ public class CommandPokeGo extends Command {
 
         getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
         try {
-            catchPokemon();
+            catchPokemon(false);
         } catch (LoginFailedException e) {
             getMessageChannel().sendMessage("Session expired. Generating a new one.");
             getSamaritan().connectToPokemonGo();
