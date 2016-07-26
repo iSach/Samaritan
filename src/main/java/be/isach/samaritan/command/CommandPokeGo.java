@@ -21,9 +21,7 @@ import com.pokegoapi.exceptions.RemoteServerException;
 import net.dv8tion.jda.entities.MessageChannel;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Package: be.isach.samaritan.command
@@ -284,7 +282,13 @@ public class CommandPokeGo extends Command {
     }
 
     private void showEggs() {
-        Collection<EggPokemon> items = go.getInventories().getHatchery().getEggs();
+        Set<EggPokemon> items = go.getInventories().getHatchery().getEggs();
+        List<EggPokemon> eggs = new ArrayList<>();
+        eggs.sort((o1, o2) -> {
+            if (o1.getEggKmWalked() > o2.getEggKmWalked()) return -1;
+            else if (o1.getEggKmWalked() < o2.getEggKmWalked()) return 1;
+            else return 0;
+        });
         StringBuilder sb = new StringBuilder();
         for (EggPokemon egg : items) {
             sb.append("  ");
