@@ -100,7 +100,7 @@ public class CommandPokeGo extends Command {
                     break;
                 case "bank":
                     int page = 1;
-                    if(args.length > 1) {
+                    if (args.length > 1) {
                         try {
                             page = Integer.parseInt(args[1]);
                         } catch (Exception ignored) {
@@ -170,28 +170,32 @@ public class CommandPokeGo extends Command {
         String encId = "";
         if (buildStringFromArgs(1).isEmpty()) {
             try {
-            List<CatchablePokemon> pokemons = go.getMap().getCatchablePokemon();
-            pokemons.sort((o1, o2) -> o2.getPokemonId().getNumber() - o1.getPokemonId().getNumber());
-            int totalScale = longestName() + 7;
-            int totalScaleDesc = longestIdd() + 4;
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("```");
-            stringBuilder.append(" \nCatchable Pokémons: \n\n\n");
-            stringBuilder.append("Name").append(TextUtil.getSpaces(totalScale - "Name".length()));
-            stringBuilder.append("ID").append(TextUtil.getSpaces(totalScaleDesc - "ID".length()));
-            stringBuilder.append("Encounter ID");
-            stringBuilder.append("\n\n");
-            for (CatchablePokemon pokemon : pokemons) {
-                String encounterId = pokemon.getEncounterId() + "";
-                String id = pokemon.getPokemonId().getNumber() + TextUtil.getSpaces(totalScaleDesc - String.valueOf(pokemon.getPokemonId().getNumber()).length());
-                String name = NameRegistry.getFrenchName(pokemon.getPokemonId().name()) + TextUtil.getSpaces(totalScale - NameRegistry.getFrenchName(pokemon.getPokemonId().name()) .length());
-                stringBuilder.append(name);
-                stringBuilder.append(id);
-                stringBuilder.append(encounterId);
-                stringBuilder.append("\n");
-            }
-            stringBuilder.append("```");
-            getMessageChannel().sendMessage(stringBuilder.toString());
+                List<CatchablePokemon> pokemons = go.getMap().getCatchablePokemon();
+                if(pokemons.isEmpty()) {
+                    getMessageChannel().sendMessage("`No pokémons catchable nearby.`");
+                    return;
+                }
+                pokemons.sort((o1, o2) -> o2.getPokemonId().getNumber() - o1.getPokemonId().getNumber());
+                int totalScale = longestName() + 7;
+                int totalScaleDesc = longestIdd() + 4;
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("```");
+                stringBuilder.append("Catchable Pokémons: \n\n\n");
+                stringBuilder.append("Name").append(TextUtil.getSpaces(totalScale - "Name".length()));
+                stringBuilder.append("ID").append(TextUtil.getSpaces(totalScaleDesc - "ID".length()));
+                stringBuilder.append("Encounter ID");
+                stringBuilder.append("\n\n");
+                for (CatchablePokemon pokemon : pokemons) {
+                    String encounterId = pokemon.getEncounterId() + "";
+                    String id = pokemon.getPokemonId().getNumber() + TextUtil.getSpaces(totalScaleDesc - String.valueOf(pokemon.getPokemonId().getNumber()).length());
+                    String name = NameRegistry.getFrenchName(pokemon.getPokemonId().name()) + TextUtil.getSpaces(totalScale - NameRegistry.getFrenchName(pokemon.getPokemonId().name()).length());
+                    stringBuilder.append(name);
+                    stringBuilder.append(id);
+                    stringBuilder.append(encounterId);
+                    stringBuilder.append("\n");
+                }
+                stringBuilder.append("```");
+                getMessageChannel().sendMessage(stringBuilder.toString());
             } catch (LoginFailedException | RemoteServerException e) {
                 e.printStackTrace();
             }
@@ -223,8 +227,8 @@ public class CommandPokeGo extends Command {
     }
 
     private void showPokeBank(int page) {
-        if(page > getMaxPages()) page = getMaxPages();
-        if(page < 1) page = 1;
+        if (page > getMaxPages()) page = getMaxPages();
+        if (page < 1) page = 1;
         List<Pokemon> pokemonSs = go.getInventories().getPokebank().getPokemons();
         pokemonSs.sort((o1, o2) -> o2.getCp() - o1.getCp());
         List<Pokemon> pokemons = new ArrayList<>();
@@ -250,7 +254,7 @@ public class CommandPokeGo extends Command {
         for (Pokemon pokemon : pokemons) {
             String id = pokemon.getPokemonId().getNumber() + "";
             String cp = pokemon.getCp() + TextUtil.getSpaces(totalScaleDesc - String.valueOf(pokemon.getCp()).length());
-            String name = NameRegistry.getFrenchName(pokemon) + TextUtil.getSpaces(totalScale - NameRegistry.getFrenchName(pokemon) .length());
+            String name = NameRegistry.getFrenchName(pokemon) + TextUtil.getSpaces(totalScale - NameRegistry.getFrenchName(pokemon).length());
             stringBuilder.append(name);
             stringBuilder.append(cp);
             stringBuilder.append(id);
@@ -281,8 +285,8 @@ public class CommandPokeGo extends Command {
             }
             StringBuilder sbbb = new StringBuilder();
             for (Pokestop pokestop : go.getMap().getMapObjects().getPokestops()) {
-                if(pokestop.canLoot() && pokestop.inRange())
-                sbbb.append(pokestop.getDetails().getName() + "\n");
+                if (pokestop.canLoot() && pokestop.inRange())
+                    sbbb.append(pokestop.getDetails().getName() + "\n");
             }
             getMessageChannel().sendMessage("stops:");
             getMessageChannel().sendMessage(sbbb.toString());
@@ -322,24 +326,24 @@ public class CommandPokeGo extends Command {
 
         String trhow = "", status = "";
 
-        if(catchResult.getActivityTypeList().size() > 2)
-        switch (catchResult.getActivityTypeList().get(1)) {
-            default:
-                trhow = TextUtil.beautifyString(catchResult.getActivityTypeList().get(1).name());
-                break;
-            case ACTIVITY_CATCH_EXCELLENT_THROW:
-                trhow = "Tir excellent !";
-                break;
-            case ACTIVITY_CATCH_FIRST_THROW:
-                trhow = "Premier Tir !";
-                break;
-            case ACTIVITY_CATCH_GREAT_THROW:
-                trhow = "Super tir !";
-                break;
-            case ACTIVITY_CATCH_NICE_THROW:
-                trhow = "Bon tir !";
-                break;
-        }
+        if (catchResult.getActivityTypeList().size() > 2)
+            switch (catchResult.getActivityTypeList().get(1)) {
+                default:
+                    trhow = TextUtil.beautifyString(catchResult.getActivityTypeList().get(1).name());
+                    break;
+                case ACTIVITY_CATCH_EXCELLENT_THROW:
+                    trhow = "Tir excellent !";
+                    break;
+                case ACTIVITY_CATCH_FIRST_THROW:
+                    trhow = "Premier Tir !";
+                    break;
+                case ACTIVITY_CATCH_GREAT_THROW:
+                    trhow = "Super tir !";
+                    break;
+                case ACTIVITY_CATCH_NICE_THROW:
+                    trhow = "Bon tir !";
+                    break;
+            }
         switch (catchResult.getStatus()) {
             case CATCH_ERROR:
                 status = "Erreur";
@@ -358,25 +362,25 @@ public class CommandPokeGo extends Command {
                 break;
         }
         int totalExp = 0, candies = 0, stardusts = 0;
-        for(int xp : catchResult.getXpList()) {
+        for (int xp : catchResult.getXpList()) {
             totalExp += xp;
         }
-        for(int candy : catchResult.getCandyList()) {
+        for (int candy : catchResult.getCandyList()) {
             candies += candy;
         }
-        for(int stardust : catchResult.getStardustList()) {
+        for (int stardust : catchResult.getStardustList()) {
             stardusts += stardust;
         }
 
         stringBuilder.append("```");
         stringBuilder.append("Result:").append("\n");
         stringBuilder.append("  Status: ").append(status).append("\n");
-        if(catchResult.getActivityTypeList().size() > 2)
+        if (catchResult.getActivityTypeList().size() > 2)
             stringBuilder.append("  Activity: ").append(trhow).append("\n");
         stringBuilder.append("  Total Exp Dropped: ").append(totalExp).append("\n");
         stringBuilder.append("  Candies dropped: ").append(candies).append("\n");
         stringBuilder.append("  Stardust dropped: ").append(stardusts).append("\n");
-        if(catchResult.getStatus() != CatchPokemonResponseOuterClass.CatchPokemonResponse.CatchStatus.CATCH_SUCCESS) {
+        if (catchResult.getStatus() != CatchPokemonResponseOuterClass.CatchPokemonResponse.CatchStatus.CATCH_SUCCESS) {
             stringBuilder.append("  Miss Percent: ").append(catchResult.getMissPercent()).append("\n");
         }
         stringBuilder.append("```");
