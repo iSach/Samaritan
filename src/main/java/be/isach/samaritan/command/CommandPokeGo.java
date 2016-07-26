@@ -140,10 +140,10 @@ public class CommandPokeGo extends Command {
         }
         try {
             GeocodingResult result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), loc).await()[0];
-            if (!result.formattedAddress.contains("Belgi")) {
-                getMessageChannel().sendMessage("Not in Belgium.");
-                return;
-            }
+//            if (!result.formattedAddress.contains("Belgi")) {
+//                getMessageChannel().sendMessage("Not in Belgium.");
+//                return;
+//            }
 
             double lat = result.geometry.location.lat;
             double lng = result.geometry.location.lng;
