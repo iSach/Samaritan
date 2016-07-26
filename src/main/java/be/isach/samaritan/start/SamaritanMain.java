@@ -50,19 +50,17 @@ public class SamaritanMain {
             object.addDefault("web-ui-websocket-port", 11350);
             object.addDefault("bot-owner-id", 93721838093352960L);
             object.addDefault("google-maps-api-key", "AIza...");
-            AdvancedJSONObject jsonObject = new AdvancedJSONObject();
-            jsonObject.addDefault("email", "test@gmail.com");
-            jsonObject.addDefault("password", "123password123");
-            object.addDefault("pokemongo-login", jsonObject);
+//            AdvancedJSONObject jsonObject = new AdvancedJSONObject();
+//            jsonObject.addDefault("email", "test@gmail.com");
+//            jsonObject.addDefault("password", "123password123");
+//            object.addDefault("pokemongo-login", jsonObject);
             Files.write(Paths.get("config.json"), object.toString(4).getBytes());
             String botToken = object.getString("bot-token");
             boolean webUi = object.getBoolean("web-ui");
             int uiWebSocketPort = object.getInt("web-ui-websocket-port");
             long ownerId = object.getLong("bot-owner-id");
-            String username = object.getJSONObject("pokemongo-login").getString("email");
-            String password = object.getJSONObject("pokemongo-login").getString("password");
             String googleMapsApiKey = object.getString("google-maps-api-key");
-            new Samaritan(args, botToken, webUi, uiWebSocketPort, ownerId, workingDirectory, new LoginData(username, password), googleMapsApiKey);
+            new Samaritan(args, botToken, webUi, uiWebSocketPort, ownerId, workingDirectory, googleMapsApiKey);
         } catch (IOException e) {
             System.out.println("---------------------------");
             System.out.println("");

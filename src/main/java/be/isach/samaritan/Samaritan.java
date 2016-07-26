@@ -149,12 +149,6 @@ public class Samaritan {
      * Manages quotes.
      */
     private QuoteHandler quoteHandler;
-
-    /**
-     * Pokémon Go Login Data.
-     */
-    private LoginData pokemonGoLoginData;
-
     /**
      * Pokémon Go instance.
      */
@@ -174,7 +168,7 @@ public class Samaritan {
      * @param uiWebSocketPort Web UI Port.
      *                        From <samaritan.properties.
      */
-    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, long ownerId, File workingDirectory, LoginData pokeGoLoginData, String googleMapsApiKey) {
+    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, long ownerId, File workingDirectory, String googleMapsApiKey) {
         this.botToken = botToken;
         this.logger = new SmartLogger();
         this.status = new SamaritanStatus();
@@ -186,7 +180,6 @@ public class Samaritan {
         this.messageHistoryPrinter = new MessageHistoryPrinter();
         this.accessLevelManager = new AccessLevelManager(this);
         this.webUi = webUi;
-        this.pokemonGoLoginData = pokeGoLoginData;
 
         status.setBootInstant(new Instant());
 
@@ -227,7 +220,7 @@ public class Samaritan {
 
         new ConsoleListenerThread(this).start();
 
-        connectToPokemonGo(pokeGoLoginData);
+        connectToPokemonGo();
 
         connectToGoogleMaps(googleMapsApiKey);
     }
@@ -243,7 +236,7 @@ public class Samaritan {
         }
     }
 
-    public void connectToPokemonGo(LoginData pokeGoLoginData) {
+    public void connectToPokemonGo() {
         final Samaritan samaritan = this;
         Thread t = new Thread() {
             @Override
@@ -253,7 +246,7 @@ public class Samaritan {
                     pokemonGo = new PokemonGo(new GoogleCredentialProvider(httpClient, new GoogleCredentialProvider.OnGoogleLoginOAuthCompleteListener() {
                         @Override
                         public void onInitialOAuthComplete(GoogleAuthJson googleAuthJson) {
-                            SgetOwner().getPrivateChannel().sendMessage("```" + "\n" +
+                            getOwner().getPrivateChannel().sendMessage("```" + "\n" +
                                     googleAuthJson.getVerificationUrl() + "\n" +
                                     googleAuthJson.getUserCode() + "\n" + "``");
                         }
@@ -450,10 +443,6 @@ public class Samaritan {
      */
     public QuoteHandler getQuoteHandler() {
         return quoteHandler;
-    }
-
-    public LoginData getPokemonGoLoginData() {
-        return pokemonGoLoginData;
     }
 
     public PokemonGo getPokemonGo() {
