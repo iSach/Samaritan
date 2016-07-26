@@ -284,6 +284,7 @@ public class CommandPokeGo extends Command {
     private void showEggs() {
         Set<EggPokemon> items = go.getInventories().getHatchery().getEggs();
         List<EggPokemon> eggs = new ArrayList<>();
+        eggs.addAll(items);
         eggs.sort((o1, o2) -> {
             if (o1.getEggKmWalked() > o2.getEggKmWalked()) return -1;
             else if (o1.getEggKmWalked() < o2.getEggKmWalked()) return 1;
