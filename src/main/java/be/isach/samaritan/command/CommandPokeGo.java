@@ -126,7 +126,7 @@ public class CommandPokeGo extends Command {
             }
         } catch (LoginFailedException exc) {
             getMessageChannel().sendMessage("Session expired. Generating a new one.");
-            getSamaritan().connectToPokemonGo(getSamaritan().getPokemonGoLoginData());
+            getSamaritan().connectToPokemonGo();
         }
     }
 
@@ -361,7 +361,7 @@ public class CommandPokeGo extends Command {
             catchPokemon();
         } catch (LoginFailedException e) {
             getMessageChannel().sendMessage("Session expired. Generating a new one.");
-            getSamaritan().connectToPokemonGo(getSamaritan().getPokemonGoLoginData());
+            getSamaritan().connectToPokemonGo();
         }
     }
 
