@@ -24,6 +24,26 @@ To run it:
 - Run it with java -jar.
 - Configure samaritan.properties
 - Run again.
+- 
+## Main Features
+- Clever Bot
+- Advanced Command System
+- Run Bash from Discord
+- Run basic JS code from Discord
+- Run brainfuck from discord
+- Show GIFs
+- Play "Find the Number"
+- Leet/Unleet messages.
+- Music (still in dev, not working perfectly)
+- Print History of messages.
+- Advanced Message Quoting system.
+- Web interface possible.
+- Access Level System for each person on each server the bot is on. This level determinates what command you can do.
+- Play Tic Tac Toe against a friend from Discord Chat.
+- Tweet something.
+- Show Uptime.
+- Show user info
+- [NEW] Pokémon Go Features (catching Pokémons, showing stats, looting pokéstops, and more!) [!!!]
 
 ## Usage
 
