@@ -13,6 +13,7 @@ import be.isach.samaritan.listener.CommandListener;
 import be.isach.samaritan.listener.PrivateMessageListener;
 import be.isach.samaritan.listener.QuoteHandler;
 import be.isach.samaritan.log.SmartLogger;
+import be.isach.samaritan.login.SamaritanLogin;
 import be.isach.samaritan.music.SongPlayer;
 import be.isach.samaritan.pokemongo.LoginData;
 import be.isach.samaritan.runtime.ShutdownThread;
@@ -241,16 +242,18 @@ public class Samaritan {
     }
 
     public void connectToPokemonGo(LoginData pokeGoLoginData) {
-        new Thread() {
+        final Samaritan samaritan = this;
+        Thread t = new Thread() {
             @Override
             public void run() {
+
                 try {
                     logger.write("Pokémon Go -> Trying to connect with token.");
                     AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
                     JSONObject jsonObject = object.getJSONObject("pokemongo-login");
                     String token = jsonObject.getString("token");
                     OkHttpClient httpClient = new OkHttpClient();
-                    RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new GoogleLogin(httpClient).login(token);
+                    RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo auth = new SamaritanLogin(httpClient, samaritan).login(token);
                     pokemonGo = new PokemonGo(auth, httpClient);
                     System.out.println("Pokémon Go -> Successfully logged in with token.");
                 } catch (Exception exc) {
@@ -272,7 +275,8 @@ public class Samaritan {
                     }
                 }
             }
-        }.start();
+        };
+        t.start();
     }
 
     /**
