@@ -6,6 +6,7 @@ import com.pokegoapi.auth.GoogleAuthJson;
 import com.pokegoapi.auth.GoogleAuthTokenJson;
 import com.pokegoapi.auth.GoogleCredentialProvider;
 import com.pokegoapi.exceptions.LoginFailedException;
+import com.pokegoapi.exceptions.RemoteServerException;
 import com.pokegoapi.util.Log;
 import com.squareup.moshi.Moshi;
 import net.dv8tion.jda.entities.PrivateChannel;
@@ -26,11 +27,15 @@ public class SamaritanLogin extends GoogleCredentialProvider {
     private OkHttpClient clientt;
     private Samaritan samaritan;
 
-    public SamaritanLogin(OkHttpClient client, Samaritan samaritan) {
-//        super(client);
-        clientt = client;
-        this.samaritan = samaritan;
+    public SamaritanLogin(OkHttpClient client, String refreshToken) throws LoginFailedException, RemoteServerException {
+        super(client, refreshToken);
     }
+
+//    public SamaritanLogin(OkHttpClient client, Samaritan samaritan) {
+//        super(client);
+//        clientt = client;
+//        this.samaritan = samaritan;
+//    }
 
     public RequestEnvelopeOuterClass.RequestEnvelope.AuthInfo login(String username, String password) throws LoginFailedException {
         try {
