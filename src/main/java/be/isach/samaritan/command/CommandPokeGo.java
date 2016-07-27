@@ -425,7 +425,7 @@ public class CommandPokeGo extends Command {
     private void test2() {
         if(directionsApiRequest == null) {
             PokemonLatitudeThread catchThread = new PokemonLatitudeThread(getSamaritan(), this);
-            getSamaritan().getTimer().schedule(catchThread, 1000L, 2500L);
+            getSamaritan().getTimer().schedule(catchThread, 1000L, 4000L);
         } else {
         }
     }
