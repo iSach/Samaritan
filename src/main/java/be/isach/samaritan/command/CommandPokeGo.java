@@ -411,8 +411,8 @@ public class CommandPokeGo extends Command {
             }
             DirectionsRoute route = directionsResult.routes[0];
             StringBuilder stringBuilder = new StringBuilder();
-            for(DirectionsLeg directionsLeg : route.legs) {
-                stringBuilder.append(directionsLeg.startAddress + " -> " + directionsLeg.endAddress + "\n");
+            for(DirectionsStep step : route.legs[0].steps) {
+                stringBuilder.append(step.startLocation + " -> " + step.startLocation + "\n");
             }
             System.out.println(stringBuilder.toString());
             getMessageChannel().sendMessage("```" + stringBuilder.toString() + "```");
