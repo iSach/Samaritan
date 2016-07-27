@@ -57,10 +57,14 @@ public class LevelRegistry {
         EXP_NEEDED.put(37, 2500000);
         EXP_NEEDED.put(38, 3000000);
         EXP_NEEDED.put(39, 5000000);
-        EXP_NEEDED.put(40, -1);
     }
 
     public static Integer getNextLevelExp(int i) {
-        return EXP_NEEDED.get(EXP_NEEDED);
+        try {
+            return EXP_NEEDED.get(EXP_NEEDED);
+        } catch (Exception exc) {
+            return -1;
+        }
     }
+
 }
