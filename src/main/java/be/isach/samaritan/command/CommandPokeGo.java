@@ -3,6 +3,7 @@ package be.isach.samaritan.command;
 import POGOProtos.Inventory.Item.ItemAwardOuterClass;
 import POGOProtos.Networking.Responses.CatchPokemonResponseOuterClass;
 import be.isach.samaritan.pokemongo.NameRegistry;
+import be.isach.samaritan.pokemongo.PokemonCatchThread;
 import be.isach.samaritan.pokemongo.TravelTask;
 import be.isach.samaritan.util.TextUtil;
 import com.google.maps.DirectionsApi;
@@ -420,7 +421,8 @@ public class CommandPokeGo extends Command {
             }
             getMessageChannel().sendMessage(from + " -> " + to);
             DirectionsRoute route = directionsResult.routes[0];
-            getSamaritan().getTimer().schedule(new TravelTask(route.legs[0].steps, getSamaritan(), this), 1000L, 500L);
+            PokemonCatchThread catchThread = new PokemonCatchThread(route.legs[0].steps, getSamaritan(), this);
+            catchThread.start();
 //            StringBuilder stringBuilder = new StringBuilder();
 //            for(DirectionsStep step : route.legs[0].steps) {
 //                stringBuilder.append(step.startLocation + " -> " + step.endLocation + "\n");
