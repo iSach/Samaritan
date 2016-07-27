@@ -20,7 +20,7 @@ public class PokemonLatitudeThread extends TimerTask {
     private CommandPokeGo commandPokeGo;
     private double latitude;
 
-    public PokemonLatitudeThread(DirectionsStep[] steps, Samaritan samaritan, CommandPokeGo commandPokeGo) {
+    public PokemonLatitudeThread(Samaritan samaritan, CommandPokeGo commandPokeGo) {
         this.commandPokeGo = commandPokeGo;
         this.go = samaritan.getPokemonGo();
         this.latitude = go.getLatitude();

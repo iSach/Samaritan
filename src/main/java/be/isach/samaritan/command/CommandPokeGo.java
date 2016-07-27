@@ -3,6 +3,7 @@ package be.isach.samaritan.command;
 import POGOProtos.Inventory.Item.ItemAwardOuterClass;
 import POGOProtos.Networking.Responses.CatchPokemonResponseOuterClass;
 import be.isach.samaritan.pokemongo.NameRegistry;
+import be.isach.samaritan.pokemongo.PokemonLatitudeThread;
 import be.isach.samaritan.pokemongo.PokemonRouteThread;
 import be.isach.samaritan.util.TextUtil;
 import com.google.maps.DirectionsApi;
@@ -430,22 +431,8 @@ public class CommandPokeGo extends Command {
 
     private void test2() {
         if(directionsApiRequest == null) {
-            String[] s = buildStringFromArgs(1).split(" -> ");
-            String from = s[0];
-            String to = s[1];
-            directionsApiRequest = DirectionsApi.getDirections(getSamaritan().getGeoApiContext(), from, to);
-            directionsApiRequest.mode(TravelMode.WALKING);
-            directionsApiRequest.avoid(DirectionsApi.RouteRestriction.HIGHWAYS);
-            DirectionsResult directionsResult = null;
-            try {
-                directionsResult = directionsApiRequest.await();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            getMessageChannel().sendMessage(from + " -> " + to);
-            DirectionsRoute route = directionsResult.routes[0];
-            PokemonRouteThread catchThread = new PokemonRouteThread(route.legs[0].steps, getSamaritan(), this);
-            catchThread.start();
+            PokemonLatitudeThread catchThread = new PokemonLatitudeThread(getSamaritan(), this);
+            getSamaritan().getTimer().schedule(catchThread, 1000L, 2500L);
         } else {
         }
     }

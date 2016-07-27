@@ -35,7 +35,7 @@ public class PokemonRouteThread extends Thread {
     public void run() {
         System.out.println("running...");
         while (running) {
-            long toSleep = 2000L;
+            long toSleep = 3500L;
 
             if (currentStep >= steps.length) {
                 cancel();
@@ -68,13 +68,13 @@ public class PokemonRouteThread extends Thread {
                     if(startLoc) {
                         distance = distance(go.getLatitude(), go.getLongitude(),
                                 step.endLocation.lat, step.endLocation.lng);
-                        toSleep = 3500 * ((int)distance / 50);
+                        toSleep += 3500 * ((int)distance / 50);
                     } else {
                         if(currentStep == (steps.length - 1)) return;
                         DirectionsStep otherStep = steps[currentStep + 1];
                         distance = distance(go.getLatitude(), go.getLongitude(),
                                 otherStep.startLocation.lat, otherStep.startLocation.lng);
-                        toSleep = 3500 * ((int)distance / 50);
+                        toSleep += 3500 * ((int)distance / 50);
                     }
                     System.out.println("Distance: " + distance + "m   (" + toSleep + "ms)");
                 }
