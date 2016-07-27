@@ -61,7 +61,7 @@ public class LevelRegistry {
 
     public static Integer getNextLevelExp(int i) {
         try {
-            return EXP_NEEDED.get(EXP_NEEDED);
+            return EXP_NEEDED.get(i);
         } catch (Exception exc) {
             return -1;
         }
