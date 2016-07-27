@@ -95,11 +95,17 @@ public class PokemonCatchThread extends Thread {
         return d * 1000;
     }
 
+    @Override
+    public synchronized void start() {
+        running = true;
+        super.start();
+    }
+
     private double deg2rad(double deg) {
         return deg * (Math.PI / 180);
     }
 
     private void cancel() {
-
+        running = false;
     }
 }
