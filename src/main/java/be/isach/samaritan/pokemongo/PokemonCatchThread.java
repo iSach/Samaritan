@@ -62,14 +62,15 @@ public class PokemonCatchThread extends Thread {
                     startLoc = !startLoc;
 
                     // 2 sec for 100meters.
+                    double distance = 0;
                     if(startLoc) {
-                        double distance = distance(step.startLocation.lat, step.startLocation.lng,
+                        distance = distance(step.startLocation.lat, step.startLocation.lng,
                                 step.endLocation.lat, step.endLocation.lng);
                         toSleep = 2000 * ((int)distance / 50);
                     } else {
                         if(currentStep == (steps.length - 1)) return;
                         DirectionsStep otherStep = steps[currentStep + 1];
-                        double distance = distance(step.endLocation.lat, step.endLocation.lng,
+                        distance = distance(step.endLocation.lat, step.endLocation.lng,
                                 otherStep.startLocation.lat, otherStep.startLocation.lng);
                         toSleep = 2000 * ((int)distance / 50);
                     }
