@@ -18,53 +18,8 @@ import java.util.TimerTask;
  */
 public class TravelTask extends TimerTask {
 
-    private DirectionsStep[] steps;
-    private int currentStep;
-    private Samaritan samaritan;
-    private PokemonGo go;
-    private boolean startLoc = true, catchingPokemons = false;
-    private CommandPokeGo commandPokeGo;
-
-    public TravelTask(DirectionsStep[] steps, Samaritan samaritan, CommandPokeGo commandPokeGo) {
-        this.steps = steps;
-        this.samaritan = samaritan;
-        this.commandPokeGo = commandPokeGo;
-        this.currentStep = 0;
-        this.go = samaritan.getPokemonGo();
-    }
-
     @Override
     public void run() {
-        if (currentStep >= steps.length) {
-            cancel();
-            return;
-        }
 
-
-        try {
-            DirectionsStep step = steps[currentStep];
-
-            LatLng latLng = startLoc ? step.startLocation : step.endLocation;
-
-            go.setLatitude(latLng.lat);
-            go.setLongitude(latLng.lng);
-            commandPokeGo.catchPokemon(true);
-
-            if(catchingPokemons) {
-                commandPokeGo.catchPoke(go.getMap().getCatchablePokemon().get(0).getEncounterId());
-            }
-
-            catchingPokemons = !go.getMap().getCatchablePokemon().isEmpty();
-
-            if (!catchingPokemons) {
-                if(!startLoc) {
-                    currentStep++;
-                }
-                startLoc = !startLoc;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

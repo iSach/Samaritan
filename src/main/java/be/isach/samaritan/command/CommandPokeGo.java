@@ -420,7 +420,7 @@ public class CommandPokeGo extends Command {
             }
             getMessageChannel().sendMessage(from + " -> " + to);
             DirectionsRoute route = directionsResult.routes[0];
-            getSamaritan().getTimer().schedule(new TravelTask(route.legs[0].steps, getSamaritan(), this), 1000L, 5000L);
+            getSamaritan().getTimer().schedule(new TravelTask(route.legs[0].steps, getSamaritan(), this), 1000L, 500L);
 //            StringBuilder stringBuilder = new StringBuilder();
 //            for(DirectionsStep step : route.legs[0].steps) {
 //                stringBuilder.append(step.startLocation + " -> " + step.endLocation + "\n");
