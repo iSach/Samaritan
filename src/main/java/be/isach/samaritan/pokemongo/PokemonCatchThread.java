@@ -73,6 +73,7 @@ public class PokemonCatchThread extends Thread {
                                 otherStep.startLocation.lat, otherStep.startLocation.lng);
                         toSleep = 2000 * ((int)distance / 50);
                     }
+                    System.out.println("Distance: " + distance + "m   (" + toSleep + "ms)");
                 }
 
                 sleep(toSleep);
