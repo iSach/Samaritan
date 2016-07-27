@@ -178,9 +178,11 @@ public class CommandPokeGo extends Command {
         String encId = "";
         if (buildStringFromArgs(1).isEmpty() || showCatchable) {
             try {
+                String loc = go.getLatitude() + ", " + go.getLongitude();
+                GeocodingResult result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), loc).await()[0];
                 List<CatchablePokemon> pokemons = go.getMap().getCatchablePokemon();
                 if (pokemons.isEmpty()) {
-                    getMessageChannel().sendMessage("`No pokémons catchable nearby.`");
+                    getMessageChannel().sendMessage("`No pokémons catchable nearby at: " + result.formattedAddress + ".`");
                     return;
                 }
                 pokemons.sort((o1, o2) -> o2.getPokemonId().getNumber() - o1.getPokemonId().getNumber());
@@ -188,7 +190,7 @@ public class CommandPokeGo extends Command {
                 int totalScaleDesc = longestIdd() + 4;
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("```");
-                stringBuilder.append("Catchable Pokémons: \n\n\n");
+                stringBuilder.append("Catchable Pokémons at " + result.formattedAddress + ": \n\n\n");
                 stringBuilder.append("Name").append(TextUtil.getSpaces(totalScale - "Name".length()));
                 stringBuilder.append("ID").append(TextUtil.getSpaces(totalScaleDesc - "ID".length()));
                 stringBuilder.append("Encounter ID");
@@ -204,7 +206,7 @@ public class CommandPokeGo extends Command {
                 }
                 stringBuilder.append("```");
                 getMessageChannel().sendMessage(stringBuilder.toString());
-            } catch (LoginFailedException | RemoteServerException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return;
