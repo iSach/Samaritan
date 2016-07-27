@@ -377,31 +377,23 @@ public class CommandPokeGo extends Command {
 
     private void goNextLoc() {
 
-//        double lat = go.getLatitude();
-//        double lng = go.getLongitude() - 0.0008;
-//        GeocodingResult result = null;
-//        try {
-//            result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), lat + ", " + lng).await()[0];
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-////        if (!result.formattedAddress.contains("Belgi")) {
-////            getMessageChannel().sendMessage("Not in Belgium.");
-////            return;
-////        }
-//        go.setLatitude(lat);
-//        go.setLongitude(lng);
-//
-//        getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
-//        try {
-//            catchPokemon(false);
-//        } catch (LoginFailedException e) {
-//            getMessageChannel().sendMessage("Session expired. Generating a new one.");
-//            getSamaritan().connectToPokemonGo();
-//        }
+        double lat = go.getLatitude();
+        double lng = go.getLongitude() - 0.0008;
+        GeocodingResult result = null;
+        try {
+            result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), lat + ", " + lng).await()[0];
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        go.setLatitude(lat);
+        go.setLongitude(lng);
 
-        if(geocodedWaypoints == null) {
-            test();
+        getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
+        try {
+            catchPokemon(false);
+        } catch (LoginFailedException e) {
+            getMessageChannel().sendMessage("Session expired. Generating a new one.");
+            getSamaritan().connectToPokemonGo();
         }
 
 
