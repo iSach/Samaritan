@@ -4,8 +4,10 @@ import POGOProtos.Inventory.Item.ItemAwardOuterClass;
 import POGOProtos.Networking.Responses.CatchPokemonResponseOuterClass;
 import be.isach.samaritan.pokemongo.NameRegistry;
 import be.isach.samaritan.util.TextUtil;
+import com.google.maps.DirectionsApi;
+import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeocodingApi;
-import com.google.maps.model.GeocodingResult;
+import com.google.maps.model.*;
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.api.inventory.Item;
 import com.pokegoapi.api.inventory.Pokeball;
@@ -34,6 +36,10 @@ public class CommandPokeGo extends Command {
     private static final DecimalFormat format = new DecimalFormat("##.##");
     private static final DecimalFormat format2 = new DecimalFormat("#0.00");
     private static final DecimalFormat format3 = new DecimalFormat("#0.##");
+
+    private DirectionsApiRequest directionsApiRequest;
+    private GeocodedWaypoint[] geocodedWaypoints;
+    private int step = 0;
 
     private PokemonGo go;
 
@@ -122,6 +128,9 @@ public class CommandPokeGo extends Command {
                         break;
                     case "eggs":
                         showEggs();
+                        break;
+                    case "test":
+                        test();
                         break;
                     default:
                         getMessageChannel().sendMessage("subcommand not found.");
@@ -356,27 +365,59 @@ public class CommandPokeGo extends Command {
 
     private void goNextLoc() {
 
-        double lat = go.getLatitude();
-        double lng = go.getLongitude() - 0.0008;
-        GeocodingResult result = null;
-        try {
-            result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), lat + ", " + lng).await()[0];
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        if (!result.formattedAddress.contains("Belgi")) {
-//            getMessageChannel().sendMessage("Not in Belgium.");
-//            return;
+//        double lat = go.getLatitude();
+//        double lng = go.getLongitude() - 0.0008;
+//        GeocodingResult result = null;
+//        try {
+//            result = GeocodingApi.geocode(getSamaritan().getGeoApiContext(), lat + ", " + lng).await()[0];
+//        } catch (Exception e) {
+//            e.printStackTrace();
 //        }
-        go.setLatitude(lat);
-        go.setLongitude(lng);
+////        if (!result.formattedAddress.contains("Belgi")) {
+////            getMessageChannel().sendMessage("Not in Belgium.");
+////            return;
+////        }
+//        go.setLatitude(lat);
+//        go.setLongitude(lng);
+//
+//        getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
+//        try {
+//            catchPokemon(false);
+//        } catch (LoginFailedException e) {
+//            getMessageChannel().sendMessage("Session expired. Generating a new one.");
+//            getSamaritan().connectToPokemonGo();
+//        }
 
-        getMessageChannel().sendMessage("Okay, so we are at: " + result.formattedAddress);
-        try {
-            catchPokemon(false);
-        } catch (LoginFailedException e) {
-            getMessageChannel().sendMessage("Session expired. Generating a new one.");
-            getSamaritan().connectToPokemonGo();
+        if(geocodedWaypoints == null) {
+            test();
+        }
+
+
+
+    }
+
+    private void test() {
+        if(directionsApiRequest == null) {
+            String[] s = buildStringFromArgs(1).split(" -> ");
+            String from = s[0];
+            String to = s[1];
+            directionsApiRequest = DirectionsApi.getDirections(getSamaritan().getGeoApiContext(), from, to);
+            directionsApiRequest.mode(TravelMode.WALKING);
+            DirectionsResult directionsResult = null;
+            try {
+                directionsResult = directionsApiRequest.await();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            DirectionsRoute route = directionsResult.routes[0];
+            StringBuilder stringBuilder = new StringBuilder();
+            for(DirectionsLeg directionsLeg : route.legs) {
+                stringBuilder.append(directionsLeg.startAddress + " -> " + directionsLeg.endAddress + "\n");
+            }
+            System.out.println(stringBuilder.toString());
+            getMessageChannel().sendMessage("```" + stringBuilder.toString() + "```");
+        } else {
+
         }
     }
 
