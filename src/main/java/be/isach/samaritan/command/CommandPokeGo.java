@@ -411,6 +411,7 @@ public class CommandPokeGo extends Command {
             String to = s[1];
             directionsApiRequest = DirectionsApi.getDirections(getSamaritan().getGeoApiContext(), from, to);
             directionsApiRequest.mode(TravelMode.WALKING);
+            directionsApiRequest.avoid(DirectionsApi.RouteRestriction.HIGHWAYS);
             DirectionsResult directionsResult = null;
             try {
                 directionsResult = directionsApiRequest.await();
