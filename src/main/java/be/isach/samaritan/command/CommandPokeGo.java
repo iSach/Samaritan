@@ -68,6 +68,21 @@ public class CommandPokeGo extends Command {
             go = getSamaritan().getPokemonGo();
 
             if (args.length == 0) {
+
+                int[] ids = new int[]{
+                        19, 13, 16
+                };
+
+                go.getInventories().getPokebank().getPokemons().stream().filter(pokemon -> Arrays.asList(ids).contains(pokemon.getPokemonId().getNumber())).forEachOrdered(pokemon -> {
+                    try {
+                        pokemon.transferPokemon();
+                    } catch (LoginFailedException e) {
+                        e.printStackTrace();
+                    } catch (RemoteServerException e) {
+                        e.printStackTrace();
+                    }
+                });
+
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("```");
                 stringBuilder.append("Username:").append(" ").append(go.getPlayerProfile().getUsername());
@@ -397,11 +412,10 @@ public class CommandPokeGo extends Command {
         }
 
 
-
     }
 
     private void test() {
-        if(directionsApiRequest == null) {
+        if (directionsApiRequest == null) {
             String[] s = buildStringFromArgs(1).split(" -> ");
             String from = s[0];
             String to = s[1];
@@ -423,7 +437,7 @@ public class CommandPokeGo extends Command {
     }
 
     private void test2() {
-        if(directionsApiRequest == null) {
+        if (directionsApiRequest == null) {
             PokemonLatitudeThread catchThread = new PokemonLatitudeThread(getSamaritan(), this);
             getSamaritan().getTimer().schedule(catchThread, 1000L, 4000L);
         } else {
@@ -529,9 +543,9 @@ public class CommandPokeGo extends Command {
         int lvl = playerProfile.getStats().getLevel();
 //        lvl = 40;
 
-        double min = ((double) playerProfile.getStats().getExperience()) - playerProfile.getStats().getPrevLevelXp() - LevelRegistry.getNextLevelExp(lvl -1);
+        double min = ((double) playerProfile.getStats().getExperience()) - playerProfile.getStats().getPrevLevelXp() - LevelRegistry.getNextLevelExp(lvl - 1);
         double max = (double) LevelRegistry.getNextLevelExp(lvl);
-        if(max == -1) {
+        if (max == -1) {
             return "40 ■■■■■■■■■■■■■■■ (Max Level)";
         }
         double ratio = min / max;
