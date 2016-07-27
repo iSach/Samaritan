@@ -28,10 +28,12 @@ public class PokemonCatchThread extends Thread {
         this.commandPokeGo = commandPokeGo;
         this.currentStep = 0;
         this.go = samaritan.getPokemonGo();
+        this.running = true;
     }
 
     @Override
     public void run() {
+        System.out.println("running...");
         while (running) {
             long toSleep = 500L;
 
