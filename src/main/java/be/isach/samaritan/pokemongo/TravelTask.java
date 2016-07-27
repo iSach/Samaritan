@@ -6,6 +6,7 @@ import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.LatLng;
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.exceptions.LoginFailedException;
+import com.pokegoapi.exceptions.RemoteServerException;
 
 import java.util.TimerTask;
 
@@ -21,7 +22,7 @@ public class TravelTask extends TimerTask {
     private int currentStep;
     private Samaritan samaritan;
     private PokemonGo go;
-    private boolean startLoc = true;
+    private boolean startLoc = true, catchingPokemons = false;
     private CommandPokeGo commandPokeGo;
 
     public TravelTask(DirectionsStep[] steps, Samaritan samaritan, CommandPokeGo commandPokeGo) {
@@ -34,28 +35,36 @@ public class TravelTask extends TimerTask {
 
     @Override
     public void run() {
-        if(currentStep >= steps.length) {
+        if (currentStep >= steps.length) {
             cancel();
             return;
         }
 
-        DirectionsStep step = steps[currentStep];
-
-        LatLng latLng = startLoc ? step.startLocation : step.endLocation;
-
-        go.setLatitude(latLng.lat);
-        go.setLongitude(latLng.lng);
 
         try {
+            DirectionsStep step = steps[currentStep];
+
+            LatLng latLng = startLoc ? step.startLocation : step.endLocation;
+
+            go.setLatitude(latLng.lat);
+            go.setLongitude(latLng.lng);
             commandPokeGo.catchPokemon(true);
-        } catch (LoginFailedException e) {
+
+            if(catchingPokemons) {
+                commandPokeGo.catchPoke(go.getMap().getCatchablePokemon().get(0).getEncounterId());
+            }
+
+            catchingPokemons = !go.getMap().getCatchablePokemon().isEmpty();
+
+            if (!catchingPokemons) {
+                if(!startLoc) {
+                    currentStep++;
+                }
+                startLoc = !startLoc;
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        if(!startLoc) {
-            currentStep++;
-        }
-
-        startLoc = !startLoc;
     }
 }

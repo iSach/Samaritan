@@ -240,6 +240,10 @@ public class CommandPokeGo extends Command {
             getMessageChannel().sendMessage("Invalid Encounter Id.");
             return;
         }
+        catchPoke(encounterId);
+    }
+
+    public void catchPoke(long encounterId) {
         try {
             List<CatchablePokemon> catchablePokemons = go.getMap().getCatchablePokemon();
             for (CatchablePokemon catchablePokemon : catchablePokemons) {
