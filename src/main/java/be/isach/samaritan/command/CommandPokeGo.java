@@ -535,7 +535,7 @@ public class CommandPokeGo extends Command {
 
     private String makeExpBar(PlayerProfile playerProfile) {
         int lvl = playerProfile.getStats().getLevel();
-        lvl = 40;
+//        lvl = 40;
 
         double min = ((double) playerProfile.getStats().getExperience()) - playerProfile.getStats().getPrevLevelXp() - LevelRegistry.getNextLevelExp(lvl -1);
         double max = (double) LevelRegistry.getNextLevelExp(lvl);
