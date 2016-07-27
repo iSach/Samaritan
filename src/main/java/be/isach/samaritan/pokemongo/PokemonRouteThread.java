@@ -12,7 +12,7 @@ import com.pokegoapi.api.PokemonGo;
  * Date: 27/07/16
  * Project: samaritan
  */
-public class PokemonCatchThread extends Thread {
+public class PokemonRouteThread extends Thread {
 
     private boolean running;
     private DirectionsStep[] steps;
@@ -22,7 +22,7 @@ public class PokemonCatchThread extends Thread {
     private boolean startLoc = true, catchingPokemons = false;
     private CommandPokeGo commandPokeGo;
 
-    public PokemonCatchThread(DirectionsStep[] steps, Samaritan samaritan, CommandPokeGo commandPokeGo) {
+    public PokemonRouteThread(DirectionsStep[] steps, Samaritan samaritan, CommandPokeGo commandPokeGo) {
         this.steps = steps;
         this.samaritan = samaritan;
         this.commandPokeGo = commandPokeGo;
@@ -35,7 +35,7 @@ public class PokemonCatchThread extends Thread {
     public void run() {
         System.out.println("running...");
         while (running) {
-            long toSleep = 500L;
+            long toSleep = 2000L;
 
             if (currentStep >= steps.length) {
                 cancel();
@@ -66,15 +66,15 @@ public class PokemonCatchThread extends Thread {
                     // 2 sec for 100meters.
                     double distance = 0;
                     if(startLoc) {
-                        distance = distance(step.startLocation.lat, step.startLocation.lng,
+                        distance = distance(go.getLatitude(), go.getLongitude(),
                                 step.endLocation.lat, step.endLocation.lng);
-                        toSleep = 2000 * ((int)distance / 50);
+                        toSleep = 3500 * ((int)distance / 50);
                     } else {
                         if(currentStep == (steps.length - 1)) return;
                         DirectionsStep otherStep = steps[currentStep + 1];
-                        distance = distance(step.endLocation.lat, step.endLocation.lng,
+                        distance = distance(go.getLatitude(), go.getLongitude(),
                                 otherStep.startLocation.lat, otherStep.startLocation.lng);
-                        toSleep = 2000 * ((int)distance / 50);
+                        toSleep = 3500 * ((int)distance / 50);
                     }
                     System.out.println("Distance: " + distance + "m   (" + toSleep + "ms)");
                 }

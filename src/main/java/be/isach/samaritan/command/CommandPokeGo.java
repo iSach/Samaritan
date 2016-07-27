@@ -3,14 +3,12 @@ package be.isach.samaritan.command;
 import POGOProtos.Inventory.Item.ItemAwardOuterClass;
 import POGOProtos.Networking.Responses.CatchPokemonResponseOuterClass;
 import be.isach.samaritan.pokemongo.NameRegistry;
-import be.isach.samaritan.pokemongo.PokemonCatchThread;
-import be.isach.samaritan.pokemongo.TravelTask;
+import be.isach.samaritan.pokemongo.PokemonRouteThread;
 import be.isach.samaritan.util.TextUtil;
 import com.google.maps.DirectionsApi;
 import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.*;
-import com.mashape.unirest.http.exceptions.UnirestException;
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.api.inventory.Item;
 import com.pokegoapi.api.inventory.Pokeball;
@@ -134,6 +132,9 @@ public class CommandPokeGo extends Command {
                         break;
                     case "test":
                         test();
+                        break;
+                    case "test2":
+                        test2();
                         break;
                     default:
                         getMessageChannel().sendMessage("subcommand not found.");
@@ -421,18 +422,30 @@ public class CommandPokeGo extends Command {
             }
             getMessageChannel().sendMessage(from + " -> " + to);
             DirectionsRoute route = directionsResult.routes[0];
-            PokemonCatchThread catchThread = new PokemonCatchThread(route.legs[0].steps, getSamaritan(), this);
+            PokemonRouteThread catchThread = new PokemonRouteThread(route.legs[0].steps, getSamaritan(), this);
             catchThread.start();
-//            StringBuilder stringBuilder = new StringBuilder();
-//            for(DirectionsStep step : route.legs[0].steps) {
-//                stringBuilder.append(step.startLocation + " -> " + step.endLocation + "\n");
-//            }
-//            System.out.println(stringBuilder.toString());
-//            try {
-//                getMessageChannel().sendMessage(TextUtil.postToHastebin(stringBuilder.toString(), true));
-//            } catch (UnirestException e) {
-//                e.printStackTrace();
-//            }
+        } else {
+        }
+    }
+
+    private void test2() {
+        if(directionsApiRequest == null) {
+            String[] s = buildStringFromArgs(1).split(" -> ");
+            String from = s[0];
+            String to = s[1];
+            directionsApiRequest = DirectionsApi.getDirections(getSamaritan().getGeoApiContext(), from, to);
+            directionsApiRequest.mode(TravelMode.WALKING);
+            directionsApiRequest.avoid(DirectionsApi.RouteRestriction.HIGHWAYS);
+            DirectionsResult directionsResult = null;
+            try {
+                directionsResult = directionsApiRequest.await();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            getMessageChannel().sendMessage(from + " -> " + to);
+            DirectionsRoute route = directionsResult.routes[0];
+            PokemonRouteThread catchThread = new PokemonRouteThread(route.legs[0].steps, getSamaritan(), this);
+            catchThread.start();
         } else {
         }
     }
