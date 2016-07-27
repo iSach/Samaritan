@@ -453,7 +453,13 @@ public class Samaritan {
         return geoApiContext;
     }
 
-    private User getOwner() {
+    public User getOwner() {
         return getJda().getUserById(getOwnerId());
     }
+
+    public Timer getTimer() {
+        return timer;
+    }
 }
+
+

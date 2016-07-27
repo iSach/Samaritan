@@ -3,6 +3,7 @@ package be.isach.samaritan.command;
 import POGOProtos.Inventory.Item.ItemAwardOuterClass;
 import POGOProtos.Networking.Responses.CatchPokemonResponseOuterClass;
 import be.isach.samaritan.pokemongo.NameRegistry;
+import be.isach.samaritan.pokemongo.TravelTask;
 import be.isach.samaritan.util.TextUtil;
 import com.google.maps.DirectionsApi;
 import com.google.maps.DirectionsApiRequest;
@@ -173,7 +174,7 @@ public class CommandPokeGo extends Command {
         }
     }
 
-    private void catchPokemon(boolean showCatchable) throws LoginFailedException {
+    public void catchPokemon(boolean showCatchable) throws LoginFailedException {
         String encId = "";
         if (buildStringFromArgs(1).isEmpty() || showCatchable) {
             try {
@@ -410,19 +411,20 @@ public class CommandPokeGo extends Command {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            getMessageChannel().sendMessage(from + " -> " + to);
             DirectionsRoute route = directionsResult.routes[0];
-            StringBuilder stringBuilder = new StringBuilder();
-            for(DirectionsStep step : route.legs[0].steps) {
-                stringBuilder.append(step.startLocation + " -> " + step.endLocation + "\n");
-            }
-            System.out.println(stringBuilder.toString());
-            try {
-                getMessageChannel().sendMessage(TextUtil.postToHastebin(stringBuilder.toString(), true));
-            } catch (UnirestException e) {
-                e.printStackTrace();
-            }
+            getSamaritan().getTimer().schedule(new TravelTask(route.legs[0].steps, getSamaritan(), this), 1000L, 2000L);
+//            StringBuilder stringBuilder = new StringBuilder();
+//            for(DirectionsStep step : route.legs[0].steps) {
+//                stringBuilder.append(step.startLocation + " -> " + step.endLocation + "\n");
+//            }
+//            System.out.println(stringBuilder.toString());
+//            try {
+//                getMessageChannel().sendMessage(TextUtil.postToHastebin(stringBuilder.toString(), true));
+//            } catch (UnirestException e) {
+//                e.printStackTrace();
+//            }
         } else {
-
         }
     }
 
