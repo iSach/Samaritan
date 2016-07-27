@@ -8,6 +8,7 @@ import com.google.maps.DirectionsApi;
 import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.*;
+import com.mashape.unirest.http.exceptions.UnirestException;
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.api.inventory.Item;
 import com.pokegoapi.api.inventory.Pokeball;
@@ -412,10 +413,14 @@ public class CommandPokeGo extends Command {
             DirectionsRoute route = directionsResult.routes[0];
             StringBuilder stringBuilder = new StringBuilder();
             for(DirectionsStep step : route.legs[0].steps) {
-                stringBuilder.append(step.startLocation + " -> " + step.startLocation + "\n");
+                stringBuilder.append(step.startLocation + " -> " + step.endLocation + "\n");
             }
             System.out.println(stringBuilder.toString());
-            getMessageChannel().sendMessage("```" + stringBuilder.toString() + "```");
+            try {
+                getMessageChannel().sendMessage(TextUtil.postToHastebin(stringBuilder.toString(), true));
+            } catch (UnirestException e) {
+                e.printStackTrace();
+            }
         } else {
 
         }
