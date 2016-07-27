@@ -2,6 +2,7 @@ package be.isach.samaritan.command;
 
 import POGOProtos.Inventory.Item.ItemAwardOuterClass;
 import POGOProtos.Networking.Responses.CatchPokemonResponseOuterClass;
+import be.isach.samaritan.pokemongo.LevelRegistry;
 import be.isach.samaritan.pokemongo.NameRegistry;
 import be.isach.samaritan.pokemongo.PokemonLatitudeThread;
 import be.isach.samaritan.pokemongo.PokemonRouteThread;
@@ -534,8 +535,13 @@ public class CommandPokeGo extends Command {
 
     private String makeExpBar(PlayerProfile playerProfile) {
         int lvl = playerProfile.getStats().getLevel();
-        double min = ((double) playerProfile.getStats().getExperience()) - playerProfile.getStats().getPrevLevelXp() - ((lvl - 1) * 1000);
-        double max = (double) lvl * 1000;
+        lvl = 40;
+
+        double min = ((double) playerProfile.getStats().getExperience()) - playerProfile.getStats().getPrevLevelXp() - LevelRegistry.getNextLevelExp(lvl -1);
+        double max = (double) LevelRegistry.getNextLevelExp(lvl);
+        if(max == -1) {
+            return "40 ■■■■■■■■■■■■■■■ (Max Level)";
+        }
         double ratio = min / max;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(playerProfile.getStats().getLevel());
