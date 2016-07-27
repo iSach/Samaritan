@@ -76,9 +76,7 @@ public class CommandPokeGo extends Command {
                 go.getInventories().getPokebank().getPokemons().stream().filter(pokemon -> Arrays.asList(ids).contains(pokemon.getPokemonId().getNumber())).forEachOrdered(pokemon -> {
                     try {
                         pokemon.transferPokemon();
-                    } catch (LoginFailedException e) {
-                        e.printStackTrace();
-                    } catch (RemoteServerException e) {
+                    } catch (LoginFailedException | RemoteServerException e) {
                         e.printStackTrace();
                     }
                 });
