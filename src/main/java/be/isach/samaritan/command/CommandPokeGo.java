@@ -365,7 +365,7 @@ public class CommandPokeGo extends Command {
         }
     }
 
-    private void lootStopsNearby() {
+    public void lootStopsNearby() {
         try {
             StringBuilder sbb = new StringBuilder();
             sbb.append("```Pokéstops looted:" + "\n");

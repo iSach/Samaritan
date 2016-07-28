@@ -5,14 +5,12 @@ import be.isach.samaritan.Samaritan;
 import be.isach.samaritan.command.CommandPokeGo;
 import com.google.maps.model.DirectionsStep;
 import com.pokegoapi.api.PokemonGo;
+import com.pokegoapi.api.map.fort.Pokestop;
 import com.pokegoapi.api.map.pokemon.CatchablePokemon;
 import com.pokegoapi.exceptions.LoginFailedException;
 import com.pokegoapi.exceptions.RemoteServerException;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * Package: be.isach.samaritan.pokemongo
@@ -27,7 +25,7 @@ public class PokemonLatitudeThread extends TimerTask {
     };
 
     private PokemonGo go;
-    private boolean catchingPokemons = false;
+    private boolean catchingPokemons = false, lootingPokestops = false;
     private CommandPokeGo commandPokeGo;
     private double latitude;
 
@@ -53,9 +51,14 @@ public class PokemonLatitudeThread extends TimerTask {
                 commandPokeGo.catchPoke(getCatchablePokemons().get(0).getEncounterId());
             }
 
-            catchingPokemons = !getCatchablePokemons().isEmpty();
+            if(lootingPokestops) {
+                commandPokeGo.lootStopsNearby();
+            }
 
-            if (!catchingPokemons) {
+            catchingPokemons = !getCatchablePokemons().isEmpty();
+            lootingPokestops = !getLootablePokestops().isEmpty();
+
+            if (!catchingPokemons && !lootingPokestops) {
                 latitude -= 0.0008;
             }
 
@@ -73,6 +76,23 @@ public class PokemonLatitudeThread extends TimerTask {
                     iterator.remove();
                 }
             }
+            return catchablePokemons;
+        } catch (LoginFailedException | RemoteServerException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Collection<Pokestop> getLootablePokestops() {
+        try {
+            Collection<Pokestop> catchablePokemons = go.getMap().getMapObjects().getPokestops();
+            for (Iterator<Pokestop> iterator = catchablePokemons.iterator(); iterator.hasNext();) {
+                Pokestop pokestop = iterator.next();
+                if (!pokestop.inRange() || !pokestop.canLoot()) {
+                    iterator.remove();
+                }
+            }
+            return catchablePokemons;
         } catch (LoginFailedException | RemoteServerException e) {
             e.printStackTrace();
         }
