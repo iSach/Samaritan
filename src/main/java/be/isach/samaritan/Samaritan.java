@@ -24,6 +24,7 @@ import com.google.maps.GeoApiContext;
 import com.pokegoapi.api.PokemonGo;
 import com.pokegoapi.auth.GoogleAuthJson;
 import com.pokegoapi.auth.GoogleAuthTokenJson;
+import com.pokegoapi.auth.GoogleAutoCredentialProvider;
 import com.pokegoapi.auth.GoogleCredentialProvider;
 import com.pokegoapi.exceptions.LoginFailedException;
 import com.pokegoapi.exceptions.RemoteServerException;
@@ -156,6 +157,8 @@ public class Samaritan {
 
     private GeoApiContext geoApiContext;
 
+    private LoginData loginData;
+
     /**
      * Samaritan Constructor.
      *
@@ -168,7 +171,7 @@ public class Samaritan {
      * @param uiWebSocketPort Web UI Port.
      *                        From <samaritan.properties.
      */
-    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, long ownerId, File workingDirectory, String googleMapsApiKey) {
+    public Samaritan(String[] args, String botToken, boolean webUi, int uiWebSocketPort, long ownerId, File workingDirectory, String googleMapsApiKey, LoginData loginData) {
         this.botToken = botToken;
         this.logger = new SmartLogger();
         this.status = new SamaritanStatus();
@@ -180,6 +183,7 @@ public class Samaritan {
         this.messageHistoryPrinter = new MessageHistoryPrinter();
         this.accessLevelManager = new AccessLevelManager(this);
         this.webUi = webUi;
+        this.loginData = loginData;
 
         status.setBootInstant(new Instant());
 
@@ -237,27 +241,29 @@ public class Samaritan {
     }
 
     public void connectToPokemonGo() {
-        final Samaritan samaritan = this;
         Thread t = new Thread() {
             @Override
             public void run() {
+                LoginData loginData = getLoginData();
                 OkHttpClient httpClient = new OkHttpClient();
                 try {
-                    pokemonGo = new PokemonGo(new GoogleCredentialProvider(httpClient, new GoogleCredentialProvider.OnGoogleLoginOAuthCompleteListener() {
-                        @Override
-                        public void onInitialOAuthComplete(GoogleAuthJson googleAuthJson) {
-                            getOwner().getPrivateChannel().sendMessage("\n" +
-                                    googleAuthJson.getVerificationUrl() + "\n" +
-                                    googleAuthJson.getUserCode() + "\n");
-                        }
-
-                        @Override
-                        public void onTokenIdReceived(GoogleAuthTokenJson googleAuthTokenJson) {
-                            getOwner().getPrivateChannel().sendMessage("\n" +
-                                    "Access Token:" + "\n" +
-                                    googleAuthTokenJson.getAccessToken() + "\n");
-                        }
-                    }), httpClient);
+//                    pokemonGo = new PokemonGo(new GoogleCredentialProvider(httpClient, new GoogleCredentialProvider.OnGoogleLoginOAuthCompleteListener() {
+//                        @Override
+//                        public void onInitialOAuthComplete(GoogleAuthJson googleAuthJson) {
+//                            getOwner().getPrivateChannel().sendMessage("\n" +
+//                                    googleAuthJson.getVerificationUrl() + "\n" +
+//                                    googleAuthJson.getUserCode() + "\n");
+//                        }
+//
+//                        @Override
+//                        public void onTokenIdReceived(GoogleAuthTokenJson googleAuthTokenJson) {
+//                            getOwner().getPrivateChannel().sendMessage("\n" +
+//                                    "Access Token:" + "\n" +
+//                                    googleAuthTokenJson.getAccessToken() + "\n");
+//                        }
+//                    }), httpClient);
+                    GoogleAutoCredentialProvider credentialProvider = new GoogleAutoCredentialProvider(httpClient,loginData.getUsername(), loginData.getPassword());
+                    pokemonGo = new PokemonGo(credentialProvider, httpClient);
                 } catch (LoginFailedException | RemoteServerException e) {
                     e.printStackTrace();
                 }
@@ -459,6 +465,10 @@ public class Samaritan {
 
     public Timer getTimer() {
         return timer;
+    }
+
+    public LoginData getLoginData() {
+        return loginData;
     }
 }
 
