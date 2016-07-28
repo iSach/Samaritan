@@ -73,13 +73,13 @@ public class CommandPokeGo extends Command {
                         19, 13, 16
                 };
 
-                go.getInventories().getPokebank().getPokemons().stream().filter(pokemon -> Arrays.asList(ids).contains(pokemon.getPokemonId().getNumber())).forEachOrdered(pokemon -> {
-                    try {
-                        pokemon.transferPokemon();
-                    } catch (LoginFailedException | RemoteServerException e) {
-                        e.printStackTrace();
-                    }
-                });
+//                go.getInventories().getPokebank().getPokemons().stream().filter(pokemon -> Arrays.asList(ids).contains(pokemon.getPokemonId().getNumber())).forEachOrdered(pokemon -> {
+//                    try {
+//                        pokemon.transferPokemon();
+//                    } catch (LoginFailedException | RemoteServerException e) {
+//                        e.printStackTrace();
+//                    }
+//                });
 
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("```");
