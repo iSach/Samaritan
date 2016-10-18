@@ -24,7 +24,7 @@ To run it:
 - Run it with java -jar.
 - Configure samaritan.properties
 - Run again.
-- 
+
 ## Main Features
 - Clever Bot
 - Advanced Command System
