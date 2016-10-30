@@ -3,11 +3,15 @@ package be.isach.samaritan.start;
 import be.isach.samaritan.Samaritan;
 import be.isach.samaritan.json.AdvancedJSONObject;
 import be.isach.samaritan.pokemongo.LoginData;
+import be.isach.samaritan.stream.TwitchData;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -39,10 +43,14 @@ public class SamaritanMain {
         File musicFolder = new File(workingDirectory, "music");
         File configFile = new File(workingDirectory, "config.json");
         File usersFile = new File(workingDirectory, "users.json");
+        File twitchConfigFile = new File(workingDirectory, "twitch.json");
 
         logsFolder.mkdir();
         musicFolder.mkdir();
 
+        Samaritan samaritan = null;
+
+        // Config.json
         try {
             AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("config.json"))));
             object.addDefault("bot-token", "");
@@ -61,7 +69,7 @@ public class SamaritanMain {
             long ownerId = object.getLong("bot-owner-id");
             String googleMapsApiKey = object.getString("google-maps-api-key");
             LoginData loginData = new LoginData(object.getJSONObject("pokemongo-login").getString("email"), object.getJSONObject("pokemongo-login").getString("password"));
-            new Samaritan(args, botToken, webUi, uiWebSocketPort, ownerId, workingDirectory, googleMapsApiKey,loginData);
+            samaritan = new Samaritan(args, botToken, webUi, uiWebSocketPort, ownerId, workingDirectory, googleMapsApiKey, loginData);
         } catch (IOException e) {
             System.out.println("---------------------------");
             System.out.println("");
@@ -83,6 +91,32 @@ public class SamaritanMain {
                 System.exit(0);
             } catch (IOException e1) {
                 System.out.println("No config was found, and Samaritan failed to generate a new one.");
+                e1.printStackTrace();
+                System.exit(0);
+            }
+        }
+
+        // Twitch.json
+        try {
+            AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("twitch.json"))));
+            String clientId = object.getString("twitch-client-id");
+            JSONArray array = object.getJSONArray("streamers");
+            List<String> streamers = new ArrayList<>();
+            array.forEach(streamer -> streamers.add(streamer.toString().toLowerCase()));
+            TwitchData twitchData = new TwitchData(clientId, streamers);
+            samaritan.initStreamModule(twitchData);
+        } catch (IOException e) {
+            System.out.println("No twitch.json detected. Generating new one.");
+            System.out.println("");
+            JSONObject object = new JSONObject();
+            object.put("twitch-client-id", "yourclientid");
+            JSONArray array = new JSONArray();
+            array.put("isachhh");
+            object.put("streamers", array);
+            try {
+                Files.write(Paths.get("config.json"), object.toString(4).getBytes());
+            } catch (IOException e1) {
+                System.out.println("No twitch.json was found, and Samaritan failed to generate a new one.");
                 e1.printStackTrace();
                 System.exit(0);
             }

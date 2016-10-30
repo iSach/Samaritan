@@ -17,6 +17,7 @@ import be.isach.samaritan.music.SongPlayer;
 import be.isach.samaritan.pokemongo.LoginData;
 import be.isach.samaritan.runtime.ShutdownThread;
 import be.isach.samaritan.stream.StreamModule;
+import be.isach.samaritan.stream.TwitchData;
 import be.isach.samaritan.util.GifFactory;
 import be.isach.samaritan.util.SamaritanStatus;
 import be.isach.samaritan.websocket.SamaritanWebsocketServer;
@@ -220,9 +221,6 @@ public class Samaritan {
         if (webUi) startWebSocketServer();
 
         new ConsoleListenerThread(this).start();
-
-        StreamModule streamModule = new StreamModule(getJda());
-        timer.schedule(streamModule, 0L, 25000L);
     }
 
     /**
@@ -422,6 +420,11 @@ public class Samaritan {
 
     public LoginData getLoginData() {
         return loginData;
+    }
+
+    public void initStreamModule(TwitchData twitchData) {
+        StreamModule streamModule = new StreamModule(getJda(), twitchData);
+        this.timer.schedule(streamModule, 0L, 25000L);
     }
 }
 

@@ -22,13 +22,13 @@ public class StreamModule extends TimerTask {
     private Twitch twitch;
     private JDA jda;
 
-    public StreamModule(JDA jda) {
+    public StreamModule(JDA jda, TwitchData twitchData) {
         this.jda = jda;
         this.users = new HashMap<>();
         this.twitch = new Twitch();
-        twitch.setClientId("a6lzpt816q0qcfvnn6rvbylib8jo4vd");
+        twitch.setClientId(twitchData.getClientId());
 
-        this.users.put("isachhh", null);
+        twitchData.getStreamers().forEach(s -> users.put(s, null));
 
         users.keySet().forEach(channel -> {
             twitch.streams().get(channel, new StreamResponseHandler() {
@@ -71,7 +71,7 @@ public class StreamModule extends TimerTask {
 
     private void broadcastLive(Stream stream) {
         Channel channel = stream.getChannel();
-        TextChannel textChannel = jda.getTextChannelById("242417626591133697");
+        TextChannel textChannel = jda.getTextChannelById("242305313527562240");
         textChannel.sendMessage("Hey! " + channel.getDisplayName() + " est en live !");
         textChannel.sendMessage("Joue à : " + stream.getGame());
         textChannel.sendMessage("\"" + channel.getStatus() + "\" https://twitch.tv/" + channel.getName());
