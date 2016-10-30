@@ -221,7 +221,8 @@ public class Samaritan {
 
         new ConsoleListenerThread(this).start();
 
-        new StreamModule().init("a6lzpt816q0qcfvnn6rvbylib8jo4vd");
+        StreamModule streamModule = new StreamModule(getJda());
+        timer.schedule(streamModule, 0L, 25000L);
     }
 
     /**

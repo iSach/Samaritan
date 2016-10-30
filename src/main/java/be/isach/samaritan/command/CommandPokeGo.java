@@ -1,3 +1,4 @@
+/*
 package be.isach.samaritan.command;
 
 import POGOProtos.Inventory.Item.ItemAwardOuterClass;
@@ -28,12 +29,14 @@ import net.dv8tion.jda.entities.MessageChannel;
 import java.text.DecimalFormat;
 import java.util.*;
 
+*/
 /**
  * Package: be.isach.samaritan.command
  * Created by: sachalewin
  * Date: 24/07/16
  * Project: samaritan
- */
+ *//*
+
 public class CommandPokeGo extends Command {
 
     private static final DecimalFormat format = new DecimalFormat("##.##");
@@ -46,13 +49,15 @@ public class CommandPokeGo extends Command {
 
     private PokemonGo go;
 
-    /**
+    */
+/**
      * Command Constructor.
      *
      * @param messageChannel The text Channel where command is called.
      * @param commandData    The Command Data, providing the Guild, the executor and the Samaritan instance.
      * @param args           The args provided when command was called.
-     */
+     *//*
+
     CommandPokeGo(MessageChannel messageChannel, CommandData commandData, String[] args) {
         super(messageChannel, commandData, args);
     }
@@ -560,9 +565,11 @@ public class CommandPokeGo extends Command {
         return stringBuilder.toString();
     }
 
-    /**
+    */
+/**
      * @return The length of the longest Command complete alias.
-     */
+     *//*
+
     public int longestIdd() {
         int longest = 0;
         try {
@@ -574,9 +581,11 @@ public class CommandPokeGo extends Command {
         return longest;
     }
 
-    /**
+    */
+/**
      * @return The length of the longest Command complete alias.
-     */
+     *//*
+
     public int longestNameE() {
         int longest = 0;
         try {
@@ -588,9 +597,11 @@ public class CommandPokeGo extends Command {
         return longest;
     }
 
-    /**
+    */
+/**
      * @return The length of the longest Command complete alias.
-     */
+     *//*
+
     public int longestCp() {
         int longest = 0;
         for (Pokemon pokemon : go.getInventories().getPokebank().getPokemons())
@@ -598,9 +609,11 @@ public class CommandPokeGo extends Command {
         return longest;
     }
 
-    /**
+    */
+/**
      * @return The length of the longest Command complete alias.
-     */
+     *//*
+
     public int longestName() {
         int longest = 0;
         for (Pokemon pokemon : go.getInventories().getPokebank().getPokemons())
@@ -608,3 +621,4 @@ public class CommandPokeGo extends Command {
         return longest;
     }
 }
+*/
