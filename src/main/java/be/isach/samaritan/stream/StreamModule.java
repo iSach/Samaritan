@@ -18,22 +18,22 @@ public class StreamModule extends TimerTask {
         ONLINE, OFFLINE
     }
 
-    private Map<String, Status> users;
+    private Map<String, Status> streamersMap;
     private Twitch twitch;
     private JDA jda;
 
     public StreamModule(JDA jda, TwitchData twitchData) {
         this.jda = jda;
-        this.users = new HashMap<>();
+        this.streamersMap = new HashMap<>();
         this.twitch = new Twitch();
         twitch.setClientId(twitchData.getClientId());
 
-        twitchData.getStreamers().forEach(s -> users.put(s, null));
+        twitchData.getStreamers().forEach(s -> streamersMap.put(s, null));
 
-        users.keySet().forEach(channel -> twitch.streams().get(channel, new StreamResponseHandler() {
+        streamersMap.keySet().forEach(channel -> twitch.streams().get(channel, new StreamResponseHandler() {
             public void onSuccess(Stream stream) {
                 Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
-                users.put(channel, currentStatus);
+                streamersMap.put(channel, currentStatus);
             }
             public void onFailure(int i, String s, String s1) {}
             public void onFailure(Throwable throwable) {}
@@ -42,8 +42,9 @@ public class StreamModule extends TimerTask {
 
     // Triggers each 30 seconds.
     public void run() {
-        users.keySet().forEach(channel -> {
-            Status lastStatus = users.get(channel);
+        System.out.println(streamersMap);
+        streamersMap.keySet().forEach(channel -> {
+            Status lastStatus = streamersMap.get(channel);
             twitch.streams().get(channel, new StreamResponseHandler() {
                 public void onSuccess(Stream stream) {
                     Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
@@ -55,7 +56,7 @@ public class StreamModule extends TimerTask {
                         broadcastLive(stream);
                     }
 
-                    users.put(channel, currentStatus);
+                    streamersMap.put(channel, currentStatus);
                 }
 
                 public void onFailure(int i, String s, String s1) {
