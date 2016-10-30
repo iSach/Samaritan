@@ -26,7 +26,7 @@ public class StreamModule extends TimerTask {
         this.jda = jda;
         this.streamersMap = new HashMap<>();
         this.twitch = new Twitch();
-        twitch.setClientId("a6lzpt816q0qcfvnn6rvbylib8jo4vd");
+        twitch.setClientId(twitchData.getClientId());
 
         twitchData.getStreamers().forEach(s -> streamersMap.put(s, null));
 
@@ -35,24 +35,18 @@ public class StreamModule extends TimerTask {
                 Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
                 streamersMap.put(channel, currentStatus);
             }
-            public void onFailure(int i, String s, String s1) {
-                streamersMap.put(channel, Status.OFFLINE);
-            }
-            public void onFailure(Throwable throwable) {
-                streamersMap.put(channel, Status.OFFLINE);}
+            public void onFailure(int i, String s, String s1) {}
+            public void onFailure(Throwable throwable) {}
         }));
     }
 
     // Triggers each 30 seconds.
     public void run() {
-        System.out.println(streamersMap);
         streamersMap.keySet().forEach(channel -> {
             Status lastStatus = streamersMap.get(channel);
-            twitch.streams().get("iSachhh", new StreamResponseHandler() {
+            twitch.streams().get(channel, new StreamResponseHandler() {
                 public void onSuccess(Stream stream) {
                     Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
-
-                    System.out.println(channel + ": " + currentStatus);
 
                     // Goes Online.
                     if (currentStatus == Status.ONLINE && lastStatus == Status.OFFLINE) {
