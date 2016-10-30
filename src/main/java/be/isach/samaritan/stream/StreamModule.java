@@ -30,16 +30,14 @@ public class StreamModule extends TimerTask {
 
         twitchData.getStreamers().forEach(s -> users.put(s, null));
 
-        users.keySet().forEach(channel -> {
-            twitch.streams().get(channel, new StreamResponseHandler() {
-                public void onSuccess(Stream stream) {
-                    Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
-                    users.put(channel, currentStatus);
-                }
-                public void onFailure(int i, String s, String s1) {}
-                public void onFailure(Throwable throwable) {}
-            });
-        });
+        users.keySet().forEach(channel -> twitch.streams().get(channel, new StreamResponseHandler() {
+            public void onSuccess(Stream stream) {
+                Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
+                users.put(channel, currentStatus);
+            }
+            public void onFailure(int i, String s, String s1) {}
+            public void onFailure(Throwable throwable) {}
+        }));
     }
 
     // Triggers each 30 seconds.
@@ -49,6 +47,8 @@ public class StreamModule extends TimerTask {
             twitch.streams().get(channel, new StreamResponseHandler() {
                 public void onSuccess(Stream stream) {
                     Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
+
+                    System.out.println(channel + ": " + currentStatus);
 
                     // Goes Online.
                     if (currentStatus == Status.ONLINE && lastStatus == Status.OFFLINE) {
