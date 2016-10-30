@@ -1,0 +1,79 @@
+package be.isach.samaritan.stream;
+
+import com.mb3364.twitch.api.Twitch;
+import com.mb3364.twitch.api.handlers.StreamResponseHandler;
+import com.mb3364.twitch.api.models.Channel;
+import com.mb3364.twitch.api.models.Stream;
+import net.dv8tion.jda.JDA;
+import net.dv8tion.jda.entities.TextChannel;
+
+import java.util.*;
+
+/**
+ * Created by sacha on 30-10-16.
+ */
+public class StreamModule extends TimerTask {
+
+    private enum Status {
+        ONLINE, OFFLINE
+    }
+
+    private Map<String, Status> users;
+    private Twitch twitch;
+    private JDA jda;
+
+    public StreamModule(JDA jda) {
+        this.jda = jda;
+        this.users = new HashMap<>();
+        this.twitch = new Twitch();
+        twitch.setClientId("a6lzpt816q0qcfvnn6rvbylib8jo4vd");
+
+        this.users.put("isachhh", null);
+
+        users.keySet().forEach(channel -> {
+            twitch.streams().get(channel, new StreamResponseHandler() {
+                public void onSuccess(Stream stream) {
+                    Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
+                    users.put(channel, currentStatus);
+                }
+                public void onFailure(int i, String s, String s1) {}
+                public void onFailure(Throwable throwable) {}
+            });
+        });
+    }
+
+    // Triggers each 30 seconds.
+    public void run() {
+        users.keySet().forEach(channel -> {
+            Status lastStatus = users.get(channel);
+            twitch.streams().get(channel, new StreamResponseHandler() {
+                public void onSuccess(Stream stream) {
+                    Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
+
+                    // Goes Online.
+                    if (currentStatus == Status.ONLINE && lastStatus == Status.OFFLINE) {
+                        broadcastLive(stream);
+                    }
+
+                    users.put(channel, currentStatus);
+                }
+
+                public void onFailure(int i, String s, String s1) {
+
+                }
+
+                public void onFailure(Throwable throwable) {
+
+                }
+            });
+        });
+    }
+
+    private void broadcastLive(Stream stream) {
+        Channel channel = stream.getChannel();
+        TextChannel textChannel = jda.getTextChannelById("242417626591133697");
+        textChannel.sendMessage("Hey! " + channel.getDisplayName() + " est en live !");
+        textChannel.sendMessage("Joue à : " + stream.getGame());
+        textChannel.sendMessage("\"" + channel.getStatus() + "\" https://twitch.tv/" + channel.getName());
+    }
+}

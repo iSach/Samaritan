@@ -29,7 +29,7 @@ public enum CommandType {
      */
 
     BASH(CommandBash.class, 4, "Runs Bash Command", "bash"),
-    BRAINFUCK(CommandBrainfuck.class, 0, "Runs BrainFuck code", "brainfuck", "bf"),
+    BRAINFUCK(CommandBrainFuck.class, 0, "Runs BrainFuck code", "brainfuck", "bf"),
     CAT(CommandCat.class, 0, "Shows a cat image", "cat"),
     CLEAN(CommandClean.class, 2, "Cleans fail lol", "clean"),
     CONVERT(CommandConvert.class, 2, "Converts WebM -> mp3", "convert"),
@@ -38,6 +38,7 @@ public enum CommandType {
     FIND_THE_NUMBER(CommandFindTheNumber.class, 0, "Starts a Find The Number game.", "findthenumber", "ftn"),
     GIF(CommandGif.class, 0, "Sends a gif", "gif"),
     GITHUB(CommandGithub.class, 0, "Shows Github link", "git", "github"),
+    GROUP(CommandGroup.class, 0, "Group Related Things", "group", "g"),
     HASTE(CommandHaste.class, 0, "Prints Hastebin Code.", "haste"),
     HELP(CommandHelp.class, 0, "Prints this", "help"),
     JOIN_ME(CommandJoinMe.class, 2, "Joins Admin.", "joinme"),

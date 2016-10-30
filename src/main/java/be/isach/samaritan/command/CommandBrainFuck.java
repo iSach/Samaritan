@@ -13,7 +13,7 @@ import java.nio.ByteBuffer;
  * Created on: 05th juin, 2016
 // * at 14:23
 // */
-class CommandBrainfuck extends Command {
+class CommandBrainFuck extends Command {
 
     ByteBuffer bytes = null;
 
@@ -26,7 +26,7 @@ class CommandBrainfuck extends Command {
      * @param commandData    The Command Data, providing the Guild, the executor and the Samaritan instance.
      * @param args           The args provided when command was called.
      */
-    CommandBrainfuck(MessageChannel messageChannel, CommandData commandData, String[] args) {
+    CommandBrainFuck(MessageChannel messageChannel, CommandData commandData, String[] args) {
         super(messageChannel, commandData, args);
     }
 

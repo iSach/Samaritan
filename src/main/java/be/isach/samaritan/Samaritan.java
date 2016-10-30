@@ -16,6 +16,7 @@ import be.isach.samaritan.log.SmartLogger;
 import be.isach.samaritan.music.SongPlayer;
 import be.isach.samaritan.pokemongo.LoginData;
 import be.isach.samaritan.runtime.ShutdownThread;
+import be.isach.samaritan.stream.StreamModule;
 import be.isach.samaritan.util.GifFactory;
 import be.isach.samaritan.util.SamaritanStatus;
 import be.isach.samaritan.websocket.SamaritanWebsocketServer;
@@ -220,52 +221,7 @@ public class Samaritan {
 
         new ConsoleListenerThread(this).start();
 
-        connectToPokemonGo();
-
-        connectToGoogleMaps(googleMapsApiKey);
-    }
-
-    private void connectToGoogleMaps(String apiKey) {
-        try {
-            logger.write("Google Maps -> Trying to connect with API Key.");
-            geoApiContext = new GeoApiContext().setApiKey(apiKey);
-            logger.write("Google Maps -> Successfully connected to Google Maps API.");
-        } catch (Exception exc) {
-            logger.write("Failed to connect to Google Maps API.");
-            exc.printStackTrace();
-        }
-    }
-
-    public void connectToPokemonGo() {
-        Thread t = new Thread() {
-            @Override
-            public void run() {
-                LoginData loginData = getLoginData();
-                OkHttpClient httpClient = new OkHttpClient();
-                try {
-//                    pokemonGo = new PokemonGo(new GoogleCredentialProvider(httpClient, new GoogleCredentialProvider.OnGoogleLoginOAuthCompleteListener() {
-//                        @Override
-//                        public void onInitialOAuthComplete(GoogleAuthJson googleAuthJson) {
-//                            getOwner().getPrivateChannel().sendMessage("\n" +
-//                                    googleAuthJson.getVerificationUrl() + "\n" +
-//                                    googleAuthJson.getUserCode() + "\n");
-//                        }
-//
-//                        @Override
-//                        public void onTokenIdReceived(GoogleAuthTokenJson googleAuthTokenJson) {
-//                            getOwner().getPrivateChannel().sendMessage("\n" +
-//                                    "Access Token:" + "\n" +
-//                                    googleAuthTokenJson.getAccessToken() + "\n");
-//                        }
-//                    }), httpClient);
-                    GoogleAutoCredentialProvider credentialProvider = new GoogleAutoCredentialProvider(httpClient,loginData.getUsername(), loginData.getPassword());
-                    pokemonGo = new PokemonGo(credentialProvider, httpClient);
-                } catch (LoginFailedException | RemoteServerException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        t.start();
+        new StreamModule().init("a6lzpt816q0qcfvnn6rvbylib8jo4vd");
     }
 
     /**
