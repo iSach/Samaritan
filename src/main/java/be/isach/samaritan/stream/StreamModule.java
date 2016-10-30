@@ -48,7 +48,7 @@ public class StreamModule extends TimerTask {
         System.out.println(streamersMap);
         streamersMap.keySet().forEach(channel -> {
             Status lastStatus = streamersMap.get(channel);
-            twitch.streams().get(channel, new StreamResponseHandler() {
+            twitch.streams().get("iSachhh", new StreamResponseHandler() {
                 public void onSuccess(Stream stream) {
                     Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
 
