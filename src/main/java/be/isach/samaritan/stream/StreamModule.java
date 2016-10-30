@@ -26,7 +26,7 @@ public class StreamModule extends TimerTask {
         this.jda = jda;
         this.streamersMap = new HashMap<>();
         this.twitch = new Twitch();
-        twitch.setClientId(twitchData.getClientId());
+        twitch.setClientId("a6lzpt816q0qcfvnn6rvbylib8jo4vd");
 
         twitchData.getStreamers().forEach(s -> streamersMap.put(s, null));
 
