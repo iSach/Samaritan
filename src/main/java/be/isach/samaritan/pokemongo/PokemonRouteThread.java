@@ -1,3 +1,4 @@
+/*
 package be.isach.samaritan.pokemongo;
 
 import be.isach.samaritan.Samaritan;
@@ -6,12 +7,14 @@ import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.LatLng;
 import com.pokegoapi.api.PokemonGo;
 
+*/
 /**
  * Package: be.isach.samaritan.pokemongo
  * Created by: sachalewin
  * Date: 27/07/16
  * Project: samaritan
- */
+ *//*
+
 public class PokemonRouteThread extends Thread {
 
     private boolean running;
@@ -113,3 +116,4 @@ public class PokemonRouteThread extends Thread {
         running = false;
     }
 }
+*/

@@ -1,7 +1,6 @@
 package be.isach.samaritan.pokemongo;
 
 import be.isach.samaritan.Samaritan;
-import be.isach.samaritan.command.CommandPokeGo;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.LatLng;
 import com.pokegoapi.api.PokemonGo;

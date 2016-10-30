@@ -1,3 +1,4 @@
+/*
 package be.isach.samaritan.pokemongo;
 
 import POGOProtos.Inventory.Item.ItemIdOuterClass;
@@ -12,12 +13,14 @@ import com.pokegoapi.exceptions.RemoteServerException;
 
 import java.util.*;
 
+*/
 /**
  * Package: be.isach.samaritan.pokemongo
  * Created by: sachalewin
  * Date: 27/07/16
  * Project: samaritan
- */
+ *//*
+
 public class PokemonLatitudeThread extends TimerTask {
 
     private static final int[] TO_AVOID = new int[]{
@@ -99,3 +102,4 @@ public class PokemonLatitudeThread extends TimerTask {
         return null;
     }
 }
+*/
