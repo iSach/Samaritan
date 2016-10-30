@@ -39,7 +39,7 @@ dependencies {
     compile 'net.bramp.ffmpeg:ffmpeg:0.5'
     compile 'com.github.Grover-c13:PokeGOAPI-Java:dcaa793557'
     compile 'com.google.maps:google-maps-services:0.1.15'
-    compile 'com.mb3364.twitch:twitch-api-wrapper:0.3'
+    compile 'com.mb3364.twitch:twitch-api:3.0.1'
 }
 
 task fatJar(type: Jar) {
