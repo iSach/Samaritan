@@ -114,7 +114,7 @@ public class SamaritanMain {
             array.put("isachhh");
             object.put("streamers", array);
             try {
-                Files.write(Paths.get("config.json"), object.toString(4).getBytes());
+                Files.write(Paths.get("twitch.json"), object.toString(4).getBytes());
             } catch (IOException e1) {
                 System.out.println("No twitch.json was found, and Samaritan failed to generate a new one.");
                 e1.printStackTrace();
