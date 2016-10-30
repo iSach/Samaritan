@@ -35,8 +35,11 @@ public class StreamModule extends TimerTask {
                 Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
                 streamersMap.put(channel, currentStatus);
             }
-            public void onFailure(int i, String s, String s1) {}
-            public void onFailure(Throwable throwable) {}
+            public void onFailure(int i, String s, String s1) {
+                streamersMap.put(channel, Status.OFFLINE);
+            }
+            public void onFailure(Throwable throwable) {
+                streamersMap.put(channel, Status.OFFLINE);}
         }));
     }
 
