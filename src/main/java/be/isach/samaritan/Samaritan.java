@@ -90,6 +90,11 @@ public class Samaritan {
     private BrainfuckInterpreter brainfuckInterpreter;
 
     /**
+     * Stream Module.
+     */
+    private StreamModule streamModule;
+
+    /**
      * UI WebSocket Server.
      */
     private SamaritanWebsocketServer samaritanWebsocketServer;
@@ -423,8 +428,12 @@ public class Samaritan {
     }
 
     public void initStreamModule(TwitchData twitchData) {
-        StreamModule streamModule = new StreamModule(getJda(), twitchData);
+        this.streamModule = new StreamModule(getJda(), twitchData);
         this.timer.schedule(streamModule, 0L, 25000L);
+    }
+
+    public StreamModule getStreamModule() {
+        return streamModule;
     }
 }
 

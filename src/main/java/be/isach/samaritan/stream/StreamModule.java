@@ -30,14 +30,7 @@ public class StreamModule extends TimerTask {
 
         twitchData.getStreamers().forEach(s -> streamersMap.put(s, null));
 
-        streamersMap.keySet().forEach(channel -> twitch.streams().get(channel, new StreamResponseHandler() {
-            public void onSuccess(Stream stream) {
-                Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
-                streamersMap.put(channel, currentStatus);
-            }
-            public void onFailure(int i, String s, String s1) {}
-            public void onFailure(Throwable throwable) {}
-        }));
+        streamersMap.keySet().forEach(channel -> initChannel(channel));
     }
 
     // Triggers each 30 seconds.
@@ -75,5 +68,24 @@ public class StreamModule extends TimerTask {
         textChannel.sendMessage("Hey! " + channel.getDisplayName() + " est en live !");
         textChannel.sendMessage("Joue à : " + stream.getGame());
         textChannel.sendMessage("\"" + channel.getStatus() + "\" https://twitch.tv/" + channel.getName());
+    }
+
+    public void initChannel(String channel) {
+        twitch.streams().get(channel, new StreamResponseHandler() {
+            public void onSuccess(Stream stream) {
+                Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
+                streamersMap.put(channel.toLowerCase(), currentStatus);
+            }
+
+            public void onFailure(int i, String s, String s1) {
+            }
+
+            public void onFailure(Throwable throwable) {
+            }
+        });
+    }
+
+    public void removeMap(String channel) {
+        streamersMap.remove(channel);
     }
 }
