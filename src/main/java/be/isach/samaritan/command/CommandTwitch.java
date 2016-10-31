@@ -40,6 +40,9 @@ public class CommandTwitch extends Command {
             case "remove":
                 remove(args);
                 break;
+            case "list":
+                list();
+                break;
         }
     }
 
@@ -56,8 +59,18 @@ public class CommandTwitch extends Command {
         JSONObject obj;
         try {
             obj = new JSONObject(new String(Files.readAllBytes(Paths.get("twitch.json"))));
-            JSONArray userObject = obj.getJSONArray("streamers");
-            userObject.put(streamer);
+            JSONArray array = obj.getJSONArray("streamers");
+            final boolean[] existsYet = {false};
+            array.forEach(userObject -> {
+                if(userObject.toString().equalsIgnoreCase(streamer)) {
+                    existsYet[0] = true;
+                }
+            });
+            if(existsYet[1]) {
+                getMessageChannel().sendMessage("Channel " + streamer + " already added");
+                return;
+            }
+            array.put(streamer.toLowerCase());
             Files.write(Paths.get("twitch.json"), obj.toString(4).getBytes());
             getMessageChannel().sendMessage("Channel " + streamer + " added");
             getSamaritan().getStreamModule().initChannel(streamer);
@@ -84,7 +97,7 @@ public class CommandTwitch extends Command {
             boolean found = false;
             for(int i = 0; i < userObject.length(); i++) {
                 Object o = userObject.get(i);
-                if(o.toString().equals(streamer)) {
+                if(o.toString().equalsIgnoreCase(streamer)) {
                     userObject.remove(i);
                     found = true;
                 }
@@ -102,6 +115,23 @@ public class CommandTwitch extends Command {
         }
     }
 
+    private void list() {
+        JSONObject obj;
+        try {
+            obj = new JSONObject(new String(Files.readAllBytes(Paths.get("twitch.json"))));
+            JSONArray array = obj.getJSONArray("streamers");
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("```");
+            stringBuilder.append("Streamers:");
+            array.forEach(streamee -> stringBuilder.append(streamee).append("\n"));
+            stringBuilder.append("```");
+            getMessageChannel().sendMessage(stringBuilder.toString());
+        } catch (IOException e) {
+            getMessageChannel().sendMessage("Error while showing streamers");
+            e.printStackTrace();
+        }
+    }
+
     private void help() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
@@ -109,6 +139,7 @@ public class CommandTwitch extends Command {
         ;
         stringBuilder.append("    -twitch add [streamer]").append("\n");
         stringBuilder.append("    -twitch remove [streamer]");
+        stringBuilder.append("    -twitch list");
         ;
         stringBuilder.append("```");
         getMessageChannel().sendMessage(stringBuilder.toString());
