@@ -122,7 +122,7 @@ public class CommandTwitch extends Command {
             JSONArray array = obj.getJSONArray("streamers");
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("```");
-            stringBuilder.append("Streamers:");
+            stringBuilder.append("Streamers:").append("\n");
             array.forEach(streamee -> stringBuilder.append(streamee).append("\n"));
             stringBuilder.append("```");
             getMessageChannel().sendMessage(stringBuilder.toString());

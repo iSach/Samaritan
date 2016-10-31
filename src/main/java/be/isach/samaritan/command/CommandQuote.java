@@ -1,10 +1,8 @@
 package be.isach.samaritan.command;
 
 import be.isach.samaritan.listener.QuoteHandler;
-import net.dv8tion.jda.MessageHistory;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.TextChannel;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
