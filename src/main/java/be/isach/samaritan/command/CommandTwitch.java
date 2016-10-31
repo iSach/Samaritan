@@ -66,7 +66,7 @@ public class CommandTwitch extends Command {
                     existsYet[0] = true;
                 }
             });
-            if(existsYet[1]) {
+            if(existsYet[0]) {
                 getMessageChannel().sendMessage("Channel " + streamer + " already added");
                 return;
             }
