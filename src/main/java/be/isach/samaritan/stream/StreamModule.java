@@ -48,6 +48,8 @@ public class StreamModule extends TimerTask {
                 public void onSuccess(Stream stream) {
                     Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
 
+                    System.out.println("Checking " + channel + ": " + currentStatus);
+
                     // Goes Online.
                     if (currentStatus == Status.ONLINE && lastStatus == Status.OFFLINE) {
                         broadcastLive(stream);
