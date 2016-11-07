@@ -45,6 +45,7 @@ public class SamaritanMain {
         File configFile = new File(workingDirectory, "config.json");
         File usersFile = new File(workingDirectory, "users.json");
         File twitchConfigFile = new File(workingDirectory, "twitch.json");
+        File beamConfigFile = new File(workingDirectory, "beam.json");
 
         logsFolder.mkdir();
         musicFolder.mkdir();

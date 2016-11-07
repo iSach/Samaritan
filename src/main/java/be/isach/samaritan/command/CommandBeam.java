@@ -110,7 +110,7 @@ public class CommandBeam extends Command {
             }
             getSamaritan().getBeamModule().removeChannel(streamer);
         } catch (IOException e) {
-            getMessageChannel().sendMessage("Error while adding " + streamer);
+            getMessageChannel().sendMessage("Error while removing " + streamer);
             e.printStackTrace();
         }
     }

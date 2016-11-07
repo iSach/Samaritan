@@ -50,7 +50,7 @@ public class CommandTwitch extends Command {
         if (args.length < 2) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("```");
-            stringBuilder.append("-beam add [streamer]");
+            stringBuilder.append("-twitch add [streamer]");
             stringBuilder.append("```");
             getMessageChannel().sendMessage(stringBuilder.toString());
             return;
