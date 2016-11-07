@@ -4,6 +4,7 @@ import com.mb3364.twitch.api.models.Channel;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.entities.TextChannel;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public abstract class StreamModule extends TimerTask {
 
     public StreamModule(JDA jda, StreamData streamData) {
         this.jda = jda;
+        this.streamersMap = new HashMap<>();
 
         streamData.getStreamers().forEach(s -> streamersMap.put(s, null));
         streamersMap.keySet().forEach(this::initialize);
