@@ -17,6 +17,7 @@ repositories {
     }
     maven { url "https://jitpack.io" }
     maven { url "http://isach.be:8081/artifactory/libs-release"}
+    maven { url "https://maven.beam.pro/content/repositories/snapshots/" }
 }
 
 dependencies {
@@ -40,6 +41,7 @@ dependencies {
     compile 'com.github.Grover-c13:PokeGOAPI-Java:dcaa793557'
     compile 'com.google.maps:google-maps-services:0.1.15'
     compile 'com.mb3364.twitch:twitch-api:3.0.1'
+    compile 'pro.beam:api:3.0.0-SNAPSHOT'
 }
 
 task fatJar(type: Jar) {

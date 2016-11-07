@@ -1,12 +1,10 @@
 package be.isach.samaritan;
 
-import POGOProtos.Networking.Envelopes.RequestEnvelopeOuterClass;
 import be.isach.samaritan.birthday.BirthdayTask;
 import be.isach.samaritan.brainfuck.BrainfuckInterpreter;
 import be.isach.samaritan.chat.PrivateMessageChatThread;
 import be.isach.samaritan.command.console.ConsoleListenerThread;
 import be.isach.samaritan.history.MessageHistoryPrinter;
-import be.isach.samaritan.json.AdvancedJSONObject;
 import be.isach.samaritan.level.AccessLevelManager;
 import be.isach.samaritan.listener.CleverBotListener;
 import be.isach.samaritan.listener.CommandListener;
@@ -16,32 +14,26 @@ import be.isach.samaritan.log.SmartLogger;
 import be.isach.samaritan.music.SongPlayer;
 import be.isach.samaritan.pokemongo.LoginData;
 import be.isach.samaritan.runtime.ShutdownThread;
-import be.isach.samaritan.stream.StreamModule;
+import be.isach.samaritan.stream.BeamModule;
+import be.isach.samaritan.stream.StreamData;
+import be.isach.samaritan.stream.TwitchModule;
 import be.isach.samaritan.stream.TwitchData;
 import be.isach.samaritan.util.GifFactory;
 import be.isach.samaritan.util.SamaritanStatus;
 import be.isach.samaritan.websocket.SamaritanWebsocketServer;
 import com.google.maps.GeoApiContext;
 import com.pokegoapi.api.PokemonGo;
-import com.pokegoapi.auth.GoogleAutoCredentialProvider;
-import com.pokegoapi.exceptions.LoginFailedException;
-import com.pokegoapi.exceptions.RemoteServerException;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
 import net.dv8tion.jda.entities.Guild;
 import net.dv8tion.jda.entities.PrivateChannel;
 import net.dv8tion.jda.entities.User;
-import okhttp3.OkHttpClient;
 import org.joda.time.Instant;
-import org.json.JSONObject;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -92,7 +84,12 @@ public class Samaritan {
     /**
      * Stream Module.
      */
-    private StreamModule streamModule;
+    private TwitchModule twitchModule;
+
+    /**
+     * Stream Module.
+     */
+    private BeamModule beamModule;
 
     /**
      * UI WebSocket Server.
@@ -427,13 +424,22 @@ public class Samaritan {
         return loginData;
     }
 
-    public void initStreamModule(TwitchData twitchData) {
-        this.streamModule = new StreamModule(getJda(), twitchData);
-        this.timer.schedule(streamModule, 0L, 25000L);
+    public void initTwitchModule(TwitchData twitchData) {
+        this.twitchModule = new TwitchModule(getJda(), twitchData);
+        this.timer.schedule(twitchModule, 0L, 25000L);
     }
 
-    public StreamModule getStreamModule() {
-        return streamModule;
+    public void initBeamModule(StreamData streamData) {
+        this.beamModule = new BeamModule(getJda(), streamData);
+        this.timer.schedule(beamModule, 0L, 25000L);
+    }
+
+    public TwitchModule getTwitchModule() {
+        return twitchModule;
+    }
+
+    public BeamModule getBeamModule() {
+        return beamModule;
     }
 }
 

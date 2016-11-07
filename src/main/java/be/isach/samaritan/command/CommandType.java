@@ -31,6 +31,7 @@ public enum CommandType {
     BASH(CommandBash.class, 4, "Runs Bash Command", "bash"),
     BRAINFUCK(CommandBrainFuck.class, 0, "Runs BrainFuck code", "brainfuck", "bf"),
     CAT(CommandCat.class, 0, "Shows a cat image", "cat"),
+    BEAM(CommandBeam.class, 2, "Beam Commands", "beam"),
     CLEAN(CommandClean.class, 3, "Cleans fail lol", "clean"),
     CONVERT(CommandConvert.class, 3, "Converts WebM -> mp3", "convert"),
     DOWNLOAD(CommandDownload.class, 3, "Downloads a Youtube Video.", "download"),

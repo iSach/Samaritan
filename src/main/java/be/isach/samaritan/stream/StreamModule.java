@@ -1,91 +1,51 @@
 package be.isach.samaritan.stream;
 
-import com.mb3364.twitch.api.Twitch;
-import com.mb3364.twitch.api.handlers.StreamResponseHandler;
 import com.mb3364.twitch.api.models.Channel;
-import com.mb3364.twitch.api.models.Stream;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.entities.TextChannel;
 
-import java.util.*;
+import java.util.Map;
+import java.util.TimerTask;
+import java.util.stream.Collectors;
 
 /**
- * Created by sacha on 30-10-16.
+ * Created by sacha on 07-11-16.
  */
-public class StreamModule extends TimerTask {
+public abstract class StreamModule extends TimerTask {
 
-    private enum Status {
+    protected enum Status {
         ONLINE, OFFLINE
     }
 
-    private Map<String, Status> streamersMap;
-    private Twitch twitch;
-    private JDA jda;
+    protected Map<String, Status> streamersMap;
+    protected JDA jda;
 
-    public StreamModule(JDA jda, TwitchData twitchData) {
+    public StreamModule(JDA jda, StreamData streamData) {
         this.jda = jda;
-        this.streamersMap = new HashMap<>();
-        this.twitch = new Twitch();
-        twitch.setClientId(twitchData.getClientId());
 
-        twitchData.getStreamers().forEach(s -> streamersMap.put(s, null));
-
-        streamersMap.keySet().forEach(channel -> initChannel(channel));
+        streamData.getStreamers().forEach(s -> streamersMap.put(s, null));
+        streamersMap.keySet().forEach(this::initialize);
     }
 
-    // Triggers each 30 seconds.
+    abstract public void initialize(String channel);
+
+    abstract void check(String channel);
+
+    abstract void broadcastLive(StreamerChannel channel);
+
+    @Override
     public void run() {
-        streamersMap.keySet().forEach(channel -> {
-            Status lastStatus = streamersMap.get(channel);
-            twitch.streams().get(channel, new StreamResponseHandler() {
-                public void onSuccess(Stream stream) {
-                    Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
-
-                    System.out.println("Checking " + channel + ": " + currentStatus);
-
-                    // Goes Online.
-                    if (currentStatus == Status.ONLINE && lastStatus == Status.OFFLINE) {
-                        broadcastLive(stream);
-                    }
-
-                    streamersMap.put(channel, currentStatus);
-                }
-
-                public void onFailure(int i, String s, String s1) {
-
-                }
-
-                public void onFailure(Throwable throwable) {
-
-                }
-            });
-        });
+        streamersMap.keySet().stream().filter(streamer -> streamer != null).forEach(this::check);
     }
 
-    private void broadcastLive(Stream stream) {
-        Channel channel = stream.getChannel();
-        TextChannel textChannel = jda.getTextChannelById("242305313527562240");
-        textChannel.sendMessage("Hey! " + channel.getDisplayName() + " est en live !");
-        textChannel.sendMessage("Joue à : " + stream.getGame());
-        textChannel.sendMessage("\"" + channel.getStatus() + "\" https://twitch.tv/" + channel.getName());
-    }
-
-    public void initChannel(String channel) {
-        twitch.streams().get(channel, new StreamResponseHandler() {
-            public void onSuccess(Stream stream) {
-                Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
-                streamersMap.put(channel.toLowerCase(), currentStatus);
-            }
-
-            public void onFailure(int i, String s, String s1) {
-            }
-
-            public void onFailure(Throwable throwable) {
-            }
-        });
-    }
-
-    public void removeMap(String channel) {
+    public final void removeChannel(String channel) {
         streamersMap.remove(channel);
+    }
+
+    protected final void sendMessage(String... messages) {
+        TextChannel textChannel = jda.getTextChannelById("242305313527562240");
+        for (String message : messages) {
+            textChannel.sendMessage(message);
+        }
     }
 }

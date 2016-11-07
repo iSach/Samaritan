@@ -3,6 +3,7 @@ package be.isach.samaritan.start;
 import be.isach.samaritan.Samaritan;
 import be.isach.samaritan.json.AdvancedJSONObject;
 import be.isach.samaritan.pokemongo.LoginData;
+import be.isach.samaritan.stream.StreamData;
 import be.isach.samaritan.stream.TwitchData;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -97,24 +98,38 @@ public class SamaritanMain {
         }
 
         // Twitch.json
+        createJsonFileStream("twitch", samaritan);
+
+        // Beam.json
+        createJsonFileStream("beam", samaritan);
+    }
+
+    private static void createJsonFileStream(String platform, Samaritan samaritan) {
         try {
-            AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get("twitch.json"))));
-            String clientId = object.getString("twitch-client-id");
+            AdvancedJSONObject object = new AdvancedJSONObject(new String(Files.readAllBytes(Paths.get(platform + ".json"))));
             JSONArray array = object.getJSONArray("streamers");
             List<String> streamers = new ArrayList<>();
             array.forEach(streamer -> streamers.add(streamer.toString().toLowerCase()));
-            TwitchData twitchData = new TwitchData(clientId, streamers);
-            samaritan.initStreamModule(twitchData);
+            if(platform.equals("twitch")) {
+                String clientId = object.getString("twitch-client-id");
+                TwitchData twitchData = new TwitchData(clientId, streamers);
+                samaritan.initTwitchModule(twitchData);
+            } else {
+                StreamData streamData = new StreamData(streamers);
+                samaritan.initBeamModule(streamData);
+            }
         } catch (IOException e) {
-            System.out.println("No twitch.json detected. Generating new one.");
+            System.out.println("No " + platform + ".json detected. Generating new one.");
             System.out.println("");
             JSONObject object = new JSONObject();
-            object.put("twitch-client-id", "yourclientid");
+            if (platform.equalsIgnoreCase("twitch")) {
+                object.put("twitch-client-id", "yourclientid");
+            }
             JSONArray array = new JSONArray();
             array.put("isachhh");
             object.put("streamers", array);
             try {
-                Files.write(Paths.get("twitch.json"), object.toString(4).getBytes());
+                Files.write(Paths.get(platform + ".json"), object.toString(4).getBytes());
             } catch (IOException e1) {
                 System.out.println("No twitch.json was found, and Samaritan failed to generate a new one.");
                 e1.printStackTrace();

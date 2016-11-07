@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 /**
  * Created by sacha on 31-10-16.
  */
-public class CommandTwitch extends Command {
+public class CommandBeam extends Command {
     /**
      * Command Constructor.
      *
@@ -19,7 +19,7 @@ public class CommandTwitch extends Command {
      * @param commandData    The Command Data, providing the Guild, the executor and the Samaritan instance.
      * @param args           The args provided when command was called.
      */
-    CommandTwitch(MessageChannel messageChannel, CommandData commandData, String[] args) {
+    CommandBeam(MessageChannel messageChannel, CommandData commandData, String[] args) {
         super(messageChannel, commandData, args);
     }
 
@@ -58,7 +58,7 @@ public class CommandTwitch extends Command {
         String streamer = args[1];
         JSONObject obj;
         try {
-            obj = new JSONObject(new String(Files.readAllBytes(Paths.get("twitch.json"))));
+            obj = new JSONObject(new String(Files.readAllBytes(Paths.get("beam.json"))));
             JSONArray array = obj.getJSONArray("streamers");
             final boolean[] existsYet = {false};
             array.forEach(userObject -> {
@@ -71,9 +71,9 @@ public class CommandTwitch extends Command {
                 return;
             }
             array.put(streamer.toLowerCase());
-            Files.write(Paths.get("twitch.json"), obj.toString(4).getBytes());
+            Files.write(Paths.get("beam.json"), obj.toString(4).getBytes());
             getMessageChannel().sendMessage("Channel " + streamer + " added");
-            getSamaritan().getTwitchModule().initialize(streamer);
+            getSamaritan().getBeamModule().initialize(streamer);
         } catch (IOException e) {
             getMessageChannel().sendMessage("Error while adding " + streamer);
             e.printStackTrace();
@@ -84,7 +84,7 @@ public class CommandTwitch extends Command {
         if (args.length < 2) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("```");
-            stringBuilder.append("-twitch remove [streamer]");
+            stringBuilder.append("-beam remove [streamer]");
             stringBuilder.append("```");
             getMessageChannel().sendMessage(stringBuilder.toString());
             return;
@@ -92,7 +92,7 @@ public class CommandTwitch extends Command {
         String streamer = args[1];
         JSONObject obj;
         try {
-            obj = new JSONObject(new String(Files.readAllBytes(Paths.get("twitch.json"))));
+            obj = new JSONObject(new String(Files.readAllBytes(Paths.get("beam.json"))));
             JSONArray userObject = obj.getJSONArray("streamers");
             boolean found = false;
             for(int i = 0; i < userObject.length(); i++) {
@@ -102,13 +102,13 @@ public class CommandTwitch extends Command {
                     found = true;
                 }
             }
-            Files.write(Paths.get("twitch.json"), obj.toString(4).getBytes());
+            Files.write(Paths.get("beam.json"), obj.toString(4).getBytes());
             if(found){
                 getMessageChannel().sendMessage("Channel " + streamer + " removed");
             } else {
                 getMessageChannel().sendMessage("Channel " + streamer + " is not an added streamer.");
             }
-            getSamaritan().getTwitchModule().removeChannel(streamer);
+            getSamaritan().getBeamModule().removeChannel(streamer);
         } catch (IOException e) {
             getMessageChannel().sendMessage("Error while adding " + streamer);
             e.printStackTrace();
@@ -118,7 +118,7 @@ public class CommandTwitch extends Command {
     private void list() {
         JSONObject obj;
         try {
-            obj = new JSONObject(new String(Files.readAllBytes(Paths.get("twitch.json"))));
+            obj = new JSONObject(new String(Files.readAllBytes(Paths.get("beam.json"))));
             JSONArray array = obj.getJSONArray("streamers");
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("```");
@@ -137,9 +137,9 @@ public class CommandTwitch extends Command {
         stringBuilder.append("```");
         stringBuilder.append("Sub-Commands:").append("\n");
         ;
-        stringBuilder.append("    -twitch add [streamer]").append("\n");
-        stringBuilder.append("    -twitch remove [streamer]");
-        stringBuilder.append("    -twitch list");
+        stringBuilder.append("    -beam add [streamer]").append("\n");
+        stringBuilder.append("    -beam remove [streamer]");
+        stringBuilder.append("    -beam list");
         ;
         stringBuilder.append("```");
         getMessageChannel().sendMessage(stringBuilder.toString());
