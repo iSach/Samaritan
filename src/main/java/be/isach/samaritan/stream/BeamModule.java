@@ -73,7 +73,8 @@ public class BeamModule extends StreamModule {
 
     @Override
     void broadcastLive(StreamerChannel channel) {
-        sendMessage("Hey! " + channel.getDisplayName() + " est en live sur Beam !");
-        sendMessage("https://beam.pro/" + channel.getChannelName());
+        String disName = channel.getDisplayName().replace("'s Channel", "");
+        sendMessage("Hey! " + disName + " est en live sur Beam !");
+        sendMessage("https://beam.pro/" + disName);
     }
 }
