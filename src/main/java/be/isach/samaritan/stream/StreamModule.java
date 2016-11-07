@@ -26,7 +26,6 @@ public abstract class StreamModule extends TimerTask {
         this.streamersMap = new HashMap<>();
 
         streamData.getStreamers().forEach(s -> streamersMap.put(s, null));
-        streamersMap.keySet().forEach(this::initialize);
     }
 
     abstract public void initialize(String channel);
@@ -49,5 +48,9 @@ public abstract class StreamModule extends TimerTask {
         for (String message : messages) {
             textChannel.sendMessage(message);
         }
+    }
+
+    protected final void initChannels() {
+        streamersMap.keySet().forEach(this::initialize);
     }
 }

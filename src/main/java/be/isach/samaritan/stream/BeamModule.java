@@ -26,6 +26,7 @@ public class BeamModule extends StreamModule {
 
     public BeamModule(JDA jda, StreamData streamData) {
         super(jda, streamData);
+        initChannels();
     }
 
     @Override

@@ -21,6 +21,7 @@ public class TwitchModule extends StreamModule {
 
         this.twitch = new Twitch();
         twitch.setClientId(twitchData.getClientId());
+        initChannels();
     }
 
     @Override
