@@ -49,14 +49,18 @@ public class TwitchModule extends StreamModule {
 
                 System.out.println("Checking " + channel + ": " + currentStatus);
 
-                String displayName = stream.getChannel().getStatus();
-                String game = stream.getGame();
+                if (stream != null) {
 
-                StreamerChannel streamerChannel = new StreamerChannel(game, displayName, channel);
+                    String displayName = stream.getChannel().getStatus();
+                    String game = stream.getGame();
 
-                // Goes Online.
-                if (currentStatus == Status.ONLINE && lastStatus == Status.OFFLINE) {
-                    broadcastLive(streamerChannel);
+                    StreamerChannel streamerChannel = new StreamerChannel(game, displayName, channel);
+
+                    // Goes Online.
+                    if (currentStatus == Status.ONLINE && lastStatus == Status.OFFLINE) {
+                        broadcastLive(streamerChannel);
+                    }
+
                 }
 
                 streamersMap.put(channel, currentStatus);
