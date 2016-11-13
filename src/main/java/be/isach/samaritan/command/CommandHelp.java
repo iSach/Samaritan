@@ -89,7 +89,7 @@ class CommandHelp extends Command {
     }
 
     private int getMaxPages() {
-        return (int)Math.ceil(CommandType.values().length / COMMANDS_PER_PAGE);
+        return (int)Math.ceil(CommandType.values().length / (double)COMMANDS_PER_PAGE);
     }
 
     private void onHelpForCommand(String commandLabel) {
