@@ -182,9 +182,10 @@ public class CommandGroup extends Command {
             langsPos++;
         }
         int i = 0;
+        getMessageChannel().sendMessage(langsPos);
         for(Role role : getGuild().getRoles()) {
             if(i > langsPos && !role.getName().contains("everyone")) {
-                stringBuilder.append("  ").append(role.getName().toLowerCase()).append("\n");
+                stringBuilder.append("  ").append(role.getName().toLowerCase()).append("   ").append(i).append("\n");
             }
             i++;
         }
