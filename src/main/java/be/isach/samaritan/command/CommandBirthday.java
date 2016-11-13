@@ -1,11 +1,8 @@
 package be.isach.samaritan.command;
 
 import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.User;
-import net.dv8tion.jda.utils.PermissionUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import pro.beam.api.resource.BeamUser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +11,7 @@ import java.nio.file.Paths;
 /**
  * Created by sacha on 31-10-16.
  */
-public class CommandTwitch extends Command {
+public class CommandBirthday extends Command {
     /**
      * Command Constructor.
      *
@@ -22,7 +19,7 @@ public class CommandTwitch extends Command {
      * @param commandData    The Command Data, providing the Guild, the executor and the Samaritan instance.
      * @param args           The args provided when command was called.
      */
-    CommandTwitch(MessageChannel messageChannel, CommandData commandData, String[] args) {
+    CommandBirthday(MessageChannel messageChannel, CommandData commandData, String[] args) {
         super(messageChannel, commandData, args);
     }
 
@@ -53,7 +50,7 @@ public class CommandTwitch extends Command {
         if (args.length < 2) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("```");
-            stringBuilder.append("-twitch add [streamer]");
+            stringBuilder.append("-birthday add @User DD/MM/YYYY [HH:MM]");
             stringBuilder.append("```");
             getMessageChannel().sendMessage(stringBuilder.toString());
             return;

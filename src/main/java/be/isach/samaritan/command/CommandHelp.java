@@ -1,5 +1,6 @@
 package be.isach.samaritan.command;
 
+import be.isach.samaritan.util.MathUtils;
 import be.isach.samaritan.util.SamaritanConstants;
 import be.isach.samaritan.util.TextUtil;
 import net.dv8tion.jda.entities.MessageChannel;
@@ -14,6 +15,8 @@ import net.dv8tion.jda.entities.MessageChannel;
  * Shows commands.
  */
 class CommandHelp extends Command {
+
+    private static final int COMMANDS_PER_PAGE = 10;
 
     /**
      * Command Constructor.
@@ -33,20 +36,44 @@ class CommandHelp extends Command {
      */
     @Override
     void onExecute(String[] args) {
+        int page = 1;
         if (args != null && args.length > 0 && !args[0].isEmpty()) {
-            onHelpForCommand(args[0]);
-            return;
+            if(MathUtils.isInteger(args[0])) {
+                page = Integer.parseInt(args[0]);
+            } else {
+                onHelpForCommand(args[0]);
+                return;
+            }
         }
+        page = Math.max(1, page);
+        page = Math.max(getMaxPages(), page);
+        showHelp(page);
+    }
+
+    /*
+    Page 1: from: 0
+            to: 9
+    Page 2: from: 10
+            to: 18
+
+            -> from = (page - 1) * COMMANDS_PER_PAGE
+               to   = (COMMANDS_PER_PAGE - 1) * page
+     */
+    private void showHelp(int page) {
         int totalScale = CommandType.longestStringLength() + 7;
         int totalScaleDesc = CommandType.longestDescriptionLength() + 6;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
-        stringBuilder.append(" \nAvailable commands: \n\n\n");
+        stringBuilder.append(" \nAvailable commands: \n");
+        stringBuilder.append(" \nPage ").append(page).append("/").append(getMaxPages()).append("  (-help [page]) \n\n");
         stringBuilder.append("Alias").append(TextUtil.getSpaces(totalScale - "Alias".length())).append(" ");
         stringBuilder.append("Description").append(TextUtil.getSpaces(totalScaleDesc - "Description".length()));
         stringBuilder.append("Required Access Level");
         stringBuilder.append("\n\n");
-        for (CommandType commandType : CommandType.values()) {
+        int from = (page - 1) * COMMANDS_PER_PAGE;
+        int to = (COMMANDS_PER_PAGE - 1) * page;
+        for (int i = from; i <= to; i++) {
+            CommandType commandType = CommandType.values()[i];
             String access = commandType.getRequiredAccessLevel() + "";
             String alias = commandType.getAliases().get(0) + TextUtil.getSpaces(totalScale - commandType.getAliases().get(0).length());
             String desc = commandType.getDescription() + TextUtil.getSpaces(totalScaleDesc - commandType.getDescription().length());
@@ -57,6 +84,10 @@ class CommandHelp extends Command {
         }
         stringBuilder.append("```");
         getMessageChannel().sendMessage(stringBuilder.toString());
+    }
+
+    private int getMaxPages() {
+        return (int)Math.ceil(CommandType.values().length / COMMANDS_PER_PAGE);
     }
 
     private void onHelpForCommand(String commandLabel) {
