@@ -174,7 +174,13 @@ public class CommandGroup extends Command {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
         stringBuilder.append("Joinable groups:").append("\n");
-        int langsPos = getGuild().getRoleById("langs").getPosition();
+        int langsPos = 0;
+        for(Role role : getGuild().getRoles()) {
+            if(role.getName().equalsIgnoreCase("langs")) {
+                langsPos = role.getPosition();
+                break;
+            }
+        }
         for(Role role : getGuild().getRoles()) {
             if(role.getPosition() < langsPos && role.getPosition() >= 0) {
                 stringBuilder.append("  ").append(role.getName().toLowerCase()).append("\n");
