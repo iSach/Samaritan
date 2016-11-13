@@ -182,7 +182,7 @@ public class CommandGroup extends Command {
             }
         }
 
-        getMessageChannel().sendMessage(indexOfLangs);
+        getMessageChannel().sendMessage(indexOfLangs + "");
 
         for(Role role : getGuild().getRoles()) {
             if(role.getPosition() > indexOfLangs
