@@ -73,7 +73,7 @@ class CommandHelp extends Command {
         stringBuilder.append("Required Access Level");
         stringBuilder.append("\n\n");
         int from = (page - 1) * COMMANDS_PER_PAGE;
-        int to = COMMANDS_PER_PAGE * page - 1;
+        int to = Math.min(CommandType.values().length, COMMANDS_PER_PAGE * page - 1);
         for (int i = from; i <= to; i++) {
             CommandType commandType = CommandType.values()[i];
             String access = commandType.getRequiredAccessLevel() + "";
