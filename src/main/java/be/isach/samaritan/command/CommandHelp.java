@@ -46,7 +46,7 @@ class CommandHelp extends Command {
             }
         }
         page = Math.max(1, page);
-        page = Math.max(getMaxPages(), page);
+        page = Math.min(getMaxPages(), page);
         showHelp(page);
     }
 
@@ -64,7 +64,7 @@ class CommandHelp extends Command {
         int totalScaleDesc = CommandType.longestDescriptionLength() + 6;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
-        stringBuilder.append(" \nAvailable commands: \n");
+        stringBuilder.append(" \nAvailable commands (Total: " + getMaxPages() + "): \n");
         stringBuilder.append(" \nPage ").append(page).append("/").append(getMaxPages()).append("  (-help [page]) \n\n");
         stringBuilder.append("Alias").append(TextUtil.getSpaces(totalScale - "Alias".length())).append(" ");
         stringBuilder.append("Description").append(TextUtil.getSpaces(totalScaleDesc - "Description".length()));
