@@ -54,14 +54,16 @@ class CommandHelp extends Command {
     Page 1: from: 0
             to: 9
     Page 2: from: 10
-            to: 18
+            to: 19
+    Page 3: from: 20
+            to: 29
 
             -> from = (page - 1) * COMMANDS_PER_PAGE
-               to   = (COMMANDS_PER_PAGE - 1) * page
+               to   = page*COMMANDS_PER_PAGE - 1
      */
     private void showHelp(int page) {
-        int totalScale = CommandType.longestStringLength() + 7;
-        int totalScaleDesc = CommandType.longestDescriptionLength() + 6;
+        int totalScale = CommandType.longestStringLength() + 4;
+        int totalScaleDesc = CommandType.longestDescriptionLength() + 4;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
         stringBuilder.append(" \nAvailable commands (Total: " + getMaxPages() + "): \n");
@@ -71,7 +73,7 @@ class CommandHelp extends Command {
         stringBuilder.append("Required Access Level");
         stringBuilder.append("\n\n");
         int from = (page - 1) * COMMANDS_PER_PAGE;
-        int to = (COMMANDS_PER_PAGE - 1) * page;
+        int to = COMMANDS_PER_PAGE * page - 1;
         for (int i = from; i <= to; i++) {
             CommandType commandType = CommandType.values()[i];
             String access = commandType.getRequiredAccessLevel() + "";
