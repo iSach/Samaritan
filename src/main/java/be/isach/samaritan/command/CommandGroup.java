@@ -174,8 +174,18 @@ public class CommandGroup extends Command {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
         stringBuilder.append("Joinable groups:").append("\n");
+
+        int indexOfLangs = 9;
+        for(int i = 0; i < getGuild().getRoles().size(); i++) {
+            if(getGuild().getRoles().get(i).getName().equalsIgnoreCase("langs")) {
+                indexOfLangs = i;
+            }
+        }
+
+        getMessageChannel().sendMessage(indexOfLangs);
+
         for(Role role : getGuild().getRoles()) {
-            if(role.getPosition() > (getGuild().getRoles().size() - 7)
+            if(role.getPosition() > indexOfLangs
                     || role.getName().contains("everyone")) {
                 continue;
             }
