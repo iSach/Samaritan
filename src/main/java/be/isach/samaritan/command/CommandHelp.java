@@ -50,23 +50,12 @@ class CommandHelp extends Command {
         showHelp(page);
     }
 
-    /*
-    Page 1: from: 0
-            to: 9
-    Page 2: from: 10
-            to: 19
-    Page 3: from: 20
-            to: 29
-
-            -> from = (page - 1) * COMMANDS_PER_PAGE
-               to   = page*COMMANDS_PER_PAGE - 1
-     */
     private void showHelp(int page) {
         int totalScale = CommandType.longestStringLength() + 4;
         int totalScaleDesc = CommandType.longestDescriptionLength() + 4;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
-        stringBuilder.append(" \nAvailable commands (Total: " + getMaxPages() + "): \n");
+        stringBuilder.append(" \nAvailable commands (Total: " + CommandType.values().length + "): \n");
         stringBuilder.append(" \nPage ").append(page).append("/").append(getMaxPages()).append("  (-help [page]) \n\n");
         stringBuilder.append("Alias").append(TextUtil.getSpaces(totalScale - "Alias".length())).append(" ");
         stringBuilder.append("Description").append(TextUtil.getSpaces(totalScaleDesc - "Description".length()));
