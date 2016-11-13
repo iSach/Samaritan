@@ -182,17 +182,13 @@ public class CommandGroup extends Command {
             }
         }
 
-        getMessageChannel().sendMessage(indexOfLangs + "");
-
-        int i = 0;
         for(Role role : getGuild().getRoles()) {
-            //if(role.getPosition() > indexOfLangs
-            //        || role.getName().contains("everyone")) {
-            //   continue;
-            //}
+            if(role.getPosition() <= indexOfLangs
+                    || role.getName().contains("everyone")) {
+                continue;
+            }
 
-            stringBuilder.append("  ").append(role.getName().toLowerCase()).append("   ").append(i).append("\n");
-            i++;
+            stringBuilder.append("  ").append(role.getName().toLowerCase()).append("\n");
         }
         stringBuilder.append("```");
         getMessageChannel().sendMessage(stringBuilder.toString());
