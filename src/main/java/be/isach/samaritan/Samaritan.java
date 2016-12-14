@@ -218,7 +218,7 @@ public class Samaritan {
         quoteHandler.start();
 
         timer.schedule(birthdayTask, 0L, 1000L * 60L);
-        timer.schedule(colorfulRankChanger, 0L, 1000L * 2L);
+        timer.schedule(colorfulRankChanger, 0L, 500L);
 
         this.accessLevelManager.loadUsers();
 
