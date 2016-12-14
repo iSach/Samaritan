@@ -52,13 +52,13 @@ public class CommandCleanAccueil extends Command {
         TextChannel messageChannel = getJda().getTextChannelById("258546506636853248");
         MessageHistory messageHistory = new MessageHistory(messageChannel);
         while (messageHistory.retrieve(5).size() > 0) {
-            List<Message> messages = messageHistory.retrieve(200);
+            List<Message> messages = messageHistory.retrieve(5);
             Collections.reverse(messages);
             for (int i = 1; i < messages.size(); i++) {
                 messages.get(i).deleteMessage();
             }
             try {
-                sleep(3000);
+                sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
