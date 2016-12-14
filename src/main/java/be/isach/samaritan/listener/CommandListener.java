@@ -1,7 +1,7 @@
 package be.isach.samaritan.listener;
 
 import be.isach.samaritan.Samaritan;
-import be.isach.samaritan.command.CommandType;
+import be.isach.samaritan.command.Commands;
 import be.isach.samaritan.util.SamaritanConstants;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
@@ -44,7 +44,7 @@ public class CommandListener extends ListenerAdapter {
         for (String s : event.getMessage().getContent().split(" && ")) {
             String commandFiltered = s.replaceFirst(Character.toString(SamaritanConstants.PREFIX), "");
             String commandLabel = commandFiltered.split(" ")[0];
-            for (CommandType commandType : CommandType.values()) {
+            for (Commands commandType : Commands.values()) {
                 if (commandType.correspondsTo(commandLabel)) {
                     if (!samaritan.getAccessLevelManager().hasAccessLevel(commandType.getRequiredAccessLevel(), event.getAuthor())) {
                         event.getChannel().sendMessage("You don't have the required access level for that! (you have: "

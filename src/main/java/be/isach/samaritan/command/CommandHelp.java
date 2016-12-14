@@ -51,20 +51,20 @@ class CommandHelp extends Command {
     }
 
     private void showHelp(int page) {
-        int totalScale = CommandType.longestStringLength() + 4;
-        int totalScaleDesc = CommandType.longestDescriptionLength() + 4;
+        int totalScale = Commands.longestStringLength() + 4;
+        int totalScaleDesc = Commands.longestDescriptionLength() + 4;
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("```");
-        stringBuilder.append(" \nAvailable commands (Total: " + CommandType.values().length + "): \n");
+        stringBuilder.append(" \nAvailable commands (Total: " + Commands.values().length + "): \n");
         stringBuilder.append(" \nPage ").append(page).append("/").append(getMaxPages()).append("  (-help [page]) \n\n");
         stringBuilder.append("Alias").append(TextUtil.getSpaces(totalScale - "Alias".length())).append(" ");
         stringBuilder.append("Description").append(TextUtil.getSpaces(totalScaleDesc - "Description".length()));
         stringBuilder.append("Required Access Level");
         stringBuilder.append("\n\n");
         int from = (page - 1) * COMMANDS_PER_PAGE;
-        int to = Math.min(CommandType.values().length - 1, COMMANDS_PER_PAGE * page - 1);
+        int to = Math.min(Commands.values().length - 1, COMMANDS_PER_PAGE * page - 1);
         for (int i = from; i <= to; i++) {
-            CommandType commandType = CommandType.values()[i];
+            Commands commandType = Commands.values()[i];
             String access = commandType.getRequiredAccessLevel() + "";
             String alias = commandType.getAliases().get(0) + TextUtil.getSpaces(totalScale - commandType.getAliases().get(0).length());
             String desc = commandType.getDescription() + TextUtil.getSpaces(totalScaleDesc - commandType.getDescription().length());
@@ -78,15 +78,15 @@ class CommandHelp extends Command {
     }
 
     private int getMaxPages() {
-        return (int)Math.ceil(CommandType.values().length / (double)COMMANDS_PER_PAGE);
+        return (int)Math.ceil(Commands.values().length / (double)COMMANDS_PER_PAGE);
     }
 
     private void onHelpForCommand(String commandLabel) {
-        if (!CommandType.isValidCommandAlias(commandLabel)) {
+        if (!Commands.isValidCommandAlias(commandLabel)) {
             getMessageChannel().sendMessage("```" + commandLabel + "``` isn't a valid command!");
             return;
         }
-        CommandType commandType = CommandType.fromAlias(commandLabel);
+        Commands commandType = Commands.fromAlias(commandLabel);
         String stringBuilder = "\nCommand " +
                 commandLabel +
                 "\n" +

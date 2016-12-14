@@ -19,7 +19,7 @@ import java.util.List;
  * <p>
  * Commands registry, all commands are registered here.
  */
-public enum CommandType {
+public enum Commands {
 
     /**
      * REMINDER:
@@ -84,7 +84,7 @@ public enum CommandType {
      */
     private int requiredAccessLevel;
 
-    CommandType(Class<? extends Command> clazz, int requiredAccessLevel, String description, String... aliases) {
+    Commands(Class<? extends Command> clazz, int requiredAccessLevel, String description, String... aliases) {
         this.clazz = clazz;
         this.aliases = Arrays.asList(aliases);
         this.description = description;
@@ -95,8 +95,8 @@ public enum CommandType {
      * @param alias The command alias.
      * @return The command corresponding to given alias.
      */
-    public static CommandType fromAlias(String alias) {
-        for (CommandType commandType : values()) {
+    public static Commands fromAlias(String alias) {
+        for (Commands commandType : values()) {
             if (commandType.correspondsTo(alias)) return commandType;
         }
         return null;
@@ -148,7 +148,7 @@ public enum CommandType {
      * @return {@code true} if the alias corresponds to any command, {@code false} otherwise.
      */
     public static boolean isValidCommandAlias(String alias) {
-        for (CommandType commandsRegistry : values()) {
+        for (Commands commandsRegistry : values()) {
             if (commandsRegistry.correspondsTo(alias)) return true;
         }
         return false;
@@ -159,7 +159,7 @@ public enum CommandType {
      */
     public static int longestStringLength() {
         int longest = 0;
-        for (CommandType commandsRegistry : values())
+        for (Commands commandsRegistry : values())
             longest = Math.max(longest, commandsRegistry.getAliases().get(0).length());
         return longest;
     }
@@ -169,7 +169,7 @@ public enum CommandType {
      */
     public static int longestDescriptionLength() {
         int longest = 0;
-        for (CommandType commandsRegistry : values())
+        for (Commands commandsRegistry : values())
             longest = Math.max(longest, commandsRegistry.getDescription().length());
         return longest;
     }
