@@ -51,10 +51,10 @@ public class CommandCleanAccueil extends Command {
     private void cleanChannel() {
         TextChannel messageChannel = getJda().getTextChannelById("258546506636853248");
         MessageHistory messageHistory = new MessageHistory(messageChannel);
-        while (messageHistory.retrieve(200).size() > 0) {
-            List<Message> messages = messageHistory.retrieve(200);
+        while (messageHistory.retrieve(10).size() >= 2) {
+            List<Message> messages = messageHistory.retrieve(10);
             Collections.reverse(messages);
-            for (int i = 1; i < 5; i++) {
+            for (int i = 0; i < messages.size(); i++) {
                 messages.get(i).deleteMessage();
             }
             try {
