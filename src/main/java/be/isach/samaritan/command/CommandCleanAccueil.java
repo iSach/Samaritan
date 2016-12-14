@@ -7,6 +7,7 @@ import net.dv8tion.jda.entities.MessageChannel;
 import net.dv8tion.jda.entities.TextChannel;
 import net.dv8tion.jda.utils.PermissionUtil;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -51,6 +52,7 @@ public class CommandCleanAccueil extends Command {
         TextChannel messageChannel = getJda().getTextChannelById("258546506636853248");
         MessageHistory messageHistory = new MessageHistory(messageChannel);
         List<Message> messages = messageHistory.retrieve(200);
+        Collections.reverse(messages);
         for(int i = 1; i < messages.size(); i++) {
             messages.get(i).deleteMessage();
         }

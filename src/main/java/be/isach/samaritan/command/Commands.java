@@ -33,7 +33,7 @@ public enum Commands {
     CAT(CommandCat.class, 0, "Shows a cat image", "cat"),
     BEAM(CommandBeam.class, 2, "Beam Commands", "beam"),
     CLEAN(CommandClean.class, 3, "Cleans fail lol", "clean"),
-    CLEANACCUEIL(CommandCleanAccueil.class, 1, "Cleans Le Accueil eksdee", "cleanacc"),
+    CLEANACCUEIL(CommandCleanAccueil.class, 1, "Cleans Le Accueil eksdee", "cleanacc", "ca"),
     CONVERT(CommandConvert.class, 3, "Converts WebM -> mp3", "convert"),
     DOWNLOAD(CommandDownload.class, 3, "Downloads a Youtube Video.", "download"),
     EVAL(CommandEval.class, 3, "Runs JS code.", "eval"),
