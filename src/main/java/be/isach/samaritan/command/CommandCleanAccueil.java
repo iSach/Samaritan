@@ -35,12 +35,12 @@ public class CommandCleanAccueil extends Command {
      */
     @Override
     void onExecute(String[] args) {
-        if(!getGuild().getId().equals("186941943941562369")) {
+        if (!getGuild().getId().equals("186941943941562369")) {
             getMessageChannel().sendMessage("Not allowed");
             return;
         }
 
-        if(!PermissionUtil.checkPermission(getExecutor(), Permission.ADMINISTRATOR, getGuild())) {
+        if (!PermissionUtil.checkPermission(getExecutor(), Permission.ADMINISTRATOR, getGuild())) {
             getMessageChannel().sendMessage("Not allowed");
             return;
         }
@@ -51,10 +51,17 @@ public class CommandCleanAccueil extends Command {
     private void cleanChannel() {
         TextChannel messageChannel = getJda().getTextChannelById("258546506636853248");
         MessageHistory messageHistory = new MessageHistory(messageChannel);
-        List<Message> messages = messageHistory.retrieve(200);
-        Collections.reverse(messages);
-        for(int i = 1; i < messages.size(); i++) {
-            messages.get(i).deleteMessage();
+        while (messageHistory.retrieve(5).size() > 0) {
+            List<Message> messages = messageHistory.retrieve(200);
+            Collections.reverse(messages);
+            for (int i = 1; i < messages.size(); i++) {
+                messages.get(i).deleteMessage();
+            }
+            try {
+                sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
