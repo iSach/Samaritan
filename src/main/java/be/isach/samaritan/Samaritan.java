@@ -3,6 +3,7 @@ package be.isach.samaritan;
 import be.isach.samaritan.birthday.BirthdayTask;
 import be.isach.samaritan.brainfuck.BrainfuckInterpreter;
 import be.isach.samaritan.chat.PrivateMessageChatThread;
+import be.isach.samaritan.colorfulrank.ColorfulRankChanger;
 import be.isach.samaritan.command.console.ConsoleListenerThread;
 import be.isach.samaritan.history.MessageHistoryPrinter;
 import be.isach.samaritan.level.AccessLevelManager;
@@ -137,6 +138,11 @@ public class Samaritan {
     private BirthdayTask birthdayTask;
 
     /**
+     * Colorful rank color changer task
+     */
+    private ColorfulRankChanger colorfulRankChanger;
+
+    /**
      * Timer.
      */
     private Timer timer;
@@ -206,11 +212,13 @@ public class Samaritan {
 
         this.quoteHandler = new QuoteHandler(jda);
         this.birthdayTask = new BirthdayTask(this);
+        this.colorfulRankChanger = new ColorfulRankChanger(this);
         this.timer = new Timer();
 
         quoteHandler.start();
 
         timer.schedule(birthdayTask, 0L, 1000L * 60L);
+        timer.schedule(colorfulRankChanger, 0L, 1000L * 2L);
 
         this.accessLevelManager.loadUsers();
 
