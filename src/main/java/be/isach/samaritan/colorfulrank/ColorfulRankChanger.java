@@ -33,6 +33,8 @@ public class ColorfulRankChanger extends TimerTask {
     @Override
     public void run() {
         colorfulRole.getManager().setColor(randomizeColor());
+        colorfulRole.getManager().update();
+        System.out.println("ColorfulRankManager: Updated Color.");
     }
 
     private Color randomizeColor() {
