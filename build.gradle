@@ -26,6 +26,7 @@ dependencies {
     compile('at.mukprojects:giphy4j:1.0.1') {
         exclude group: 'org.apache.commons'
     }
+
     compile('com.github.axet:vget:1.1.33') {
         exclude group: 'commons-io'
     }
