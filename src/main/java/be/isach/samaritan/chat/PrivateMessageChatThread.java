@@ -5,10 +5,10 @@ import com.google.code.chatterbotapi.ChatterBot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
-import net.dv8tion.jda.JDA;
-import net.dv8tion.jda.entities.Message;
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
 
 import java.util.List;
 import java.util.Map;
@@ -101,7 +101,7 @@ public class PrivateMessageChatThread extends MessageScanningThread {
             try {
                 String reply = botSession.think(s);
                 getMessageChannel().sendMessage(reply);
-                debugMessage(nM.getAuthor().getUsername(), s, reply);
+                debugMessage(nM.getAuthor().getName(), s, reply);
                 sleep(750);
             } catch (Exception e) {
                 e.printStackTrace();

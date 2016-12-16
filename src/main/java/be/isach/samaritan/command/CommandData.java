@@ -1,8 +1,8 @@
 package be.isach.samaritan.command;
 
 import be.isach.samaritan.Samaritan;
-import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.User;
 
 /**
  * Project: samaritan

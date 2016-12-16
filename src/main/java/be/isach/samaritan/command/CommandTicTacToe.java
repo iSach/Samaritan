@@ -1,11 +1,11 @@
 package be.isach.samaritan.command;
 
-import net.dv8tion.jda.OnlineStatus;
-import net.dv8tion.jda.entities.Message;
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.User;
-import net.dv8tion.jda.events.Event;
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 
 /**
  * Project: samaritan
@@ -72,13 +72,13 @@ public class CommandTicTacToe extends Command {
             getMessageChannel().sendMessage("Who do you want to play against?");
             opponentUsername = nextMessage().getContent().split(" ")[0];
         }
-        this.opponent = getJda().getUsersByName(opponentUsername).get(0);
-        if (opponent == null || opponent.getOnlineStatus() != OnlineStatus.ONLINE) {
+        this.opponent = getJda().getUsersByName(opponentUsername, true).get(0);
+        if (opponent == null || getGuild().getMember(opponent).getOnlineStatus() != OnlineStatus.ONLINE) {
             getMessageChannel().sendMessage("This user isn't online, or doesn't exist.");
             return;
         }
         getMessageChannel().sendMessage("Starting Tic Tac Toe game!\n" +
-                "Opposing " + getExecutor().getUsername() + "(X) and " + opponent.getUsername() + "(O) !\n" +
+                "Opposing " + getExecutor().getName() + "(X) and " + opponent.getName() + "(O) !\n" +
                 "To play, enter the letter A B or C followed by 1 2 or 3 when it's your turn.");
 
         startGame();
@@ -133,7 +133,7 @@ public class CommandTicTacToe extends Command {
         if (winner == null) {
             getMessageChannel().sendMessage("Game draw! No winner.");
         } else {
-            getMessageChannel().sendMessage(winner.getUsername() + " (" + (winner == opponent ? 'O' : 'X') + ") wins!");
+            getMessageChannel().sendMessage(winner.getName() + " (" + (winner == opponent ? 'O' : 'X') + ") wins!");
         }
     }
 
@@ -237,13 +237,13 @@ public class CommandTicTacToe extends Command {
         for (int i = 0; i < 9; i++) {
             replacedPattern = replacedPattern.replace(PATTERN_LETTERS[i], board[i]);
         }
-        String finalMessage = replacedPattern + "\n" +
-                (opponentTurn ? opponent.getUsername() + " (O)" : getExecutor().getUsername() + " (X)") + "'s Turn\n" +
-                "```";
+        String finalMessage = replacedPattern + "\n" + (opponentTurn ? opponent.getName() + " (O)" : getExecutor().getName() + " (X)") + "'s Turn\n" + "```";
         if (boardMessage == null) {
-            boardMessage = (getMessageChannel().sendMessage(finalMessage));
+            (getMessageChannel().sendMessage(finalMessage)).queue(message -> {
+                boardMessage = message;
+            });
         } else {
-            boardMessage.updateMessage(finalMessage);
+            boardMessage.editMessage(finalMessage);
         }
     }
 }

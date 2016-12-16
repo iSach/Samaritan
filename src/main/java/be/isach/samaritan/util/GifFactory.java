@@ -4,8 +4,6 @@ import at.mukprojects.giphy4j.Giphy;
 import at.mukprojects.giphy4j.entity.search.SearchFeed;
 import at.mukprojects.giphy4j.exception.GiphyException;
 
-import java.net.URL;
-
 /**
  * Project: samaritan
  * Package: be.isach.samaritan.util

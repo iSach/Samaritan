@@ -1,10 +1,7 @@
 package be.isach.samaritan.command;
 
-import net.dv8tion.jda.OnlineStatus;
-import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.Role;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.OnlineStatus;
+import net.dv8tion.jda.core.entities.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -90,9 +87,9 @@ public class CommandGroup extends Command {
         for (Role role : roles) {
             int online = 0, idle = 0, max = 0;
 
-            for (User user : guild.getUsersWithRole(role)) {
-                if (user.getOnlineStatus() == OnlineStatus.ONLINE) online++;
-                else if (user.getOnlineStatus() == OnlineStatus.AWAY) idle++;
+            for (Member member : guild.getMembersWithRoles(role)) {
+                if (member.getOnlineStatus() == OnlineStatus.ONLINE) online++;
+                else if (member.getOnlineStatus() == OnlineStatus.IDLE) idle++;
                 max++;
             }
 
@@ -121,7 +118,7 @@ public class CommandGroup extends Command {
             getMessageChannel().sendMessage("That group doesn't exist!");
             return;
         }
-        if(getGuild().getUsersWithRole(role).contains(getExecutor())) {
+        if(getGuild().getMembersWithRoles(role).contains(getExecutor())) {
             getMessageChannel().sendMessage("You're already in that group!");
             return;
         }
@@ -131,9 +128,10 @@ public class CommandGroup extends Command {
             printJoinableGroups();
             return;
         }
-        getGuild().getManager().addRoleToUser(getExecutor(), role);
-        getGuild().getManager().update();
-        getMessageChannel().sendMessage("You've been successfully added to the Language Group: " + role.getName());
+        Role finalRole = role;
+        getGuild().getController().addRolesToMember(getGuild().getMember(getExecutor()), role).queue(aVoid -> {
+            getMessageChannel().sendMessage("You've been successfully added to the Language Group: " + finalRole.getName());
+        });
     }
 
     private void remove(String... args) {
@@ -155,7 +153,7 @@ public class CommandGroup extends Command {
             getMessageChannel().sendMessage("That group doesn't exist!");
             return;
         }
-        if(!getGuild().getUsersWithRole(role).contains(getExecutor())) {
+        if(!getGuild().getMembersWithRoles(role).contains(getExecutor())) {
             getMessageChannel().sendMessage("You are not in that group!");
             return;
         }
@@ -165,9 +163,10 @@ public class CommandGroup extends Command {
             printJoinableGroups();
             return;
         }
-        getGuild().getManager().removeRoleFromUser(getExecutor(), role);
-        getGuild().getManager().update();
-        getMessageChannel().sendMessage("You've been successfully removed from the Language Group: " + role.getName());
+        Role finalRole = role;
+        getGuild().getController().removeRolesFromMember(getGuild().getMember(getExecutor()), role).queue((aVoid) -> {
+            getMessageChannel().sendMessage("You've been successfully removed from the Language Group: " + finalRole.getName());
+        });
     }
 
     private void printJoinableGroups() {
@@ -191,7 +190,7 @@ public class CommandGroup extends Command {
     }
 
     private static int compare(Guild guild, Role role, Role other) {
-        int a = guild.getUsersWithRole(role).size(), b = guild.getUsersWithRole(other).size();
+        int a = guild.getMembersWithRoles(role).size(), b = guild.getMembersWithRoles(other).size();
         return b > a ? 1 : b < a ? -1 : 0;
     }
 }

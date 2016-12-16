@@ -1,6 +1,6 @@
 package be.isach.samaritan.command;
 
-import net.dv8tion.jda.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import org.luaj.vm2.Lua;
 
 /**

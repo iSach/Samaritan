@@ -6,14 +6,14 @@ import com.google.code.chatterbotapi.ChatterBot;
 import com.google.code.chatterbotapi.ChatterBotFactory;
 import com.google.code.chatterbotapi.ChatterBotSession;
 import com.google.code.chatterbotapi.ChatterBotType;
-import net.dv8tion.jda.JDA;
-import net.dv8tion.jda.entities.Message;
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.User;
-import net.dv8tion.jda.events.Event;
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.hooks.EventListener;
-import net.dv8tion.jda.hooks.ListenerAdapter;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.hooks.EventListener;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.util.Map;
 
@@ -70,10 +70,10 @@ public class CleverBotListener extends Thread implements EventListener {
         if (eevent instanceof MessageReceivedEvent) {
             MessageReceivedEvent event = (MessageReceivedEvent) eevent;
             if(event.getMessage().getMentionedUsers().isEmpty()) return;
-            if (event.getMessage().getMentionedUsers().get(0).getId().equals(jda.getSelfInfo().getId())) {
+            if (event.getMessage().getMentionedUsers().get(0).getId().equals(jda.getSelfUser().getId())) {
                 event.getChannel().sendTyping();
                 try {
-                    String s = event.getMessage().getContent().replace("@" + jda.getSelfInfo().getUsername() +" ", "");
+                    String s = event.getMessage().getContent().replace("@" + jda.getSelfUser().getName() +" ", "");
                     event.getChannel().sendMessage(botSession.think(s));
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -1,8 +1,9 @@
 package be.isach.samaritan.command;
 
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.Role;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
 
 import java.util.List;
 
@@ -30,18 +31,19 @@ public class CommandUserInfo extends Command {
         User user = getExecutor();
         if (args != null && args.length > 0) {
             try {
-                user = getJda().getUsersByName(args[0]).get(0);
+                user = getJda().getUsersByName(args[0], false).get(0);
             } catch (Exception exc) {
                 getMessageChannel().sendMessage("Invalid user.");
                 return;
             }
         }
+        Member member = getGuild().getMember(user);
         String stringBuilder = "```" + "\n" +
-                "Requested User: " + user.getUsername() + "#" + user.getDiscriminator() + "\n" +
+                "Requested User: " + user.getName() + "#" + user.getDiscriminator() + "\n" +
                 "ID: " + user.getId() + "\n" +
-                "Game: " + (user.getCurrentGame() == null ? "None" : user.getCurrentGame().getName()) + "\n" +
-                "Status: " + user.getOnlineStatus().toString().toLowerCase() + "\n" +
-                "Roles: " + formatRoleList(getGuild().getRolesForUser(user)) + "\n" +
+                "Game: " + (member.getGame() == null ? "None" : member.getGame().getName()) + "\n" +
+                "Status: " + member.getOnlineStatus().toString().toLowerCase() + "\n" +
+                "Roles: " + formatRoleList(member.getRoles()) + "\n" +
                 "Access Level: " + getSamaritan().getAccessLevelManager().getAccessLevel(user) + "\n" +
                 "Avatar URL: " + user.getAvatarUrl() + "\n" +
                 "```";

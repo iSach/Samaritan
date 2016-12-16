@@ -3,8 +3,8 @@ package be.isach.samaritan.listener;
 import be.isach.samaritan.Samaritan;
 import be.isach.samaritan.command.Commands;
 import be.isach.samaritan.util.SamaritanConstants;
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.hooks.ListenerAdapter;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 /**
  * Project: samaritan

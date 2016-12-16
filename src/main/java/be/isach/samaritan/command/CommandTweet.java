@@ -1,6 +1,6 @@
 package be.isach.samaritan.command;
 
-import net.dv8tion.jda.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

@@ -1,6 +1,6 @@
 package be.isach.samaritan.command;
 
-import net.dv8tion.jda.entities.*;
+import net.dv8tion.jda.core.entities.*;
 
 /**
  * Project: samaritan
@@ -34,7 +34,7 @@ class CommandJoinMe extends Command {
         VoiceChannel voiceChannel = null;
         for (Guild guild : getJda().getGuilds())
             for (VoiceChannel vocalChannel : guild.getVoiceChannels())
-                if (vocalChannel.getUsers().contains(user)) voiceChannel = vocalChannel;
+                if (vocalChannel.getMembers().contains(getGuild().getMember(user))) voiceChannel = vocalChannel;
         if (voiceChannel == null) {
             getMessageChannel().sendMessage("I couldn't find you in any voice channel, please join one.");
             return;

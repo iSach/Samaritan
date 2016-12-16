@@ -1,11 +1,8 @@
 package be.isach.samaritan.command;
 
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.User;
-import net.dv8tion.jda.utils.PermissionUtil;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import pro.beam.api.resource.BeamUser;
 
 import java.io.IOException;
 import java.nio.file.Files;

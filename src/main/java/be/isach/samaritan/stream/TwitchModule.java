@@ -2,12 +2,8 @@ package be.isach.samaritan.stream;
 
 import com.mb3364.twitch.api.Twitch;
 import com.mb3364.twitch.api.handlers.StreamResponseHandler;
-import com.mb3364.twitch.api.models.Channel;
 import com.mb3364.twitch.api.models.Stream;
-import net.dv8tion.jda.JDA;
-import net.dv8tion.jda.entities.TextChannel;
-
-import java.util.*;
+import net.dv8tion.jda.core.JDA;
 
 /**
  * Created by sacha on 30-10-16.

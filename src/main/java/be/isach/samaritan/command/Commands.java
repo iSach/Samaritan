@@ -1,10 +1,10 @@
 package be.isach.samaritan.command;
 
 import be.isach.samaritan.Samaritan;
-import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.TextChannel;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.entities.User;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -28,14 +28,9 @@ public enum Commands {
      * Then Levels go from 3 to 0.
      */
 
-    BASH(CommandBash.class, 4, "Runs Bash Command", "bash"),
     BRAINFUCK(CommandBrainFuck.class, 0, "Runs BrainFuck code", "brainfuck", "bf"),
-    CAT(CommandCat.class, 0, "Shows a cat image", "cat"),
     BEAM(CommandBeam.class, 2, "Beam Commands", "beam"),
     CLEAN(CommandClean.class, 3, "Cleans fail lol", "clean"),
-    CLEANACCUEIL(CommandCleanAccueil.class, 1, "Cleans Le Accueil eksdee", "cleanacc", "ca"),
-    CONVERT(CommandConvert.class, 3, "Converts WebM -> mp3", "convert"),
-    DOWNLOAD(CommandDownload.class, 3, "Downloads a Youtube Video.", "download"),
     EVAL(CommandEval.class, 3, "Runs JS code.", "eval"),
     FIND_THE_NUMBER(CommandFindTheNumber.class, 0, "Starts a Find The Number game.", "findthenumber", "ftn"),
     GIF(CommandGif.class, 0, "Sends a gif", "gif"),
@@ -45,18 +40,10 @@ public enum Commands {
     HELP(CommandHelp.class, 0, "Prints this", "help"),
     JOIN_ME(CommandJoinMe.class, 3, "Joins Admin.", "joinme"),
     LEET(CommandLeet.class, 0, "Translates text to Leet.", "leet"),
-    //    LUA(CommandLua.class, true, "Runs LUA code.", "lua"),
-    PLAY(CommandPlay.class, 2, "Plays a Music", "play"),
-   // POKE_GO(CommandPokeGo.class, 2, "Pokémon Go!", "pokego", "pokemon", "pokego", "go"),
-    PRINT_HISTORY(CommandPrintHistory.class, 0, "Prints History of given size", "history"),
-    MEME(CommandMeme.class, 0, "Shows a cool meme.", "meme"),
     QUOTE(CommandQuote.class, 0, "Quotes a message", "quote"),
     SAY(CommandSay.class, 3, "Says a message", "say", "print"),
     SEND(CommandSend.class, 2, "Sends a WebSocket", "send", "socket"),
     SET_LEVEL(CommandSetLevel.class, 4, "Sets a user Level.", "setlevel"),
-    SET_NAME(CommandSetName.class, 4, "Sets new name", "setname"),
-    SHUFFLE(CommandShuffle.class, 3, "Toggles Shuffle Mode", "shuffle"),
-    SONGS(CommandSongs.class, 0, "Lists songs", "songs"),
     SHUTDOWN(CommandShutdown.class, 4, "Stops Samaritan [!!]", "stop", "shutdown"),
     TIC_TAC_TOE(CommandTicTacToe.class, 0, "Starts a Tic Tac Toe Game", "tictactoe", "ttt"),
     TWEET(CommandTweet.class, 3, "Tweets", "tweet"),

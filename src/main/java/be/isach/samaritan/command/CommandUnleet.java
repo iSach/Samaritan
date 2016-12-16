@@ -1,10 +1,8 @@
 package be.isach.samaritan.command;
 
-import net.dv8tion.jda.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.MessageChannel;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Project: samaritan

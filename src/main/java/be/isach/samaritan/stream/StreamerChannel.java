@@ -1,7 +1,5 @@
 package be.isach.samaritan.stream;
 
-import org.luaj.vm2.ast.Str;
-
 /**
  * Created by sacha on 07-11-16.
  */

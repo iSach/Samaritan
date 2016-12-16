@@ -1,9 +1,6 @@
 package be.isach.samaritan.runtime;
 
 import be.isach.samaritan.Samaritan;
-import be.isach.samaritan.chat.PrivateMessageChatThread;
-import net.dv8tion.jda.JDA;
-import net.dv8tion.jda.entities.PrivateChannel;
 
 /**
  * Project: samaritan

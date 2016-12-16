@@ -1,14 +1,13 @@
 package be.isach.samaritan.listener;
 
 import be.isach.samaritan.chat.PrivateMessageChatThread;
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.PrivateChannel;
-import net.dv8tion.jda.entities.User;
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.hooks.ListenerAdapter;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.PrivateChannel;
+import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,7 +47,7 @@ public class PrivateMessageListener extends ListenerAdapter {
                 chatThread.setScannedMessaged(event.getMessage());
             } else {
                 System.out.println("Unexpected exception. PrivateMessageChatThread couldn't be found for:" +
-                        " " + ((PrivateChannel) event.getChannel()).getUser().getUsername());
+                        " " + ((PrivateChannel) event.getChannel()).getUser().getName());
             }
         }
     }

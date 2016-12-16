@@ -1,8 +1,8 @@
 package be.isach.samaritan.command;
 
 import be.isach.samaritan.listener.QuoteHandler;
-import net.dv8tion.jda.entities.Message;
-import net.dv8tion.jda.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -57,9 +57,9 @@ public class CommandQuote extends Command {
 
         String messageToSend = "```\n" +
                 "(" +
-                message.getTime().toZonedDateTime().withZoneSameInstant(ZoneId.of("Europe/Paris")).format(DATE_FORMAT) +
+                message.getCreationTime().toZonedDateTime().withZoneSameInstant(ZoneId.of("Europe/Paris")).format(DATE_FORMAT) +
                 " " +
-                message.getAuthor().getUsername() +
+                message.getAuthor().getName() +
                 "): " +
                 message.getContent() +
                 "\n" +

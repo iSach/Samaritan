@@ -1,6 +1,8 @@
 package be.isach.samaritan.util;
 
-import org.joda.time.*;
+import org.joda.time.Duration;
+import org.joda.time.Instant;
+import org.joda.time.Interval;
 
 /**
  * Project: samaritan

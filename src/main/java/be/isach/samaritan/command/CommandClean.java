@@ -1,10 +1,8 @@
 package be.isach.samaritan.command;
 
-import net.dv8tion.jda.MessageHistory;
-import net.dv8tion.jda.entities.Message;
-import net.dv8tion.jda.entities.MessageChannel;
-
-import java.time.ZoneId;
+import net.dv8tion.jda.core.MessageHistory;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 
 /**
  * Project: samaritan
@@ -34,13 +32,15 @@ class CommandClean extends Command {
     @Override
     void onExecute(String[] args) {
         MessageHistory messageHistory = new MessageHistory(getMessageChannel());
-        messageHistory.retrieve(150);
-        for (Message message : messageHistory.getRecent()) {
-            if (message.getAuthor().isBot()
-                    && message.getContent().contains(buildStringFromArgs())) {
-                message.deleteMessage();
-                return;
+        messageHistory.retrievePast(150).queue((messages -> {
+
+            for (Message message : messages) {
+                if (message.getAuthor().isBot()
+                        && message.getContent().contains(buildStringFromArgs())) {
+                    message.deleteMessage();
+                    return;
+                }
             }
-        }
+        }));
     }
 }

@@ -1,15 +1,13 @@
 package be.isach.samaritan.listener;
 
-import net.dv8tion.jda.JDA;
-import net.dv8tion.jda.MessageHistory;
-import net.dv8tion.jda.entities.Message;
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.TextChannel;
-import net.dv8tion.jda.events.Event;
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.hooks.EventListener;
-import net.dv8tion.jda.hooks.ListenerAdapter;
-import org.luaj.vm2.ast.Str;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.MessageHistory;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.TextChannel;
+import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.core.hooks.EventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,10 +37,11 @@ public class QuoteHandler extends Thread implements EventListener {
             try {
                 List<Message> messages = new ArrayList<>();
                 MessageHistory messageHistory = new MessageHistory(messageChannel);
-                messageHistory.retrieve(2000);
-                messages.addAll(messageHistory.getRecent());
-                messageChannelListMap.put(messageChannel, messages);
-                System.out.println("[Quote Handler]: Loaded 1000 messages in channel: " + messageChannel.getName());
+                messageHistory.retrievePast(2000).queue((messageList) -> {
+                    messages.addAll(messageHistory.getCachedHistory());
+                    messageChannelListMap.put(messageChannel, messages);
+                    System.out.println("[Quote Handler]: Loaded 1000 messages in channel: " + messageChannel.getName());
+                });
             } catch (Exception exc) {
                 continue;
             }
@@ -68,11 +67,11 @@ public class QuoteHandler extends Thread implements EventListener {
     }
 
     @Override
-    public void onEvent(Event eevent) {
-        if (eevent instanceof MessageReceivedEvent) {
-            MessageReceivedEvent event = (MessageReceivedEvent) eevent;
-            if(messageChannelListMap.containsKey(event.getChannel())) {
-                messageChannelListMap.get(event.getChannel()).add(event.getMessage());
+    public void onEvent(Event event) {
+        if (event instanceof MessageReceivedEvent) {
+            MessageReceivedEvent msgEvent = (MessageReceivedEvent) event;
+            if(messageChannelListMap.containsKey(msgEvent.getChannel())) {
+                messageChannelListMap.get(msgEvent.getChannel()).add(msgEvent.getMessage());
             }
         }
     }

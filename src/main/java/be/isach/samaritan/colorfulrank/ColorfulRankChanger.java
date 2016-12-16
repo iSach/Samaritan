@@ -3,8 +3,8 @@ package be.isach.samaritan.colorfulrank;
 import be.isach.samaritan.Samaritan;
 import be.isach.samaritan.util.MathUtils;
 import com.google.common.collect.Maps;
-import net.dv8tion.jda.entities.Role;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.User;
 import org.joda.time.DateTime;
 
 import java.awt.*;
@@ -32,8 +32,7 @@ public class ColorfulRankChanger extends TimerTask {
 
     @Override
     public void run() {
-        colorfulRole.getManager().setColor(randomizeColor());
-        colorfulRole.getManager().update();
+        colorfulRole.getManager().setColor(randomizeColor()).queue();
         System.out.println("ColorfulRankManager: Updated Color.");
     }
 

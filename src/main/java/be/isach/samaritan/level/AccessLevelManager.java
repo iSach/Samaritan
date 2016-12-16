@@ -1,9 +1,9 @@
 package be.isach.samaritan.level;
 
 import be.isach.samaritan.Samaritan;
-import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.User;
-import net.dv8tion.jda.utils.ApplicationUtil;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -66,14 +66,14 @@ public class AccessLevelManager {
         } catch (IOException e) {
             JSONObject object = new JSONObject();
             for (Guild guild : samaritan.getJda().getGuilds()) {
-                for (User user : guild.getUsers()) {
+                for (Member member : guild.getMembers()) {
                     JSONObject userObject = new JSONObject();
-                    if (user.getId().equals(samaritan.getOwnerId())) {
+                    if (member.getUser().getId().equals(samaritan.getOwnerId())) {
                         userObject.put("access-level", 4);
                         continue;
                     }
                     userObject.put("access-level", 0);
-                    object.put(user.getId(), userObject);
+                    object.put(member.getUser().getId(), userObject);
                 }
             }
             try {
@@ -95,7 +95,7 @@ public class AccessLevelManager {
     }
 
     public int getAccessLevel(User user) {
-        if (user.getId().equals(samaritan.getJda().getSelfInfo().getId())) return 4;
+        if (user.getId().equals(samaritan.getJda().getSelfUser().getId())) return 4;
         try {
             return levelsMap.get(user.getId());
         } catch (Exception e) {

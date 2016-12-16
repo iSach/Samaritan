@@ -3,7 +3,7 @@ package be.isach.samaritan.command;
 import be.isach.samaritan.util.MathUtils;
 import be.isach.samaritan.util.SamaritanConstants;
 import be.isach.samaritan.util.TextUtil;
-import net.dv8tion.jda.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.MessageChannel;
 
 /**
  * Project: samaritan

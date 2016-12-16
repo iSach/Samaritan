@@ -2,7 +2,7 @@ package be.isach.samaritan.command;
 
 import at.mukprojects.giphy4j.Giphy;
 import be.isach.samaritan.util.MathUtils;
-import net.dv8tion.jda.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.MessageChannel;
 
 /**
  * Project: samaritan

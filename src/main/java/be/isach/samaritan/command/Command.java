@@ -2,9 +2,9 @@ package be.isach.samaritan.command;
 
 import be.isach.samaritan.Samaritan;
 import be.isach.samaritan.message.MessageScanningThread;
-import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
 
 /**
  * Project: samaritan

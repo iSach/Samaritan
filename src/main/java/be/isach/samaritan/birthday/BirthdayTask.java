@@ -2,8 +2,8 @@ package be.isach.samaritan.birthday;
 
 import be.isach.samaritan.Samaritan;
 import com.google.common.collect.Maps;
-import net.dv8tion.jda.entities.Guild;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.User;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Instant;
@@ -41,7 +41,7 @@ public class BirthdayTask extends TimerTask {
                     && birthdayDate.getMonthOfYear() == dateTime.getMonthOfYear()) {
                 for (Guild guild : samaritan.getJda().getGuilds()) {
                     atLeastOneFound = true;
-                    System.out.println("[Birthday Manager]: Birthday found! For: " + user.getUsername());
+                    System.out.println("[Birthday Manager]: Birthday found! For: " + user.getAsMention());
                     String stringBuilder = ("Happy birthday " + user.getAsMention() + " !\n") +
                             "You are now " + (dateTime.getYear() - birthdayDate.getYear()) + " years old!\n" +
                             "Birthday is at exactly: " + birthdayDate.toString("dd/MM/yyyy HH:mm") + "\n" +

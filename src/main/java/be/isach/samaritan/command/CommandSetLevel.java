@@ -1,8 +1,8 @@
 package be.isach.samaritan.command;
 
 import be.isach.samaritan.util.SamaritanConstants;
-import net.dv8tion.jda.entities.MessageChannel;
-import net.dv8tion.jda.entities.User;
+import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.User;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -31,11 +31,11 @@ public class CommandSetLevel extends Command {
     @Override
     void onExecute(String[] args) {
         if (args.length < 2) {
-            getMessageChannel().sendMessage("Correct Usage: `" + SamaritanConstants.PREFIX + "setlevel <username> <newLevel>`");
+            getMessageChannel().sendMessage("Correct Usage: `" + SamaritanConstants.PREFIX + "setlevel @user#xxxx <newLevel>`");
             return;
         }
         try {
-            User user = getJda().getUsersByName(args[0]).get(0);
+            User user = getScannedMessaged().getMentionedUsers().get(0);
             if (user.getId().equals(getSamaritan().getOwnerId())) {
                 getMessageChannel().sendMessage("You can't change the Owner's Access Level.");
                 return;
@@ -43,7 +43,7 @@ public class CommandSetLevel extends Command {
             int level = Math.max(0, Math.min(4, Integer.parseInt(args[1])));
             try {
                 getSamaritan().getAccessLevelManager().setLevel(user, level);
-                getMessageChannel().sendMessage("Successfully set the level of " + user.getUsername() + " to " + level);
+                getMessageChannel().sendMessage("Successfully set the level of " + user.getName() + " to " + level);
             } catch (IOException i) {
                 getMessageChannel().sendMessage("Something went wrong... Check Username, etc.");
             }

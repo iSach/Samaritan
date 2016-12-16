@@ -1,13 +1,11 @@
 package be.isach.samaritan.stream;
 
-import com.mb3364.twitch.api.models.Channel;
-import net.dv8tion.jda.JDA;
-import net.dv8tion.jda.entities.TextChannel;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
-import java.util.stream.Collectors;
 
 /**
  * Created by sacha on 07-11-16.
