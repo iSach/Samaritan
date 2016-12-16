@@ -211,7 +211,7 @@ public class Samaritan {
      *
      * @return {@code true} if everything went well, {@code false} otherwise.
      */
-    private boolean initJda(){
+    private boolean initJda() {
         try {
             jda = new JDABuilder(AccountType.BOT).setToken(botToken).buildBlocking();
             jda.getPresence().setGame(Game.of("2.0.2"));
