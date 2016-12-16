@@ -175,7 +175,7 @@ public class Samaritan {
         logger.write();
         logger.write("I am Samaritan.");
         logger.write();
-        logger.write("Starting...");
+        logger.write("Initiating...");
         logger.write();
         logger.write("Boot Instant: " + new Instant().toString());
         logger.write();
