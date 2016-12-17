@@ -51,7 +51,7 @@ public class CommandListener extends ListenerAdapter {
                                 + samaritan.getAccessLevelManager().getAccessLevel(event.getAuthor()) + ", required: " +
                                 commandType.getRequiredAccessLevel() + ")");
                         try {
-                            event.getMessage().deleteMessage();
+                            event.getMessage().deleteMessage().queue();
                         } catch (Exception exc) {
                             System.out.println("Samaritan -> Couldn't delete message: " + event.getMessage().getId());
                         }
@@ -61,9 +61,9 @@ public class CommandListener extends ListenerAdapter {
                     String[] args = new String[commandFiltered.split(" ").length - 1];
                     for (int i = 1; i < g.length; i++)
                         args[i - 1] = g[i];
-                    long threadId = commandType.call(event.getTextChannel(), event.getMessage().getAuthor(), event.getGuild(), samaritan, args);
+                    long threadId = commandType.call(event.getMessage(), event.getTextChannel(), event.getMessage().getAuthor(), event.getGuild(), samaritan, args);
                     try {
-                        event.getMessage().deleteMessage();
+                        event.getMessage().deleteMessage().queue();
                     } catch (Exception exc) {
                         System.out.println("Couldn't delete command request message for thread: " + threadId);
                     }

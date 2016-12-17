@@ -2,6 +2,7 @@ package be.isach.samaritan.command;
 
 import be.isach.samaritan.Samaritan;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 
 /**
@@ -30,10 +31,13 @@ public class CommandData {
      */
     private Guild guild;
 
-    public CommandData(Samaritan samaritan, User user, Guild guild) {
+    private Message message;
+
+    public CommandData(Samaritan samaritan, User user, Guild guild, Message message) {
         this.samaritan = samaritan;
         this.user = user;
         this.guild = guild;
+        this.message = message;
     }
 
     /**
@@ -55,5 +59,9 @@ public class CommandData {
      */
     public User getExecutor() {
         return user;
+    }
+
+    public Message getMessage() {
+        return message;
     }
 }

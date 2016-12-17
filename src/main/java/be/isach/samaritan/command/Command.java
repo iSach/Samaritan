@@ -25,7 +25,7 @@ abstract class Command extends MessageScanningThread {
     /**
      * Samaritan Instance.
      */
-    private CommandData data;
+    protected CommandData data;
 
     /**
      * Command Constructor.

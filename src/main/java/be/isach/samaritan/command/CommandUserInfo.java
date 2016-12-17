@@ -5,6 +5,9 @@ import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -26,15 +29,16 @@ public class CommandUserInfo extends Command {
         super(messageChannel, commandData, args);
     }
 
+
     @Override
     void onExecute(String[] args) {
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss.SSS");
         User user = getExecutor();
         if (args != null && args.length > 0) {
             try {
-                user = getJda().getUsersByName(args[0], false).get(0);
+                user = data.getMessage().getMentionedUsers().get(0);
             } catch (Exception exc) {
-                getMessageChannel().sendMessage("Invalid user.");
-                return;
+                exc.printStackTrace();
             }
         }
         Member member = getGuild().getMember(user);
@@ -44,10 +48,11 @@ public class CommandUserInfo extends Command {
                 "Game: " + (member.getGame() == null ? "None" : member.getGame().getName()) + "\n" +
                 "Status: " + member.getOnlineStatus().toString().toLowerCase() + "\n" +
                 "Roles: " + formatRoleList(member.getRoles()) + "\n" +
+                "Joined At: " + dateFormat.format(member.getJoinDate()) + "\n" +
                 "Access Level: " + getSamaritan().getAccessLevelManager().getAccessLevel(user) + "\n" +
                 "Avatar URL: " + user.getAvatarUrl() + "\n" +
                 "```";
-        getMessageChannel().sendMessage(stringBuilder);
+        getMessageChannel().sendMessage(stringBuilder).queue();
     }
 
     private String formatRoleList(List<Role> roles) {

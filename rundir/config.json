@@ -1,0 +1,11 @@
+{
+    "web-ui": true,
+    "bot-owner-id": 93721838093352960,
+    "web-ui-websocket-port": 11350,
+    "pokemongo-login": {
+        "password": "123password123",
+        "email": "test@gmail.com"
+    },
+    "bot-token": "MTY4NDI4NDg3MjE1MDIyMDgw.Cw517w.QUS5ts7E1aa-0oXMtxf3OxXn2OA",
+    "google-maps-api-key": "AIza..."
+}

@@ -74,7 +74,7 @@ class CommandHelp extends Command {
             stringBuilder.append("\n");
         }
         stringBuilder.append("```");
-        getMessageChannel().sendMessage(stringBuilder.toString());
+        getMessageChannel().sendMessage(stringBuilder.toString()).queue();
     }
 
     private int getMaxPages() {
@@ -83,7 +83,7 @@ class CommandHelp extends Command {
 
     private void onHelpForCommand(String commandLabel) {
         if (!Commands.isValidCommandAlias(commandLabel)) {
-            getMessageChannel().sendMessage("```" + commandLabel + "``` isn't a valid command!");
+            getMessageChannel().sendMessage("```" + commandLabel + "``` isn't a valid command!").queue();
             return;
         }
         Commands commandType = Commands.fromAlias(commandLabel);
@@ -99,6 +99,6 @@ class CommandHelp extends Command {
                 "Required Access Level: `" +
                 commandType.getRequiredAccessLevel() +
                 "`\n";
-        getMessageChannel().sendMessage(stringBuilder);
+        getMessageChannel().sendMessage(stringBuilder).queue();
     }
 }

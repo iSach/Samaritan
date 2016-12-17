@@ -1,10 +1,7 @@
 package be.isach.samaritan.command;
 
 import be.isach.samaritan.Samaritan;
-import net.dv8tion.jda.core.entities.Guild;
-import net.dv8tion.jda.core.entities.MessageChannel;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -90,10 +87,10 @@ public enum Commands {
         return null;
     }
 
-    public long call(TextChannel textChannel, User user, Guild guild, Samaritan samaritan, String[] args) {
+    public long call(Message message, TextChannel textChannel, User user, Guild guild, Samaritan samaritan, String[] args) {
         Command command = null;
         try {
-            CommandData commandData = new CommandData(samaritan, user, guild);
+            CommandData commandData = new CommandData(samaritan, user, guild, message);
             command = clazz.getDeclaredConstructor(MessageChannel.class, CommandData.class, String[].class).newInstance(textChannel, commandData, args);
             System.out.println("Calling command: " + command.toString());
             command.start();
