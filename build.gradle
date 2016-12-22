@@ -45,7 +45,7 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Samaritan',
                 'Implementation-Version': version,
-                'Main-Class': 'be.isach.samaritan.start.Start'
+                'Main-Class': 'be.isach.samaritan.runtime.Start'
     }
     appendix = 'all'
     from {
