@@ -1,4 +1,4 @@
-package be.isach.samaritan.json;
+package be.isach.samaritan.util;
 
 import org.json.JSONException;
 import org.json.JSONObject;

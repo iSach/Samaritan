@@ -32,15 +32,7 @@ class CommandClean extends Command {
     @Override
     void onExecute(String[] args) {
         MessageHistory messageHistory = new MessageHistory(getMessageChannel());
-        messageHistory.retrievePast(150).queue((messages -> {
-
-            for (Message message : messages) {
-                if (message.getAuthor().isBot()
-                        && message.getContent().contains(buildStringFromArgs())) {
-                    message.deleteMessage();
-                    return;
-                }
-            }
+        messageHistory.retrievePast(100).queue((messages -> {
         }));
     }
 }

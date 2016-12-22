@@ -1,6 +1,6 @@
 package be.isach.samaritan
 
-include be.isach.samaritan.brainfuck.BrainfuckInterpreter
+include be.isach.samaritan.util.brainfuck.BrainfuckInterpreter
 include be.isach.samaritan.chat.PrivateMessageChatThread
 include be.isach.samaritan.command.console.ConsoleListenerThread
 include be.isach.samaritan.history.MessageHistoryPrinter

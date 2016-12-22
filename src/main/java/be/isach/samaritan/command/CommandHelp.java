@@ -1,9 +1,18 @@
 package be.isach.samaritan.command;
 
+import be.isach.samaritan.util.EmoteUnicodeUtil;
 import be.isach.samaritan.util.MathUtils;
 import be.isach.samaritan.util.SamaritanConstants;
 import be.isach.samaritan.util.TextUtil;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.events.*;
+import net.dv8tion.jda.core.events.Event;
+import net.dv8tion.jda.core.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.core.hooks.EventListener;
+import org.joda.time.Instant;
+
+import java.awt.*;
 
 /**
  * Project: samaritan
@@ -16,6 +25,7 @@ import net.dv8tion.jda.core.entities.MessageChannel;
  */
 class CommandHelp extends Command {
 
+    private String messageId;
     private static final int COMMANDS_PER_PAGE = 10;
 
     /**
@@ -27,6 +37,8 @@ class CommandHelp extends Command {
      */
     CommandHelp(MessageChannel messageChannel, CommandData commandData, String[] args) {
         super(messageChannel, commandData, args);
+
+        getJda().addEventListener(this);
     }
 
     /**
@@ -51,30 +63,55 @@ class CommandHelp extends Command {
     }
 
     private void showHelp(int page) {
-        int totalScale = Commands.longestStringLength() + 4;
-        int totalScaleDesc = Commands.longestDescriptionLength() + 4;
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("```");
-        stringBuilder.append(" \nAvailable commands (Total: " + Commands.values().length + "): \n");
-        stringBuilder.append(" \nPage ").append(page).append("/").append(getMaxPages()).append("  (-help [page]) \n\n");
-        stringBuilder.append("Alias").append(TextUtil.getSpaces(totalScale - "Alias".length())).append(" ");
-        stringBuilder.append("Description").append(TextUtil.getSpaces(totalScaleDesc - "Description".length()));
-        stringBuilder.append("Required Access Level");
-        stringBuilder.append("\n\n");
-        int from = (page - 1) * COMMANDS_PER_PAGE;
-        int to = Math.min(Commands.values().length - 1, COMMANDS_PER_PAGE * page - 1);
-        for (int i = from; i <= to; i++) {
-            Commands commandType = Commands.values()[i];
-            String access = commandType.getRequiredAccessLevel() + "";
-            String alias = commandType.getAliases().get(0) + TextUtil.getSpaces(totalScale - commandType.getAliases().get(0).length());
-            String desc = commandType.getDescription() + TextUtil.getSpaces(totalScaleDesc - commandType.getDescription().length());
-            stringBuilder.append(SamaritanConstants.PREFIX).append(alias);
-            stringBuilder.append(desc);
-            stringBuilder.append(access);
-            stringBuilder.append("\n");
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        {
+            embedBuilder.setTitle("Available commands (Total: " + Commands.values().length + "):");
+            embedBuilder.setColor(new Color(255, 255, 255));
+            embedBuilder.setDescription("Page " + page + "/" + getMaxPages() + "  (-help [page])");
+
+            StringBuilder aliasesSb = new StringBuilder();
+            StringBuilder descriptionSb = new StringBuilder();
+            StringBuilder accessLevelSb = new StringBuilder();
+
+            int from = (page - 1) * COMMANDS_PER_PAGE;
+            int to = Math.min(Commands.values().length - 1, COMMANDS_PER_PAGE * page - 1);
+            for (int i = from; i <= to; i++) {
+                Commands commandType = Commands.values()[i];
+                aliasesSb.append("-" + commandType.getAliases().get(0)).append("\n");
+                descriptionSb.append(commandType.getDescription()).append("\n");
+                accessLevelSb.append(commandType.getRequiredAccessLevel()).append("\n");
+            }
+
+            embedBuilder.addField("Alias", aliasesSb.toString(), true);
+            embedBuilder.addField("Description", descriptionSb.toString(), true);
+            embedBuilder.addField("Required Access Level", accessLevelSb.toString(), true);
         }
-        stringBuilder.append("```");
-        getMessageChannel().sendMessage(stringBuilder.toString()).queue();
+        getMessageChannel().sendMessage(embedBuilder.build()).queue(message -> {
+//            messageId = message.getId();
+//            message.addReaction(EmoteUnicodeUtil.getUnicode("track_previous")).queue();
+//            message.addReaction(EmoteUnicodeUtil.getUnicode("arrow_left")).queue();
+//            message.addReaction(EmoteUnicodeUtil.getUnicode("arrow_right")).queue();
+//            message.addReaction(EmoteUnicodeUtil.getUnicode("track_next")).queue();
+        });
+    }
+
+    @Override
+    public void onEvent(Event e) {
+        super.onEvent(e);
+
+
+        if(e instanceof MessageReactionAddEvent) {
+            MessageReactionAddEvent event = ((MessageReactionAddEvent) e);
+            if(event.getMessageId().equals(messageId)
+                    && !event.getUser().equals(getJda().getSelfUser())) {
+                try {
+                    sleep(1500);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+                event.getReaction().removeReaction(getJda().getUserById("93721838093352960"));
+            }
+        }
     }
 
     private int getMaxPages() {

@@ -3,6 +3,7 @@ package be.isach.samaritan.log;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Project: samaritan
@@ -35,6 +36,12 @@ public class SmartLogger {
             System.out.println(format("", logLevel));
         for (Object object : objects)
             System.out.println(format(object.toString(), logLevel));
+    }
+
+    public void writeFrom(String provider, Object... objects) {
+        for (Object o : objects) {
+            write("[" + provider.toUpperCase() + "]: " + o);
+        }
     }
 
     public void write(Object... objects) {

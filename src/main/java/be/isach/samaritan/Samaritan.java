@@ -1,9 +1,7 @@
 package be.isach.samaritan;
 
-import be.isach.samaritan.birthday.BirthdayTask;
-import be.isach.samaritan.brainfuck.BrainfuckInterpreter;
+import be.isach.samaritan.util.brainfuck.BrainfuckInterpreter;
 import be.isach.samaritan.chat.PrivateMessageChatThread;
-import be.isach.samaritan.colorfulrank.ColorfulRankChanger;
 import be.isach.samaritan.command.console.ConsoleListenerThread;
 import be.isach.samaritan.level.AccessLevelManager;
 import be.isach.samaritan.listener.CleverBotListener;
@@ -19,13 +17,17 @@ import be.isach.samaritan.stream.TwitchModule;
 import be.isach.samaritan.util.GifFactory;
 import be.isach.samaritan.util.SamaritanStatus;
 import be.isach.samaritan.websocket.SamaritanWebsocketServer;
+import com.mashape.unirest.http.Unirest;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.PrivateChannel;
 import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.entities.impl.JDAImpl;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
+import net.dv8tion.jda.core.requests.WebSocketClient;
+import net.dv8tion.jda.core.utils.SimpleLog;
 import org.joda.time.Instant;
 
 import javax.security.auth.login.LoginException;
@@ -120,16 +122,6 @@ public class Samaritan {
     private GifFactory gifFactory;
 
     /**
-     * Birthday task
-     */
-    private BirthdayTask birthdayTask;
-
-    /**
-     * Colorful rank color changer task
-     */
-    private ColorfulRankChanger colorfulRankChanger;
-
-    /**
      * Timer.
      */
     private Timer timer;
@@ -169,8 +161,6 @@ public class Samaritan {
 
         status.setBootInstant(new Instant());
 
-        logger.write("--------------------------------------------------------");
-        logger.write();
         logger.write("Hello.");
         logger.write();
         logger.write("I am Samaritan.");
@@ -186,14 +176,10 @@ public class Samaritan {
             return;
         }
 
-        this.quoteHandler = new QuoteHandler(jda);
-        this.birthdayTask = new BirthdayTask(this);
-        this.colorfulRankChanger = new ColorfulRankChanger(this);
+        this.quoteHandler = new QuoteHandler(jda, this);
         this.timer = new Timer();
 
         quoteHandler.start();
-
-        timer.schedule(birthdayTask, 0L, 1000L * 60L);
 
         this.accessLevelManager.loadUsers();
 
@@ -212,11 +198,22 @@ public class Samaritan {
      * @return {@code true} if everything went well, {@code false} otherwise.
      */
     private boolean initJda() {
+
         try {
+            SimpleLog.Level level = JDAImpl.LOG.getLevel();
+            SimpleLog.Level socketLevel = WebSocketClient.LOG.getLevel();
+            JDAImpl.LOG.setLevel(SimpleLog.Level.OFF);
+            WebSocketClient.LOG.setLevel(SimpleLog.Level.OFF);
+
             jda = new JDABuilder(AccountType.BOT).setToken(botToken).buildBlocking();
             jda.getPresence().setGame(Game.of("2.0.2"));
+            logger.writeFrom("jda", "Successfully connected!");
+            logger.writeFrom("jda WebSocket", "Connected to WebSocket!");
+
+            JDAImpl.LOG.setLevel(level);
+            WebSocketClient.LOG.setLevel(socketLevel);
         } catch (LoginException | InterruptedException | RateLimitedException e) {
-            logger.write("Couldn't connect!");
+            logger.writeFrom("jda", "Couldn't connect!");
             e.printStackTrace();
             return false;
         }
@@ -248,11 +245,11 @@ public class Samaritan {
      */
     private void startWebSocketServer() {
         try {
-            samaritanWebsocketServer = new SamaritanWebsocketServer(new InetSocketAddress(11350));
+            samaritanWebsocketServer = new SamaritanWebsocketServer(new InetSocketAddress(11350), this);
             samaritanWebsocketServer.start();
-            System.out.println("WS Server started.");
+            getLogger().writeFrom("Web Socket Server", "Server started.");
         } catch (UnknownHostException e) {
-            System.out.println("WS Server couldn't start.");
+            getLogger().writeFrom("Web Socket Server", "Server couldn't be started, error:");
             e.printStackTrace();
         }
     }

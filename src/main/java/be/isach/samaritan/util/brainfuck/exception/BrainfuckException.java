@@ -1,8 +1,8 @@
-package be.isach.samaritan.exception;
+package be.isach.samaritan.util.brainfuck.exception;
 
 /**
  * Project: samaritan
- * Package: be.isach.samaritan.exception
+ * Package: be.isach.samaritan.util.brainfuck.exception
  * Created by: Sacha
  * Created on: 05th juin, 2016
  * at 14:26

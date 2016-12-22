@@ -1,7 +1,7 @@
 package be.isach.samaritan.command;
 
-import be.isach.samaritan.brainfuck.BrainfuckInterpreter;
-import be.isach.samaritan.exception.BrainfuckException;
+import be.isach.samaritan.util.brainfuck.BrainfuckInterpreter;
+import be.isach.samaritan.util.brainfuck.exception.BrainfuckException;
 import net.dv8tion.jda.core.entities.MessageChannel;
 
 import java.nio.ByteBuffer;

@@ -1,6 +1,4 @@
-package be.isach.samaritan.start;
-
-import be.isach.samaritan.Samaritan;
+package be.isach.samaritan.runtime;
 
 /**
  * Created by Sacha on 15/05/16.

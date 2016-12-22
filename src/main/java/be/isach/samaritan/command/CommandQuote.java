@@ -1,11 +1,19 @@
 package be.isach.samaritan.command;
 
 import be.isach.samaritan.listener.QuoteHandler;
+import be.isach.samaritan.util.ColorUtil;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageChannel;
+import net.dv8tion.jda.core.entities.MessageEmbed;
 
+import java.awt.*;
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Project: samaritan
@@ -40,7 +48,6 @@ public class CommandQuote extends Command {
     void onExecute(String[] args) {
         String s = buildStringFromArgs();
         getMessageChannel().sendTyping();
-        System.out.println("quote command called.");
         QuoteHandler quoteHandler = getSamaritan().getQuoteHandler();
 
         if(!quoteHandler.getMessageChannelListMap().containsKey(getMessageChannel())) {
@@ -55,15 +62,15 @@ public class CommandQuote extends Command {
             return;
         }
 
-        String messageToSend = "```\n" +
-                "(" +
-                message.getCreationTime().toZonedDateTime().withZoneSameInstant(ZoneId.of("Europe/Paris")).format(DATE_FORMAT) +
-                " " +
-                message.getAuthor().getName() +
-                "): " +
-                message.getContent() +
-                "\n" +
-                "```";
-        getMessageChannel().sendMessage(messageToSend);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setAuthor(message.getAuthor().getName() + " (" + message.getCreationTime().toZonedDateTime().withZoneSameInstant(ZoneId.of("Europe/Paris")).format(DATE_FORMAT) + ")", "http://discordapp.com", message.getAuthor().getAvatarUrl());
+        embedBuilder.setDescription(message.getRawContent());
+        embedBuilder.setColor(getGuild().getMember(message.getAuthor()).getColor());
+        embedBuilder.setFooter("Quote requested by " + getExecutor().getName(), null);
+        MessageEmbed messageEmbed = embedBuilder.build();
+        getMessageChannel().sendMessage(messageEmbed).queue();
     }
 }

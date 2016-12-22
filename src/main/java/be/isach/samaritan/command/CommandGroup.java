@@ -33,7 +33,7 @@ public class CommandGroup extends Command {
     @Override
     void onExecute(String[] args) {
         if(!getGuild().getId().equals("186941943941562369")) {
-            getMessageChannel().sendMessage("This command isn't available here.");
+            getMessageChannel().sendMessage("This command isn't available here.").queue();
             return;
         }
 
@@ -45,7 +45,7 @@ public class CommandGroup extends Command {
             stringBuilder.append("    -group add [group]").append("\n");;
             stringBuilder.append("    -group remove [group]");
             stringBuilder.append("```");
-            getMessageChannel().sendMessage(stringBuilder.toString());
+            getMessageChannel().sendMessage(stringBuilder.toString()).queue();
             printJoinableGroups();
             return;
         }
@@ -59,7 +59,7 @@ public class CommandGroup extends Command {
                 stringBuilder.append("    -group add [group]").append("\n");;
                 stringBuilder.append("    -group remove [group]");
                 stringBuilder.append("```");
-                getMessageChannel().sendMessage(stringBuilder.toString());
+                getMessageChannel().sendMessage(stringBuilder.toString()).queue();
                 printJoinableGroups();
                 break;
             case "list":
@@ -102,7 +102,7 @@ public class CommandGroup extends Command {
     private void add(String... args) {
         String roleAsString;
         if(args.length < 2) {
-            getMessageChannel().sendMessage("What group do you wanna join?");
+            getMessageChannel().sendMessage("What group do you wanna join?").queue();
             printJoinableGroups();
             roleAsString = nextMessage().getContent().split(" ")[0].toLowerCase();
         } else {
@@ -115,22 +115,22 @@ public class CommandGroup extends Command {
             }
         }
         if(role == null) {
-            getMessageChannel().sendMessage("That group doesn't exist!");
+            getMessageChannel().sendMessage("That group doesn't exist!").queue();
             return;
         }
         if(getGuild().getMembersWithRoles(role).contains(getExecutor())) {
-            getMessageChannel().sendMessage("You're already in that group!");
+            getMessageChannel().sendMessage("You're already in that group!").queue();
             return;
         }
         if(role.getPosition() > (getGuild().getRoles().size() - 7)
                 || role.getName().contains("everyone")) {
-            getMessageChannel().sendMessage("This isn't a language group.");
+            getMessageChannel().sendMessage("This isn't a language group.").queue();
             printJoinableGroups();
             return;
         }
         Role finalRole = role;
         getGuild().getController().addRolesToMember(getGuild().getMember(getExecutor()), role).queue(aVoid -> {
-            getMessageChannel().sendMessage("You've been successfully added to the Language Group: " + finalRole.getName());
+            getMessageChannel().sendMessage("You've been successfully added to the Language Group: " + finalRole.getName()).queue();
         });
     }
 
@@ -150,22 +150,22 @@ public class CommandGroup extends Command {
             }
         }
         if(role == null) {
-            getMessageChannel().sendMessage("That group doesn't exist!");
+            getMessageChannel().sendMessage("That group doesn't exist!").queue();
             return;
         }
         if(!getGuild().getMembersWithRoles(role).contains(getExecutor())) {
-            getMessageChannel().sendMessage("You are not in that group!");
+            getMessageChannel().sendMessage("You are not in that group!").queue();
             return;
         }
         if(role.getPosition() > (getGuild().getRoles().size() - 7)
                 || role.getName().contains("everyone")) {
-            getMessageChannel().sendMessage("This isn't a language group.");
+            getMessageChannel().sendMessage("This isn't a language group.").queue();
             printJoinableGroups();
             return;
         }
         Role finalRole = role;
         getGuild().getController().removeRolesFromMember(getGuild().getMember(getExecutor()), role).queue((aVoid) -> {
-            getMessageChannel().sendMessage("You've been successfully removed from the Language Group: " + finalRole.getName());
+            getMessageChannel().sendMessage("You've been successfully removed from the Language Group: " + finalRole.getName()).queue();
         });
     }
 
@@ -186,7 +186,7 @@ public class CommandGroup extends Command {
             }
         }
         stringBuilder.append("```");
-        getMessageChannel().sendMessage(stringBuilder.toString());
+        getMessageChannel().sendMessage(stringBuilder.toString()).queue();
     }
 
     private static int compare(Guild guild, Role role, Role other) {

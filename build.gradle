@@ -19,14 +19,13 @@ repositories {
 
 dependencies {
     compile 'org.java-websocket:Java-WebSocket:1.3.0'
-    compile 'net.dv8tion:JDA:3.0.BETA2_108'
+    compile 'net.dv8tion:JDA:3.0.BETA2_111'
     compile 'org.luaj:luaj-jse:3.0.1'
     compile 'org.apache.opennlp:opennlp-tools:1.6.0'
     compile 'commons-io:commons-io:2.5'
     compile('at.mukprojects:giphy4j:1.0.1') {
         exclude group: 'org.apache.commons'
     }
-
     compile('com.github.axet:vget:1.1.33') {
         exclude group: 'commons-io'
     }
@@ -39,7 +38,7 @@ dependencies {
     compile 'com.github.Grover-c13:PokeGOAPI-Java:dcaa793557'
     compile 'com.google.maps:google-maps-services:0.1.15'
     compile('com.mb3364.twitch:twitch-api:3.0.1') { changing = true }
-    compile 'pro.beam:api:3.0.0-SNAPSHOT'
+    compile 'pro.beam:api:3.0.2-SNAPSHOT'
 }
 
 task fatJar(type: Jar) {

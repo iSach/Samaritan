@@ -29,7 +29,7 @@ public enum Commands {
     BEAM(CommandBeam.class, 2, "Beam Commands", "beam"),
     CLEAN(CommandClean.class, 3, "Cleans fail lol", "clean"),
     EVAL(CommandEval.class, 3, "Runs JS code.", "eval"),
-    FIND_THE_NUMBER(CommandFindTheNumber.class, 0, "Starts a Find The Number game.", "findthenumber", "ftn"),
+    FIND_THE_NUMBER(CommandFindTheNumber.class, 0, "Find the Number game.", "findthenumber", "ftn"),
     GIF(CommandGif.class, 0, "Sends a gif", "gif"),
     GITHUB(CommandGithub.class, 0, "Shows Github link", "git", "github"),
     GROUP(CommandGroup.class, 0, "Group Related Things", "group", "g"),
@@ -37,17 +37,21 @@ public enum Commands {
     HELP(CommandHelp.class, 0, "Prints this", "help"),
     JOIN_ME(CommandJoinMe.class, 3, "Joins Admin.", "joinme"),
     LEET(CommandLeet.class, 0, "Translates text to Leet.", "leet"),
-    QUOTE(CommandQuote.class, 0, "Quotes a message", "quote"),
+    QUOTE(CommandQuote.class, 0, "Quotes a message", "quote", "q"),
     SAY(CommandSay.class, 3, "Says a message", "say", "print"),
     SEND(CommandSend.class, 2, "Sends a WebSocket", "send", "socket"),
+    SERVERS(CommandServers.class, 0, "Show Servers list", "servers"),
+    SERVERINFO(CommandServerInfo.class, 0, "Show Server Info", "sinfo", "serverinfo", "guildinfo"),
     SET_LEVEL(CommandSetLevel.class, 4, "Sets a user Level.", "setlevel"),
     SHUTDOWN(CommandShutdown.class, 4, "Stops Samaritan [!!]", "stop", "shutdown"),
+    TEST(CommandTest.class, 4, "Test Command", "test"),
     TIC_TAC_TOE(CommandTicTacToe.class, 0, "Starts a Tic Tac Toe Game", "tictactoe", "ttt"),
     TWEET(CommandTweet.class, 3, "Tweets", "tweet"),
     TWITCH(CommandTwitch.class, 2, "Twitch Related", "twitch"),
     UNLEET(CommandUnleet.class, 0, "Unleets a message", "unleet"),
     UPTIME(CommandUptime.class, 0, "Shows uptime", "uptime"),
-    USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info");
+    USERINFO(CommandUserInfo.class, 0, "Show infos about a User.", "userinfo", "user-info"),
+    WORD_REACT(CommandWordReaction.class, 0, "Reacts as a word.", "wordreact", "wreact", "wr");
 
     /**
      * Command class.
@@ -92,7 +96,16 @@ public enum Commands {
         try {
             CommandData commandData = new CommandData(samaritan, user, guild, message);
             command = clazz.getDeclaredConstructor(MessageChannel.class, CommandData.class, String[].class).newInstance(textChannel, commandData, args);
-            System.out.println("Calling command: " + command.toString());
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("Calling command \"");
+            // "" + clazz.getSimpleName().replace("Command", "") + "\" on: " + command.toString()
+            stringBuilder.append(clazz.getSimpleName().replace("Command", ""));
+            stringBuilder.append("\" on: ");
+            stringBuilder.append(command.toString());
+            stringBuilder.append(" ");
+            stringBuilder.append("(").append("Guild: " + guild.getName()).append(", ");
+            stringBuilder.append("Channel: #" + textChannel.getName()).append(")");
+            samaritan.getLogger().write(stringBuilder.toString());
             command.start();
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             e.printStackTrace();

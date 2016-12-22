@@ -20,44 +20,44 @@ public class BeamModule extends StreamModule {
 
     @Override
     public void initialize(String channel) {
-        BeamAPI beam = new BeamAPI();
-
-        Futures.addCallback(beam.use(UsersService.class).search(channel), new ResponseHandler<UserSearchResponse>() {
-            @Override
-            public void onSuccess(UserSearchResponse response) {
-                if(response.size() > 0) {
-                    BeamChannel beamChannel = response.get(0).channel;
-                    Status currentStatus = beamChannel == null ? Status.OFFLINE : beamChannel.online ? Status.ONLINE : Status.OFFLINE;
-                    streamersMap.put(channel, currentStatus);
-                }
-            }
-        });
+//        BeamAPI beam = new BeamAPI();
+//
+//        Futures.addCallback(beam.use(UsersService.class).search(channel), new ResponseHandler<UserSearchResponse>() {
+//            @Override
+//            public void onSuccess(UserSearchResponse response) {
+//                if(response.size() > 0) {
+//                    BeamChannel beamChannel = response.get(0).channel;
+//                    Status currentStatus = beamChannel == null ? Status.OFFLINE : beamChannel.online ? Status.ONLINE : Status.OFFLINE;
+//                    streamersMap.put(channel, currentStatus);
+//                }
+//            }
+//        });
     }
 
     @Override
     void check(String channel) {
-        BeamAPI beam = new BeamAPI();
-
-        Futures.addCallback(beam.use(UsersService.class).search(channel), new ResponseHandler<UserSearchResponse>() {
-            @Override
-            public void onSuccess(UserSearchResponse response) {
-                if(response.size() > 0) {
-                    Status lastStatus = streamersMap.get(channel);
-                    BeamChannel beamChannel = response.get(0).channel;
-                    Status currentStatus = beamChannel == null ? Status.OFFLINE : beamChannel.online ? Status.ONLINE : Status.OFFLINE;
-
-                    System.out.println("BEAM | Checking " + channel + ": " + currentStatus);
-
-                    StreamerChannel streamerChannel = new StreamerChannel(null, beamChannel.name, channel);
-
-                    if (currentStatus == Status.ONLINE && lastStatus == Status.OFFLINE) {
-                        broadcastLive(streamerChannel);
-                    }
-
-                    streamersMap.put(channel, currentStatus);
-                }
-            }
-        });
+//        BeamAPI beam = new BeamAPI();
+//
+//        Futures.addCallback(beam.use(UsersService.class).search(channel), new ResponseHandler<UserSearchResponse>() {
+//            @Override
+//            public void onSuccess(UserSearchResponse response) {
+//                if(response.size() > 0) {
+//                    Status lastStatus = streamersMap.get(channel);
+//                    BeamChannel beamChannel = response.get(0).channel;
+//                    Status currentStatus = beamChannel == null ? Status.OFFLINE : beamChannel.online ? Status.ONLINE : Status.OFFLINE;
+//
+//                    System.out.println("BEAM | Checking " + channel + ": " + currentStatus);
+//
+//                    StreamerChannel streamerChannel = new StreamerChannel(null, beamChannel.name, channel);
+//
+//                    if (currentStatus == Status.ONLINE && lastStatus == Status.OFFLINE) {
+//                        broadcastLive(streamerChannel);
+//                    }
+//
+//                    streamersMap.put(channel, currentStatus);
+//                }
+//            }
+//        });
     }
 
     @Override

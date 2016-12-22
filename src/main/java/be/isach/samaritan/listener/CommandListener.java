@@ -49,7 +49,7 @@ public class CommandListener extends ListenerAdapter {
                     if (!samaritan.getAccessLevelManager().hasAccessLevel(commandType.getRequiredAccessLevel(), event.getAuthor())) {
                         event.getChannel().sendMessage("You don't have the required access level for that! (you have: "
                                 + samaritan.getAccessLevelManager().getAccessLevel(event.getAuthor()) + ", required: " +
-                                commandType.getRequiredAccessLevel() + ")");
+                                commandType.getRequiredAccessLevel() + ")").queue();
                         try {
                             event.getMessage().deleteMessage().queue();
                         } catch (Exception exc) {

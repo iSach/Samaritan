@@ -1,12 +1,12 @@
-package be.isach.samaritan.brainfuck;
+package be.isach.samaritan.util.brainfuck;
 
-import be.isach.samaritan.exception.BrainfuckException;
+import be.isach.samaritan.util.brainfuck.exception.BrainfuckException;
 
 import java.nio.ByteBuffer;
 
 /**
  * Project: samaritan
- * Package: be.isach.samaritan.brainfuck
+ * Package: be.isach.samaritan.util.brainfuck
  * Created by: Sacha
  * Created on: 05th juin, 2016
  * at 15:21

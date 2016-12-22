@@ -1,7 +1,7 @@
-package be.isach.samaritan.start;
+package be.isach.samaritan.runtime;
 
 import be.isach.samaritan.Samaritan;
-import be.isach.samaritan.json.AdvancedJSONObject;
+import be.isach.samaritan.util.AdvancedJSONObject;
 import be.isach.samaritan.stream.StreamData;
 import be.isach.samaritan.stream.TwitchData;
 import org.json.JSONArray;
@@ -62,7 +62,6 @@ public class SamaritanMain {
             boolean webUi = object.getBoolean("web-ui");
             int uiWebSocketPort = object.getInt("web-ui-websocket-port");
             long ownerId = object.getLong("bot-owner-id");
-            String googleMapsApiKey = object.getString("google-maps-api-key");
             samaritan = new Samaritan(args, botToken, webUi, uiWebSocketPort, ownerId, workingDirectory);
         } catch (IOException e) {
             System.out.println("---------------------------");
