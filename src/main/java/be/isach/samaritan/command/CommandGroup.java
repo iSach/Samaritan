@@ -1,8 +1,10 @@
 package be.isach.samaritan.command;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
 import net.dv8tion.jda.core.entities.*;
 
+import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,13 +41,20 @@ public class CommandGroup extends Command {
 
         if(args == null || args.length == 0) {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("```");
-            stringBuilder.append("Sub-Commands:").append("\n");;
-            stringBuilder.append("    -group list").append("\n");
-            stringBuilder.append("    -group add [group]").append("\n");;
-            stringBuilder.append("    -group remove [group]");
-            stringBuilder.append("```");
-            getMessageChannel().sendMessage(stringBuilder.toString()).queue();
+            stringBuilder.append("-group list ").append("\n");
+            stringBuilder.append("-group add [group]").append("\n");;
+            stringBuilder.append("-group leave [group]");
+            StringBuilder descriptionBuilder = new StringBuilder();
+            stringBuilder.append("Lists joinable groups.");
+            stringBuilder.append("Join a group.");
+            stringBuilder.append("Quit a group.");
+            EmbedBuilder embedBuilder = new EmbedBuilder();
+            embedBuilder.setColor(Color.WHITE);
+            embedBuilder.setTitle("Group Command Help");
+            embedBuilder.addField("Sub-Command", stringBuilder.toString(), true);
+            embedBuilder.addField("Description", descriptionBuilder.toString(), true);
+            embedBuilder.setFooter("Informations requested by " + getExecutor().getName(), null);
+            getMessageChannel().sendMessage(embedBuilder.build()).queue();
             printJoinableGroups();
             return;
         }
@@ -53,13 +62,20 @@ public class CommandGroup extends Command {
         switch (arg) {
             default:
                 StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append("```");
-                stringBuilder.append("Sub-Commands:").append("\n");;
-                stringBuilder.append("    -group list").append("\n");
-                stringBuilder.append("    -group add [group]").append("\n");;
-                stringBuilder.append("    -group remove [group]");
-                stringBuilder.append("```");
-                getMessageChannel().sendMessage(stringBuilder.toString()).queue();
+                stringBuilder.append("-group list ").append("\n");
+                stringBuilder.append("-group add [group]").append("\n");;
+                stringBuilder.append("-group leave [group]");
+                StringBuilder descriptionBuilder = new StringBuilder();
+                stringBuilder.append("Lists joinable groups.");
+                stringBuilder.append("Join a group.");
+                stringBuilder.append("Quit a group.");
+                EmbedBuilder embedBuilder = new EmbedBuilder();
+                embedBuilder.setColor(Color.WHITE);
+                embedBuilder.setTitle("Group Command Help");
+                embedBuilder.addField("Sub-Command", stringBuilder.toString(), true);
+                embedBuilder.addField("Description", descriptionBuilder.toString(), true);
+                embedBuilder.setFooter("Informations requested by " + getExecutor().getName(), null);
+                getMessageChannel().sendMessage(embedBuilder.build()).queue();
                 printJoinableGroups();
                 break;
             case "list":
@@ -68,8 +84,8 @@ public class CommandGroup extends Command {
             case "add":
                 add(args);
                 break;
-            case "remove":
-                remove(args);
+            case "leave":
+                leave(args);
                 break;
         }
     }
@@ -134,10 +150,10 @@ public class CommandGroup extends Command {
         });
     }
 
-    private void remove(String... args) {
+    private void leave(String... args) {
         String roleAsString;
         if(args.length < 2) {
-            getMessageChannel().sendMessage("What group do you wanna be removed from?");
+            getMessageChannel().sendMessage("What group do you want to leave?");
             printJoinableGroups();
             roleAsString = nextMessage().getContent().split(" ")[0].toLowerCase();
         } else {
