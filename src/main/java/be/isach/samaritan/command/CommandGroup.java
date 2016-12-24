@@ -43,12 +43,13 @@ public class CommandGroup extends Command {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("-group list ").append("\n");
             stringBuilder.append("-group add [group]").append("\n");
-            ;
             stringBuilder.append("-group leave [group]");
+
             StringBuilder descriptionBuilder = new StringBuilder();
-            stringBuilder.append("Lists joinable groups.");
-            stringBuilder.append("Join a group.");
-            stringBuilder.append("Quit a group.");
+            descriptionBuilder.append("Lists joinable groups.");
+            descriptionBuilder.append("Join a group.");
+            descriptionBuilder.append("Quit a group.");
+
             EmbedBuilder embedBuilder = new EmbedBuilder();
             embedBuilder.setColor(Color.WHITE);
             embedBuilder.setTitle("Group Command Help");
@@ -204,8 +205,7 @@ public class CommandGroup extends Command {
         }
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.WHITE);
-        embedBuilder.setTitle("Joinable groups:");
-        embedBuilder.setDescription(stringBuilder.toString());
+        embedBuilder.addField("Joinable Groups", stringBuilder.toString(), false);
         embedBuilder.setFooter("Informations requested by " + getExecutor().getName(), null);
         getMessageChannel().sendMessage(embedBuilder.build()).queue();
     }
