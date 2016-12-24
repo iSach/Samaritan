@@ -46,8 +46,8 @@ public class CommandGroup extends Command {
             stringBuilder.append("-group leave [group]");
 
             StringBuilder descriptionBuilder = new StringBuilder();
-            descriptionBuilder.append("Lists joinable groups.");
-            descriptionBuilder.append("Join a group.");
+            descriptionBuilder.append("Lists joinable groups.").append("\n");
+            descriptionBuilder.append("Join a group.").append("\n");
             descriptionBuilder.append("Quit a group.");
 
             EmbedBuilder embedBuilder = new EmbedBuilder();
@@ -66,12 +66,13 @@ public class CommandGroup extends Command {
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("-group list ").append("\n");
                 stringBuilder.append("-group add [group]").append("\n");
-                ;
                 stringBuilder.append("-group leave [group]");
+
                 StringBuilder descriptionBuilder = new StringBuilder();
-                descriptionBuilder.append("Lists joinable groups.");
-                descriptionBuilder.append("Join a group.");
+                descriptionBuilder.append("Lists joinable groups.").append("\n");
+                descriptionBuilder.append("Join a group.").append("\n");
                 descriptionBuilder.append("Quit a group.");
+
                 EmbedBuilder embedBuilder = new EmbedBuilder();
                 embedBuilder.setColor(Color.WHITE);
                 embedBuilder.setTitle("Group Command Help");
@@ -205,7 +206,7 @@ public class CommandGroup extends Command {
         }
         EmbedBuilder embedBuilder = new EmbedBuilder();
         embedBuilder.setColor(Color.WHITE);
-        embedBuilder.addField("Joinable Groups", stringBuilder.toString(), false);
+        embedBuilder.addField("Language Groups", stringBuilder.toString(), false);
         embedBuilder.setFooter("Informations requested by " + getExecutor().getName(), null);
         getMessageChannel().sendMessage(embedBuilder.build()).queue();
     }
