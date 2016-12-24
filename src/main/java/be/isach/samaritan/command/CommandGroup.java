@@ -42,7 +42,7 @@ public class CommandGroup extends Command {
         if (args == null || args.length == 0) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("-group list ").append("\n");
-            stringBuilder.append("-group add [group]").append("\n");
+            stringBuilder.append("-group join [group]").append("\n");
             stringBuilder.append("-group leave [group]");
 
             StringBuilder descriptionBuilder = new StringBuilder();
@@ -65,7 +65,7 @@ public class CommandGroup extends Command {
             default:
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("-group list ").append("\n");
-                stringBuilder.append("-group add [group]").append("\n");
+                stringBuilder.append("-group join [group]").append("\n");
                 stringBuilder.append("-group leave [group]");
 
                 StringBuilder descriptionBuilder = new StringBuilder();
@@ -85,8 +85,8 @@ public class CommandGroup extends Command {
             case "list":
                 list();
                 break;
-            case "add":
-                add(args);
+            case "join":
+                join(args);
                 break;
             case "leave":
                 leave(args);
@@ -119,10 +119,10 @@ public class CommandGroup extends Command {
         getMessageChannel().sendMessage(stringBuilder.toString());
     }
 
-    private void add(String... args) {
+    private void join(String... args) {
         String roleAsString;
         if (args.length < 2) {
-            getMessageChannel().sendMessage("What group do you wanna join?").queue();
+            getMessageChannel().sendMessage("What group do you want to join?").queue();
             printJoinableGroups();
             roleAsString = nextMessage().getContent().split(" ")[0].toLowerCase();
         } else {
