@@ -201,7 +201,7 @@ public class CommandGroup extends Command {
         }
         for (Role role : getGuild().getRoles()) {
             if (role.getPosition() < langsPos && role.getPosition() >= 0) {
-                stringBuilder.append("  ").append(role.getName().toLowerCase()).append("\n");
+                stringBuilder.append(role.getName().toLowerCase()).append("\n");
             }
         }
         EmbedBuilder embedBuilder = new EmbedBuilder();
