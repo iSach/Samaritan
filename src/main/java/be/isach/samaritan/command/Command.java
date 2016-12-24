@@ -3,6 +3,7 @@ package be.isach.samaritan.command;
 import be.isach.samaritan.Samaritan;
 import be.isach.samaritan.message.MessageScanningThread;
 import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 
@@ -103,6 +104,10 @@ abstract class Command extends MessageScanningThread {
      */
     final User getExecutor() {
         return getData().getExecutor();
+    }
+
+    final Member getMember() {
+        return getGuild().getMember(getExecutor());
     }
 
     /**

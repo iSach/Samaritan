@@ -118,7 +118,7 @@ public class CommandGroup extends Command {
             getMessageChannel().sendMessage("That group doesn't exist!").queue();
             return;
         }
-        if(getGuild().getMembersWithRoles(role).contains(getExecutor())) {
+        if(getGuild().getMembersWithRoles(role).contains(getMember())) {
             getMessageChannel().sendMessage("You're already in that group!").queue();
             return;
         }
@@ -153,7 +153,7 @@ public class CommandGroup extends Command {
             getMessageChannel().sendMessage("That group doesn't exist!").queue();
             return;
         }
-        if(!getGuild().getMembersWithRoles(role).contains(getExecutor())) {
+        if(!getGuild().getMembersWithRoles(role).contains(getMember())) {
             getMessageChannel().sendMessage("You are not in that group!").queue();
             return;
         }

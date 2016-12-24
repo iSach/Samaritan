@@ -54,6 +54,7 @@ public class CommandUserInfo extends Command {
         embedBuilder.addField("Status", member.getOnlineStatus().toString().toLowerCase(), true);
         embedBuilder.addField("Joined At", dateFormat.format(member.getJoinDate()), true);
         embedBuilder.addField("Access Level", getSamaritan().getAccessLevelManager().getAccessLevel(user) + "", true);
+        embedBuilder.addField("Nickname", member.getNickname(), true);
         embedBuilder.addField("Roles", formatRoleList(member.getRoles()), false);
         embedBuilder.setAuthor(member.getUser().getName(), null, member.getUser().getAvatarUrl());
         embedBuilder.setFooter("Informations requested by " + getExecutor().getName(), "http://discordapp.com");
