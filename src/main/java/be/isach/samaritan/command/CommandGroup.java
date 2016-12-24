@@ -34,15 +34,16 @@ public class CommandGroup extends Command {
      */
     @Override
     void onExecute(String[] args) {
-        if(!getGuild().getId().equals("186941943941562369")) {
+        if (!getGuild().getId().equals("186941943941562369")) {
             getMessageChannel().sendMessage("This command isn't available here.").queue();
             return;
         }
 
-        if(args == null || args.length == 0) {
+        if (args == null || args.length == 0) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("-group list ").append("\n");
-            stringBuilder.append("-group add [group]").append("\n");;
+            stringBuilder.append("-group add [group]").append("\n");
+            ;
             stringBuilder.append("-group leave [group]");
             StringBuilder descriptionBuilder = new StringBuilder();
             stringBuilder.append("Lists joinable groups.");
@@ -63,12 +64,13 @@ public class CommandGroup extends Command {
             default:
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append("-group list ").append("\n");
-                stringBuilder.append("-group add [group]").append("\n");;
+                stringBuilder.append("-group add [group]").append("\n");
+                ;
                 stringBuilder.append("-group leave [group]");
                 StringBuilder descriptionBuilder = new StringBuilder();
-                stringBuilder.append("Lists joinable groups.");
-                stringBuilder.append("Join a group.");
-                stringBuilder.append("Quit a group.");
+                descriptionBuilder.append("Lists joinable groups.").append("\n");
+                descriptionBuilder.append("Join a group.").append("\n");
+                descriptionBuilder.append("Quit a group.");
                 EmbedBuilder embedBuilder = new EmbedBuilder();
                 embedBuilder.setColor(Color.WHITE);
                 embedBuilder.setTitle("Group Command Help");
@@ -117,7 +119,7 @@ public class CommandGroup extends Command {
 
     private void add(String... args) {
         String roleAsString;
-        if(args.length < 2) {
+        if (args.length < 2) {
             getMessageChannel().sendMessage("What group do you wanna join?").queue();
             printJoinableGroups();
             roleAsString = nextMessage().getContent().split(" ")[0].toLowerCase();
@@ -125,20 +127,20 @@ public class CommandGroup extends Command {
             roleAsString = args[1].toLowerCase();
         }
         Role role = null;
-        for(Role r : getGuild().getRoles()) {
-            if(r.getName().equalsIgnoreCase(roleAsString)) {
+        for (Role r : getGuild().getRoles()) {
+            if (r.getName().equalsIgnoreCase(roleAsString)) {
                 role = r;
             }
         }
-        if(role == null) {
+        if (role == null) {
             getMessageChannel().sendMessage("That group doesn't exist!").queue();
             return;
         }
-        if(getGuild().getMembersWithRoles(role).contains(getMember())) {
+        if (getGuild().getMembersWithRoles(role).contains(getMember())) {
             getMessageChannel().sendMessage("You're already in that group!").queue();
             return;
         }
-        if(role.getPosition() > (getGuild().getRoles().size() - 7)
+        if (role.getPosition() > (getGuild().getRoles().size() - 7)
                 || role.getName().contains("everyone")) {
             getMessageChannel().sendMessage("This isn't a language group.").queue();
             printJoinableGroups();
@@ -152,7 +154,7 @@ public class CommandGroup extends Command {
 
     private void leave(String... args) {
         String roleAsString;
-        if(args.length < 2) {
+        if (args.length < 2) {
             getMessageChannel().sendMessage("What group do you want to leave?");
             printJoinableGroups();
             roleAsString = nextMessage().getContent().split(" ")[0].toLowerCase();
@@ -160,20 +162,20 @@ public class CommandGroup extends Command {
             roleAsString = args[1].toLowerCase();
         }
         Role role = null;
-        for(Role r : getGuild().getRoles()) {
-            if(r.getName().equalsIgnoreCase(roleAsString)) {
+        for (Role r : getGuild().getRoles()) {
+            if (r.getName().equalsIgnoreCase(roleAsString)) {
                 role = r;
             }
         }
-        if(role == null) {
+        if (role == null) {
             getMessageChannel().sendMessage("That group doesn't exist!").queue();
             return;
         }
-        if(!getGuild().getMembersWithRoles(role).contains(getMember())) {
+        if (!getGuild().getMembersWithRoles(role).contains(getMember())) {
             getMessageChannel().sendMessage("You are not in that group!").queue();
             return;
         }
-        if(role.getPosition() > (getGuild().getRoles().size() - 7)
+        if (role.getPosition() > (getGuild().getRoles().size() - 7)
                 || role.getName().contains("everyone")) {
             getMessageChannel().sendMessage("This isn't a language group.").queue();
             printJoinableGroups();
@@ -187,22 +189,25 @@ public class CommandGroup extends Command {
 
     private void printJoinableGroups() {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("```");
-        stringBuilder.append("Joinable groups:").append("\n");
+        stringBuilder.append("").append("\n");
         int langsPos = 0;
-        for(Role role : getGuild().getRoles()) {
-            if(role.getName().equalsIgnoreCase("langs")) {
+        for (Role role : getGuild().getRoles()) {
+            if (role.getName().equalsIgnoreCase("langs")) {
                 langsPos = role.getPosition();
                 break;
             }
         }
-        for(Role role : getGuild().getRoles()) {
-            if(role.getPosition() < langsPos && role.getPosition() >= 0) {
+        for (Role role : getGuild().getRoles()) {
+            if (role.getPosition() < langsPos && role.getPosition() >= 0) {
                 stringBuilder.append("  ").append(role.getName().toLowerCase()).append("\n");
             }
         }
-        stringBuilder.append("```");
-        getMessageChannel().sendMessage(stringBuilder.toString()).queue();
+        EmbedBuilder embedBuilder = new EmbedBuilder();
+        embedBuilder.setColor(Color.WHITE);
+        embedBuilder.setTitle("Joinable groups:");
+        embedBuilder.setDescription(stringBuilder.toString());
+        embedBuilder.setFooter("Informations requested by " + getExecutor().getName(), null);
+        getMessageChannel().sendMessage(embedBuilder.build()).queue();
     }
 
     private static int compare(Guild guild, Role role, Role other) {
