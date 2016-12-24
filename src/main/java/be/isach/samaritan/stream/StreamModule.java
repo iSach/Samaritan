@@ -1,5 +1,6 @@
 package be.isach.samaritan.stream;
 
+import be.isach.samaritan.Samaritan;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.TextChannel;
 
@@ -18,10 +19,12 @@ public abstract class StreamModule extends TimerTask {
 
     protected Map<String, Status> streamersMap;
     protected JDA jda;
+    private Samaritan samaritan;
 
-    public StreamModule(JDA jda, StreamData streamData) {
+    public StreamModule(JDA jda, StreamData streamData, Samaritan samaritan) {
         this.jda = jda;
         this.streamersMap = new HashMap<>();
+        this.samaritan = samaritan;
 
         streamData.getStreamers().forEach(s -> streamersMap.put(s, null));
     }
@@ -50,5 +53,9 @@ public abstract class StreamModule extends TimerTask {
 
     protected final void initChannels() {
         streamersMap.keySet().forEach(this::initialize);
+    }
+
+    public Samaritan getSamaritan() {
+        return samaritan;
     }
 }

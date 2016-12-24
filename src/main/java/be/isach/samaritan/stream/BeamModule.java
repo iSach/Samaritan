@@ -1,5 +1,6 @@
 package be.isach.samaritan.stream;
 
+import be.isach.samaritan.Samaritan;
 import com.google.common.util.concurrent.Futures;
 import net.dv8tion.jda.core.JDA;
 import pro.beam.api.BeamAPI;
@@ -13,8 +14,8 @@ import pro.beam.api.util.ResponseHandler;
  */
 public class BeamModule extends StreamModule {
 
-    public BeamModule(JDA jda, StreamData streamData) {
-        super(jda, streamData);
+    public BeamModule(JDA jda, StreamData streamData, Samaritan samaritan) {
+        super(jda, streamData, samaritan);
         initChannels();
     }
 
@@ -46,7 +47,7 @@ public class BeamModule extends StreamModule {
 //                    BeamChannel beamChannel = response.get(0).channel;
 //                    Status currentStatus = beamChannel == null ? Status.OFFLINE : beamChannel.online ? Status.ONLINE : Status.OFFLINE;
 //
-//                    System.out.println("BEAM | Checking " + channel + ": " + currentStatus);
+//                    getSamaritan().getLogger().write("Bealm Channel: \"" + channel + "\" is: " + currentStatus);
 //
 //                    StreamerChannel streamerChannel = new StreamerChannel(null, beamChannel.name, channel);
 //

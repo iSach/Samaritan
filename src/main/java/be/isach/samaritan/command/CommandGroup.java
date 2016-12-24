@@ -69,8 +69,8 @@ public class CommandGroup extends Command {
                 ;
                 stringBuilder.append("-group leave [group]");
                 StringBuilder descriptionBuilder = new StringBuilder();
-                descriptionBuilder.append("Lists joinable groups.").append("\n");
-                descriptionBuilder.append("Join a group.").append("\n");
+                descriptionBuilder.append("Lists joinable groups.");
+                descriptionBuilder.append("Join a group.");
                 descriptionBuilder.append("Quit a group.");
                 EmbedBuilder embedBuilder = new EmbedBuilder();
                 embedBuilder.setColor(Color.WHITE);

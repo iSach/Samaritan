@@ -1,5 +1,6 @@
 package be.isach.samaritan.stream;
 
+import be.isach.samaritan.Samaritan;
 import com.mb3364.twitch.api.Twitch;
 import com.mb3364.twitch.api.handlers.StreamResponseHandler;
 import com.mb3364.twitch.api.models.Stream;
@@ -12,8 +13,8 @@ public class TwitchModule extends StreamModule {
 
     private Twitch twitch;
 
-    public TwitchModule(JDA jda, TwitchData twitchData) {
-        super(jda, twitchData);
+    public TwitchModule(JDA jda, TwitchData twitchData, Samaritan samaritan) {
+        super(jda, twitchData, samaritan);
 
         this.twitch = new Twitch();
         twitch.setClientId(twitchData.getClientId());
@@ -43,7 +44,7 @@ public class TwitchModule extends StreamModule {
             public void onSuccess(Stream stream) {
                 Status currentStatus = stream == null ? Status.OFFLINE : stream.isOnline() ? Status.ONLINE : Status.OFFLINE;
 
-                System.out.println("Checking " + channel + ": " + currentStatus);
+                getSamaritan().getLogger().write("Twitch Channel: \"" + channel + "\" is: " + currentStatus);
 
                 if (stream != null) {
 
