@@ -358,12 +358,12 @@ public class Samaritan {
     }
 
     public void initTwitchModule(TwitchData twitchData) {
-        this.twitchModule = new TwitchModule(getJda(), twitchData);
+        this.twitchModule = new TwitchModule(getJda(), twitchData, this);
         this.timer.schedule(twitchModule, 0L, 25000L);
     }
 
     public void initBeamModule(StreamData streamData) {
-        this.beamModule = new BeamModule(getJda(), streamData);
+        this.beamModule = new BeamModule(getJda(), streamData, this);
         this.timer.schedule(beamModule, 0L, 25000L);
     }
 
