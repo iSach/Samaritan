@@ -35,6 +35,7 @@ public enum Commands {
     GROUP(CommandGroup.class, 0, "Group Related Things", "group", "g"),
     HASTE(CommandHaste.class, 0, "Prints Hastebin Code.", "haste"),
     HELP(CommandHelp.class, 0, "Prints this", "help"),
+    NSFW(CommandNsfw.class, 0, "Joins/Leave NSFW", "nsfw"),
     JOIN_ME(CommandJoinMe.class, 3, "Joins Admin.", "joinme"),
     LEET(CommandLeet.class, 0, "Translates text to Leet.", "leet"),
     QUOTE(CommandQuote.class, 0, "Quotes a message", "quote", "q"),
