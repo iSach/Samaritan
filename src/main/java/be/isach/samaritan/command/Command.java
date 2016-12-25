@@ -117,6 +117,10 @@ abstract class Command extends MessageScanningThread {
         return getData().getGuild();
     }
 
+    protected final void log(String... strings) {
+        getSamaritan().getLogger().writeFrom(getClass().getSimpleName(), strings);
+    }
+
     /**
      * Made for subclasses, called when command is executed.
      *
