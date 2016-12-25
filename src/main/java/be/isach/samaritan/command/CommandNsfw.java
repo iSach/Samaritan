@@ -55,7 +55,7 @@ public class CommandNsfw extends Command {
             return;
         }
 
-        if(getGuild().getMembersWithRoles(role).contains(getMember())) {
+        if(!getGuild().getMembersWithRoles(role).contains(getMember())) {
             getGuild().getController().addRolesToMember(getGuild().getMember(getExecutor()), role).queue(aVoid -> {
                 getMessageChannel().sendMessage(getMember().getAsMention() + " You've been successfully added to the nsfw Group").queue();
             });
